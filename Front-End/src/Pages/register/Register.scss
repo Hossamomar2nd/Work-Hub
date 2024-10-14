@@ -1,0 +1,230 @@
+.registerPage{
+
+  .signUpTitle{
+    margin-top: 30px;
+    margin-bottom: 0px !important;
+    margin-left: 670px;
+    font-weight: 500;
+    font-size: 42px;
+    color: #74767e;
+    margin-bottom: 15px;
+  }
+
+  .registerContainer{
+    display: flex;
+    background-color: #ffffff;
+    width: 77%;
+    height: 100%;
+    margin-left: 180px;
+    border: 1px solid #e9e9e9;
+    padding: 7px;
+    padding-bottom: 0px;
+    box-shadow: 3px 5px 20px 5px #e9e9e9;
+    border-radius: 20px;
+    margin-bottom: 120px;
+    margin-top: 50px;
+
+    .register {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 50px;
+      
+        form {
+          width: 100%;
+          padding: 100px 0px;
+          display: flex;
+          gap: 120px;
+      
+          h1 {
+            color: rgb(69, 69, 69);
+            margin-bottom: 20px;
+          }
+      
+          .left,
+          .right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+
+            .createAccount{
+              position: relative;
+              bottom: 40px;
+            }
+            
+            .becomeSeller{
+              position: relative;
+              bottom: 40px;
+              width: 540px;
+            }
+      
+            label {
+              color: gray;
+              font-size: 18px;
+            }
+    
+            .phoneNo{
+                position: relative;
+                top: 10px;
+            }
+
+            .phoneNumberContainer{
+              display: flex;
+
+              .countryCodeSelect{
+                width: 71px;
+              }
+
+              .phoneNoInput{
+                border: 1px solid rgb(216, 214, 214) !important;
+                // position: relative;
+                // top: 30px;
+                width: 329px;
+            }
+
+            .phoneNoInput:hover {
+              border: 1px solid #1dbf73 !important;
+              transition: .2s ease-in-out;
+          }
+
+          .phoneNoInput:focus {
+            outline: 0;
+            border: 1px solid #1dbf73 !important;
+            transition: .2s ease-in-out;
+        }
+            }
+    
+            .singupDesc{
+                position: relative;
+                top: 10px;
+            }
+
+            textarea {
+              width: 400px;
+              height: 120px;
+              padding: 10px;
+              border: 1px solid rgb(216, 214, 214);
+            }
+  
+            select {
+              padding: 10px;
+              border: 1px solid rgb(216, 214, 214);
+            }
+            .Input {
+              width: 400px;
+              border: 1px solid rgb(216, 214, 214) !important;
+            }
+
+            .skillsInput {
+              width: 400px;
+              // border: 1px solid rgb(216, 214, 214) !important;
+            }
+
+            .Input:hover {
+              border: 1px solid #1dbf73 !important;
+              transition: .2s ease-in-out;
+            }
+
+            .Input:focus {
+              outline: 0;
+              border: 1px solid #1dbf73 !important;
+              transition: .2s ease-in-out;
+            }
+
+            textarea:hover,
+            select:hover{
+                border: 1px solid #1dbf73 !important;
+                transition: .2s ease-in-out;
+            }
+            textarea:focus,
+            select:focus{
+                outline: 0;
+                border: 1px solid #1dbf73 !important;
+                transition: .2s ease-in-out;
+            }
+      
+            .registerButton {
+              border: none;
+              border-radius: 5px;
+              padding: 10px;
+              color: white;
+              font-weight: 500;
+              font-size: 18px;
+              background-color: #1dbf73;
+              cursor: pointer;
+              margin-top: 20px;
+            }
+    
+            .registerButton:hover{
+              background-color: #24dc86;  
+            }
+      
+            .toggle {
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              position: absolute;
+              bottom: 320px;
+              
+            
+              .switch {
+                position: relative;
+                display: inline-block;
+                width: 50px;
+                height: 24px;
+              }
+      
+              /* Hide default HTML checkbox */
+              .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+              }
+      
+              .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                -webkit-transition: 0.4s;
+                transition: 0.4s;
+                border-radius: 24px;
+              }
+      
+              .slider:before {
+                position: absolute;
+                content: "";
+                height: 16px;
+                width: 16px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: 0.4s;
+                transition: 0.4s;
+                border-radius: 50%;
+              }
+      
+              input:checked + .slider {
+                background-color: #1dbf73;
+              }
+      
+              input:focus + .slider {
+                box-shadow: 0 0 1px #1dbf73;
+              }
+      
+              input:checked + .slider:before {
+                -webkit-transform: translateX(26px);
+                -ms-transform: translateX(26px);
+                transform: translateX(26px);
+              }
+            }
+          }
+        }
+      }
+      
+}
+}

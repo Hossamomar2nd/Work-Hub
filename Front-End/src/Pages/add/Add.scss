@@ -1,0 +1,201 @@
+.add {
+    display: flex;
+    justify-content: center;
+  
+    .addContainer {
+      width: 1100px;
+      padding: 50px 0px;
+  
+      h1 {
+        width: max-content;
+        margin-bottom: 30px;
+        color: rgb(0, 0, 0);
+        font-weight: 400;
+      }
+  
+      .sections {
+        display: flex;
+        justify-content: space-between;
+        gap: 90px;
+
+        .form-field {
+          label,
+          h2 {
+            margin: 0;
+            font-size: 18px;
+            // color: rgb(84, 84, 84);
+            color: gray;
+
+          }
+        }
+        
+        .featureInput {
+          width: 300px;
+          padding: 7px;
+          outline: none;
+          border-radius: 5px;
+          border: 1px solid rgb(220, 220, 220);
+          margin-top: 10px;
+          padding: 5px;
+
+
+          &:focus {
+            border: 1px solid #1dbf73;
+          }
+        }
+
+        .updateFeatures{
+          // display: flex;
+          justify-content: space-between;
+        
+          .first-division {
+            display: flex;
+            // flex-direction: column;
+        
+            .updateAdd-img {
+              width: 30px;
+              height: 30px;
+              cursor: pointer;
+              position: relative;
+              left: 15px;
+              top: 13px;
+              display: flex;
+              align-self: flex-start;
+            }
+
+            .updateAdd-img_2 {
+              width: 30px;
+              height: 30px;
+              cursor: pointer;
+              position: relative;
+              right: 5px;
+              top: 13px;
+              display: flex;
+              align-self: flex-start;
+            }
+          }
+        
+          .second-division {
+
+            .updateService-remove-img {
+              width: 20px;
+              height: 20px;
+              position: relative;
+              right: 28px;
+              top: 13px;
+              cursor: pointer;
+            }
+
+          }
+
+        }
+        
+        .features {
+          display: flex;
+          justify-content: space-between;
+        
+          .first-division {
+            display: flex;
+            flex-direction: column;
+        
+            .add-img {
+              width: 30px;
+              height: 30px;
+              cursor: pointer;
+              position: relative;
+              left: 320px;
+              bottom: 33px;
+              display: flex;
+              align-self: flex-start;
+            }
+          }
+        
+          .second-division {
+            margin-right: 250px;
+            
+            .remove-img {
+              width: 20px;
+              height: 20px;
+              align-self: flex-start;
+              display: flex;
+              position: relative;
+              right: 30px;
+              top: 17px;
+              cursor: pointer;
+      
+              // margin-left: 20px; 
+              // Note: you can add this line if needed
+            }
+          }
+        }
+  
+        label {
+          color: gray;
+          font-size: 18px;
+        }
+  
+        .info,
+        .details {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          justify-content: space-between;
+  
+          input,
+          select,
+          textarea {
+            padding: 5px;
+
+            &:focus {
+              outline: 0;
+              border: 1px solid #1dbf73;
+            }
+
+            &:hover {
+              border: 1px solid #1dbf73;
+            }
+          }
+            .cancelBtnUpdateService{
+              width: 100%;
+              // height: 50px;
+              background-color: rgb(132, 132, 132);
+              color: #fff;
+              // margin-left: 40px;
+              border: 1px solid;
+              border-radius: 4px;
+              font-weight: bold;
+              letter-spacing: 1px;
+              font-size: 20px;
+      
+              &:hover {
+                  background-color: rgb(96, 96, 96);
+              }
+            }
+  
+          button {
+            border: none;
+            padding: 10px;
+            color: white;
+            font-weight: 500;
+            width: 100%;
+            // height: 50px;
+            // background-color: rgb(77, 193, 195);
+            border: 1px solid #1dbf73;
+            border-radius: 4px;
+            color: #fff;
+            font-weight: bold;
+            letter-spacing: 1px;
+            font-size: 20px;
+            // margin-left: 105px;
+            background-color: #1dbf73;
+            cursor: pointer;
+          }
+          button:hover {
+            background-color: #24dc86;
+          }
+        }
+      }
+    }
+  }
+  

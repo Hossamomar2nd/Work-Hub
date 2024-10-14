@@ -1,0 +1,94 @@
+.messages {
+    display: flex;
+    justify-content: center;
+  
+    .messagesContainer {
+      width: 1200px;
+      padding: 50px 0px;
+
+      .action {
+        text-align: center;
+        position: relative;
+      }
+
+      .date {
+        text-align: center;
+        position: relative;
+      }
+
+      .userName {
+        text-align: center;
+        position: relative;
+      }
+  
+      .title {
+        display: flex;
+        justify-content: space-between;
+  
+        button {
+          background-color: #1dbf73;
+          color: white;
+          font-weight: 500;
+          border: none;
+          padding: 10px;
+          cursor: pointer;
+        }
+      }
+  
+      table {
+        width: 100%;
+  
+        tr {
+          height: 100px;
+          th {
+            text-align: center;
+          }
+          td {
+            text-align: center;
+            padding: 10px;
+
+            .image{
+              width: 45px;
+              height: 45px;
+              border-radius: 50%;
+            }
+  
+            &:first-child {
+              font-weight: 500;
+            }
+            
+            &:nth-child(2),
+            &:nth-child(3) {
+              color: gray;
+              text-align: center;
+            }
+          }
+  
+          button {
+            background-color: #1dbf73;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+          }
+  
+          &.active {
+            background-color: #1dbf730f;
+
+            .dateData {
+              text-align: center;
+            }
+
+            .userNameData {
+              text-align: center;
+
+              p {
+                position: relative;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  

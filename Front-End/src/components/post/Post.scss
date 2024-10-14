@@ -1,0 +1,953 @@
+.post {
+    position: relative;
+    left: 30px;
+    width: 90%;
+    border-radius: 10px;
+    margin: 30px 0;
+    -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+    box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+
+
+    .postContainer {
+        padding: 10px;
+
+        .postTop {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .postTopLeft {
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+
+                .postProfileImg {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+                .onlineImg{
+                    width: 10px;
+                    height: 10px;
+                    position: absolute;
+                    right: 575px;
+                    top: 39px;
+                }
+
+                .postUsername {
+                    font-size: 15px;
+                    font-weight: 500;
+                    margin: 0 10px;
+                    position: relative;
+                    bottom: 7px;
+                }
+            }
+
+            .postSpecialization{
+                font-size: 12px;
+                position: absolute;
+                top: 33px;
+                left: 62px;
+                font-weight: 500;
+                color: #737373;
+            }
+
+            .postDate {
+                font-size: 12px;
+                position: absolute;
+                top: 35px;
+                left: 62px;
+                margin-top: 15px;
+            }
+
+            .postTopRight {
+
+                .deletePostContainer {
+                    position: absolute;
+                    top: 40px;
+                    right: 10px;
+                    padding: 20px;
+                    background-color: #fff;
+                    border-radius: 10px;
+                    border: 1px solid lightgray;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    color: gray;
+                    width: 130px;
+                    font-weight: 500;
+
+                    .sidebarDeleteList {
+                        cursor: pointer;
+                        list-style: none;
+                        margin-left: 5px;
+                    }
+
+                    .sidebarJoinButton {
+                        width: 100px;
+                        // border: 1px solid rgb(185, 185, 185);
+                        padding: 7px;
+                        // border-radius: 10px;
+                        background-color: transparent;
+                        font-weight: 500;
+                        color: rgb(0, 0, 0);
+                        position: relative;
+                        right: 5px;
+                        text-transform: none;
+                    }
+
+                    .sidebarJoinButton:hover {
+                        background-color: #ff3030;
+                        color: #fff;
+                    }
+
+                }
+
+                .postTopRightImg {
+                    width: 30px;
+                    height: 30px;
+                    cursor: pointer;
+                }
+
+            }
+        }
+
+        .postCenter {
+            margin: 20px 0;
+
+            .postText {
+                margin-left: 5px;
+            }
+
+            .postImg {
+                margin-top: 20px;
+                width: 100%;
+                max-height: 500px;
+                object-fit: contain;
+            }
+
+        }
+
+        .postBottom {
+            // display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 400px;
+
+            .activePostBottomLeft {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                position: relative;
+                // top: 10px;
+                left: 5px;
+
+                .activeItem {
+                    display: flex;
+                    gap: 5px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    color: black;
+                    position: relative;
+                    left: 232px;
+                    width: 150px;
+
+                    .commentsImg {
+                        width: 25px;
+                        height: 25px;
+                    }
+                }
+
+                .heartIcon {
+                    width: 24px;
+                    height: 24px;
+                    margin-right: 5px;
+                    cursor: pointer;
+                    // position: absolute;
+                    // bottom: 40px;
+                }
+
+                .redHeartIcon {
+                    width: 24px;
+                    height: 24px;
+                    margin-right: 5px;
+                    cursor: pointer;
+                    // position: absolute;
+                    // bottom: 50px;
+                }
+
+                .postLikeCounter {
+                    font-size: 15px;
+                    width: 110px;
+                }
+            }
+
+            .postBottomLeft {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 50px;
+                position: relative;
+                left: 5px;
+
+                .item {
+                    display: flex;
+                    gap: 5px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    color: black;
+                    position: relative;
+                    left: 190px;
+
+                    .commentsImg {
+                        width: 25px;
+                        height: 25px;
+                    }
+                }
+
+                .heartIcon {
+                    width: 24px;
+                    height: 24px;
+                    margin-right: 5px;
+                    cursor: pointer;
+                }
+
+                .redHeartIcon {
+                    width: 24px;
+                    height: 24px;
+                    margin-right: 5px;
+                    cursor: pointer;
+                    // position: relative;
+                    // top: 1.5px;
+                }
+
+                .postLikeCounter {
+                    font-size: 15px;
+                }
+            }
+
+            .postBottomRight {
+                // position: relative;
+                // right: 100px;
+                width: 100%;
+
+                .commentList {
+                    // display: flex;
+                    margin-bottom: 40px;
+                    position: relative;
+                    width: 100%;
+                    height: auto;
+                    left: 6px;
+                    top: 20px;
+                    list-style: none;
+
+                    .deleteCommentImg{
+                        width: 20px;
+                        height: 20px;
+                        cursor: pointer;
+                   
+                    }
+
+                    .commentListDateAndDelete{
+                        display: flex;
+                        gap: 315px;
+
+                        .dateContainer {
+                            
+                            .commentListDate{
+                                position: relative;
+                                left: 15px;
+                            }
+                        }
+                    }
+
+                    .commentListDateJustNow{
+                        display: flex;
+                        gap: 280px;
+
+                        .dateContainer {
+                            
+                            .commentListDate{
+                                position: relative;
+                                left: 15px;
+                            }
+                        }
+                    }
+
+                    .commentListDateAndDeleteTwo{
+                        display: flex;
+                        gap: 305px;
+
+                        .dateContainer {
+                            
+                            .commentListDate{
+                                position: relative;
+                                left: 15px;
+                            }
+                        }
+                    }
+
+                    .nameCommentContainer{
+                        // display: block;
+                        background-color: rgb(231, 231, 231);
+                        border: 1px solid rgb(231, 231, 231);
+                        border-radius: 10px;
+                        padding: 10px;
+                        margin-left: 7px;
+                        width: auto;
+                        // overflow: hidden;   
+                        
+                        .commentInfoAndDeleteComment{
+                            display: flex;
+                            gap: 160px;
+                        }
+
+
+                        .commentContent{
+                            width: 340px !important;    
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            // word-wrap: break-word !important;
+                            // white-space: nowrap;       
+                        }
+
+                        .userInfoCommentListLink {
+                            display: inherit;
+                            text-decoration: none;
+
+                            .commentSpecialization{
+                                display: inherit;
+                                color: rgb(67, 67, 67);
+                                font-size: 12px !important;
+                                margin-top: 20px;
+                                margin-bottom: 10px;
+                                position: relative;
+                                right: 87px;
+                                font-weight: 500;
+                            }
+
+                            .commentListUsername {
+                                display: inherit;
+                                color: black;
+                                position: relative;
+                                bottom: 4px;
+                                font-weight: 600;
+                                
+                            }
+                        }
+                    }
+
+                    .userInfoCommentList {
+                        display: flex;
+                        gap: 5px;
+
+                        .userInfoCommentListLink {
+                            text-decoration: none;
+
+                            .commentListUsername {
+                                color: black;
+                            
+                            }
+                            .profileImgCommentList {
+                                width: 30px;
+                                height: 30px;
+                                border-radius: 50%;
+                                position: relative;
+                                top: 32px;
+                                right: 32px;
+                                object-fit: cover;
+                            }
+
+                            .onlineImg{
+                                width: 8px;
+                                height: 8px;
+                                position: relative;
+                                right: 39px;
+                                top: 43px;
+                            }
+                        }
+                    }
+
+                }
+
+                .activeWrite {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 15px;
+                    margin: 20px 0px;
+                    position: relative;
+                    right: 135px;
+
+                    .commentListForm {
+                        display: flex;
+                        gap: 15px;
+                        position: relative;
+                        left: 140px;
+
+                        .profileImgComment {
+                            border-radius: 50%;
+                            width: 35px;
+                            height: 35px;
+                            position: relative;
+                            top: 6px;
+                            object-fit: cover;
+                        }
+
+                        .onlineImg{
+                            width: 8px;
+                            height: 8px;
+                            position: absolute;
+                            right: 559px;
+                            top: 33px;
+                        }
+
+                        .sendCommentButton {
+                            background: transparent;
+                            width: 30px;
+                            height: 35px;
+                            border: none;
+                            position: relative;
+                            top: 5px;
+
+                            .sendCommentImg {
+                                width: 25px;
+                                height: 25px;
+                                cursor: pointer;
+                                position: relative;
+                                right: 5px;
+                            }
+                        }
+
+
+
+                        input {
+                            width: 500px;
+                            padding: 10px;
+                            border: 1px solid themed("border");
+                            background-color: transparent;
+                            color: themed("textColor");
+                            border: 2px solid rgb(210, 210, 210);
+                            border-radius: 10px;
+                        }
+
+                        input:hover {
+                            border: 2px solid #1dbf73;
+                        }
+
+                        input:focus {
+                            outline: 0;
+                            border: 2px solid #1dbf73;
+                        }
+                    }
+                }
+
+                .write {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 15px;
+                    margin: 20px 0px;
+
+                    .profileImgComment {
+                        border-radius: 50%;
+                        width: 30px;
+                        height: 30px;
+                        position: relative;
+                        right: 300px;
+                        // margin-top: 50px;
+                    }
+
+                    .sendCommentImg {
+                        width: 25px;
+                        height: 25px;
+                        cursor: pointer;
+                    }
+
+                    input {
+                        flex: 5;
+                        padding: 10px;
+                        border: 1px solid themed("border");
+                        background-color: transparent;
+                        color: themed("textColor");
+                        border: 2px solid rgb(210, 210, 210);
+                        border-radius: 10px;
+
+                    }
+
+                    input:hover {
+                        border: 2px solid #1dbf73;
+                    }
+
+                    input:focus {
+                        outline: 0;
+                        border: 2px solid #1dbf73;
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+.adminPostActive {
+    position: relative;
+    left: 30px;
+    width: 90%;
+    border-radius: 10px;
+    margin: 30px 0;
+    -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+    box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+
+
+    .postContainer {
+        padding: 10px;
+
+        .postTop {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .postTopLeft {
+                display: flex;
+                align-items: center;
+
+                .postProfileImg {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+                .onlineImg{
+                    width: 10px;
+                    height: 10px;
+                    position: absolute;
+                    right: 467px;
+                    top: 39px;
+                }
+
+                .postUsername {
+                    font-size: 15px;
+                    font-weight: 500;
+                    margin: 0 10px;
+                    position: relative;
+                    bottom: 7px;
+                }
+            }
+
+            .postDate {
+                font-size: 12px;
+                position: absolute;
+                top: 35px;
+                left: 62px;
+            }
+
+            .postTopRight {
+
+                .deletePostContainer {
+                    position: absolute;
+                    top: 40px;
+                    right: 10px;
+                    padding: 20px;
+                    background-color: #fff;
+                    border-radius: 10px;
+                    border: 1px solid lightgray;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    color: gray;
+                    width: 130px;
+                    font-weight: 500;
+
+                    .sidebarDeleteList {
+                        cursor: pointer;
+                        list-style: none;
+                        margin-left: 5px;
+                    }
+
+                    .sidebarJoinButton {
+                        width: 100px;
+                        // border: 1px solid rgb(185, 185, 185);
+                        padding: 7px;
+                        // border-radius: 10px;
+                        background-color: transparent;
+                        font-weight: 500;
+                        color: rgb(0, 0, 0);
+                        position: relative;
+                        right: 5px;
+                        text-transform: none;
+                    }
+
+                    .sidebarJoinButton:hover {
+                        background-color: #ff3030;
+                        color: #fff;
+                    }
+
+                }
+
+                .postTopRightImg {
+                    width: 30px;
+                    height: 30px;
+                    cursor: pointer;
+                }
+
+            }
+        }
+
+        .postCenter {
+            margin: 20px 0;
+
+            .postText {
+                margin-left: 5px;
+            }
+
+            .postImg {
+                margin-top: 20px;
+                width: 100%;
+                max-height: 500px;
+                object-fit: contain;
+            }
+
+        }
+
+        .postBottom {
+            // display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 400px;
+
+            .activePostBottomLeft {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                position: relative;
+                // top: 10px;
+                left: 5px;
+
+                .activeItem {
+                    display: flex;
+                    gap: 5px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    color: black;
+                    position: relative;
+                    left: 127px;
+                    width: 150px;
+
+                    .commentsImg {
+                        width: 25px;
+                        height: 25px;
+                    }
+                }
+
+                .heartIcon {
+                    width: 24px;
+                    height: 24px;
+                    margin-right: 5px;
+                    cursor: pointer;
+                    // position: absolute;
+                    // bottom: 40px;
+                }
+
+                .redHeartIcon {
+                    width: 24px;
+                    height: 24px;
+                    margin-right: 5px;
+                    cursor: pointer;
+                    // position: absolute;
+                    // bottom: 50px;
+                }
+
+                .postLikeCounter {
+                    font-size: 15px;
+                    width: 110px;
+                }
+            }
+
+            .postBottomLeft {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 50px;
+                position: relative;
+                left: 5px;
+
+                .item {
+                    display: flex;
+                    gap: 5px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    color: black;
+                    position: relative;
+                    left: 88px;
+
+                    .commentsImg {
+                        width: 25px;
+                        height: 25px;
+                    }
+                }
+
+                .heartIcon {
+                    width: 24px;
+                    height: 24px;
+                    margin-right: 5px;
+                    cursor: pointer;
+                }
+
+                .redHeartIcon {
+                    width: 24px;
+                    height: 24px;
+                    margin-right: 5px;
+                    cursor: pointer;
+                    // position: relative;
+                    // top: 1.5px;
+                }
+
+                .postLikeCounter {
+                    font-size: 15px;
+                }
+            }
+
+            .postBottomRight {
+                // position: relative;
+                // right: 100px;
+                width: 100%;
+
+                .commentList {
+                    // display: flex;
+                    margin-bottom: 40px;
+                    position: relative;
+                    width: 100%;
+                    height: auto;
+                    left: 6px;
+                    top: 20px;
+                    list-style: none;
+
+                    .deleteCommentImg{
+                        width: 20px;
+                        height: 20px;
+                        cursor: pointer;
+                   
+                    }
+
+                    .commentListDateAndDelete{
+                        display: flex;
+                        gap: 275px;
+
+                        .dateContainer {
+                            
+                            .commentListDate{
+                                position: relative;
+                                left: 15px;
+                            }
+                        }
+                    }
+
+                    .commentListDateAndDeleteTwo{
+                        display: flex;
+                        gap: 265px;
+
+                        .dateContainer {
+                            
+                            .commentListDate{
+                                position: relative;
+                                left: 15px;
+                            }
+                        }
+                    }
+
+                    .nameCommentContainer{
+                        // display: block;
+                        background-color: rgb(231, 231, 231);
+                        border: 1px solid rgb(231, 231, 231);
+                        border-radius: 10px;
+                        padding: 10px;
+                        margin-left: 7px;
+                        width: auto;
+                        // overflow: hidden;   
+                        
+                        .commentInfoAndDeleteComment{
+                            display: flex;
+                            gap: 160px;
+                        }
+
+
+                        .commentContent{
+                            width: 340px !important;    
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            // word-wrap: break-word !important;
+                            // white-space: nowrap;       
+                        }
+
+                        .userInfoCommentListLink {
+                            display: inherit;
+                            text-decoration: none;
+
+                            .commentListUsername {
+                                display: inherit;
+                                color: black;
+                                position: relative;
+                                bottom: 4px;
+                                font-weight: 600;
+                                
+                            }
+                        }
+                    }
+
+                    .userInfoCommentList {
+                        display: flex;
+                        gap: 5px;
+
+                        .userInfoCommentListLink {
+                            text-decoration: none;
+
+                            .commentListUsername {
+                                color: black;
+                            
+                            }
+                            .profileImgCommentList {
+                                width: 30px;
+                                height: 30px;
+                                border-radius: 50%;
+                                position: relative;
+                                top: 32px;
+                                right: 32px;
+                                object-fit: cover;
+                            }
+
+                            .onlineImg{
+                                width: 8px;
+                                height: 8px;
+                                position: relative;
+                                right: 39px;
+                                top: 43px;
+                            }
+                        }
+                    }
+
+                }
+
+                .activeWrite {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 15px;
+                    margin: 20px 0px;
+                    position: relative;
+                    right: 135px;
+
+                    .commentListForm {
+                        display: flex;
+                        gap: 15px;
+                        position: relative;
+                        left: 140px;
+                        width: 123%;
+
+                        .profileImgComment {
+                            border-radius: 50%;
+                            width: 35px;
+                            height: 35px;
+                            position: relative;
+                            top: 6px;
+                            object-fit: cover;
+                        }
+
+                        .onlineImg{
+                            width: 8px;
+                            height: 8px;
+                            position: absolute;
+                            right: 458px;
+                            top: 33px;
+                        }
+
+                        .sendCommentButton {
+                            background: transparent;
+                            width: 30px;
+                            height: 35px;
+                            border: none;
+                            position: relative;
+                            top: 5px;
+
+                            .sendCommentImg {
+                                width: 25px;
+                                height: 25px;
+                                cursor: pointer;
+                                position: relative;
+                                right: 5px;
+                            }
+                        }
+
+
+
+                        input {
+                            width: 500px;
+                            padding: 10px;
+                            border: 1px solid themed("border");
+                            background-color: transparent;
+                            color: themed("textColor");
+                            border: 2px solid rgb(210, 210, 210);
+                            border-radius: 10px;
+                        }
+
+                        input:hover {
+                            border: 2px solid #1dbf73;
+                        }
+
+                        input:focus {
+                            outline: 0;
+                            border: 2px solid #1dbf73;
+                        }
+                    }
+                }
+
+                .write {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 15px;
+                    margin: 20px 0px;
+
+                    .profileImgComment {
+                        border-radius: 50%;
+                        width: 30px;
+                        height: 30px;
+                        position: relative;
+                        right: 300px;
+                        // margin-top: 50px;
+                    }
+
+                    .sendCommentImg {
+                        width: 25px;
+                        height: 25px;
+                        cursor: pointer;
+                    }
+
+                    input {
+                        flex: 5;
+                        padding: 10px;
+                        border: 1px solid themed("border");
+                        background-color: transparent;
+                        color: themed("textColor");
+                        border: 2px solid rgb(210, 210, 210);
+                        border-radius: 10px;
+
+                    }
+
+                    input:hover {
+                        border: 2px solid #1dbf73;
+                    }
+
+                    input:focus {
+                        outline: 0;
+                        border: 2px solid #1dbf73;
+                    }
+                }
+            }
+        }
+    }
+
+}

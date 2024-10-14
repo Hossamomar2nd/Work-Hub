@@ -1,0 +1,89 @@
+.learnSection {
+    background-color: #fafafa;
+    display: flex;
+    justify-content: center;
+    padding: 70px 0px;
+    height: 300px;
+    margin-top: 150px;
+    margin-bottom: 150px;
+
+
+    .learnSectionContainer {
+        width: 1400px;
+        align-items: center;
+        display: flex;
+        gap: 15px;
+        height: 150px;
+        margin-left: 100px;
+
+
+        h1 {
+            font-size: 24px;
+            font-weight: 400;
+            color: #333333;
+        }
+
+        img {
+            margin-bottom: 15px;
+            width: 35px;
+        }
+
+    }
+
+    .title1 {
+        font-size: 22px;
+        font-weight: 500;
+        color: #404145;
+
+        p {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px;
+            width: 70%;
+            color: #7A7D85;
+            margin-top: 10px;
+            margin-right: 20px;
+        }
+
+    }
+
+    .title2 {
+        font-size: 22px;
+        font-weight: 500;
+        color: #404145;
+        position: relative;
+        right: 60px;
+      
+
+        p {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px;
+            width: 90%;
+            color: #7A7D85;
+            margin-top: 10px;
+            margin-right: 20px;
+        }
+
+    }
+
+    .title3 {
+        font-size: 22px;
+        font-weight: 500;
+        color: #404145;
+        position: relative;
+        // left: 1000px;
+        // bottom: 290px;
+
+        p {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px;
+            width: 90%;
+            color: #7A7D85;
+            margin-top: 10px;
+            margin-right: 20px;
+        }
+
+    }
+}

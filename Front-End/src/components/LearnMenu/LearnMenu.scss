@@ -1,0 +1,57 @@
+.learnMenuContainer {
+
+  .courseFilterAlert{
+    padding: 10px;
+    width: 1400px;
+    margin-left: 50px;
+  }
+    
+    .learnMenu {
+        border-bottom: 1px solid #d7d7d7;
+        height: 33px;
+        position: relative;
+        left: 105px;
+        width: 1300px;
+        display: flex;
+        justify-content: space-between;
+        font-weight: 300;
+        color: gray;
+        background-color: #fff;
+        padding: 0 30px;
+
+        .learnMenuLink {
+          text-decoration: none;
+          color: #404145;
+          font-weight: 500;
+          font-size: 16px;
+          padding-top: 8px;
+          padding-bottom: 8px;
+          // z-index: 999999;
+      }
+  
+      .learnMenuLink:focus{
+        border-bottom: 4px solid #1dbf73;
+      }
+      }
+    .allLearnCards {
+        width: 1500px;
+        // margin-left: 50px;
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+        justify-content: start;
+        column-gap: 70px;
+        padding: 50px 100px;
+        row-gap: 90px;
+      }
+
+      .learnCards {
+        width: 1200px !important;
+        margin-left: 280px;
+        display: grid;
+        grid-template-columns: auto auto auto ;
+        justify-content: start;
+        padding: 50px 100px;
+        column-gap: 70px;
+        row-gap: 90px;
+      }
+}

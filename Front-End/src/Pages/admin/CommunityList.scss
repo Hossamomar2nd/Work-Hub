@@ -1,0 +1,100 @@
+.sidebar-close-community{
+    position: relative;
+    right: 90px;
+}
+
+.sidebar-open-community {
+    position: relative;
+    right: 160px;
+}
+
+.CommunityListPage {
+    margin-top: 70px;
+    h1 {
+        text-align: center;
+        color: #0e9184;
+        font-size: 45px;
+        font-weight: bold;
+        line-height: 120px;
+        margin-bottom: 15px;
+        margin-left: 350px;     
+    }
+
+    .contain-table {
+        width: 80%;   // commented out since you mentioned it's not currently used
+        margin-left: 310px;
+    
+        .addCategoryButton {
+            position: relative;
+            left: 710px;
+            width: 150px;
+            height: 40px;
+            color: rgb(255, 255, 255);
+            background-color: #0e9184;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            border: 1px solid;
+            display: inline-block;
+            cursor: pointer;
+            font-family: Arial;
+            font-size: 18px;
+            text-decoration: none;
+    
+            &:hover {
+                background-color: #11b4a3;
+            }
+    
+            &::after {
+                background-color: #11b4a3;
+            }
+        }
+    }
+    
+    .clicked {
+        opacity: 2%;
+    }
+    
+    .action {
+        text-align: center;
+    }
+    
+    .gl-update-btn,
+    .gl-delete-btn {
+        border: 1px solid rgb(164, 163, 163);
+        width: 75px;
+        height: 35px;
+        border-radius: 5px;
+        color: rgb(255, 255, 255);
+        margin-left: 20px;
+    
+        &.gl-update-btn {
+            background-color: #0e9184;
+            border-color: #0e9184;
+    
+            &:hover {
+                background-color: #11b4a3;
+                border-color: #11b4a3;
+            }
+        }
+    
+        &.gl-delete-btn {
+            background-color: rgb(248, 37, 37);
+            border-color: rgb(248, 37, 37);
+    
+            &:hover {
+                background-color: rgb(193, 33, 33);
+                border-color: rgb(193, 33, 33);
+            }
+        }
+    }
+    
+    .desc {
+        inline-size: 450px;
+    }
+    
+    .test {
+        text-align: center;
+    }
+    
+}
+

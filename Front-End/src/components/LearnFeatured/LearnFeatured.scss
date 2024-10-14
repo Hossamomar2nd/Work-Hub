@@ -1,0 +1,132 @@
+.learnFeatured {
+    width: 1519px;
+    height: 448px;
+    text-align: center;
+    margin-bottom: 65px;
+
+    .firstText {
+        text-align: center;
+        color: #ffffff;
+        letter-spacing: 1px;
+        text-transform: capitalize;
+        width: 611px;
+        z-index: 99;
+        position: relative;
+        bottom: 400px;
+        left: 440px;
+
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 600;
+
+
+            span {
+                color: #1DBF73;
+                font-size: 54px !important;
+
+            }
+        }
+
+    }
+
+    .topLearn {
+        display: flex;
+        width: 100%;
+
+        img {
+            height: 448px;
+            width: 1519px;
+        }
+    }
+
+    .learnSearchContainer {
+        width: 500px;
+        position: relative;
+        bottom: 350px;
+        left: 500px;
+
+        .searchLearn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #fff;
+            border-radius: 5px;
+
+            .searchInputLearn {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                img {
+                    width: 20px;
+                    height: 20px;
+                    margin-left: 10px;
+                }
+
+                input {
+                    border: none;
+                    outline: none;
+                }
+            }
+
+            button {
+                width: 120px;
+                height: 50px;
+                border: none;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+                background-color: #1dbf73;
+                color: #fff;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background-color: #24dc86;
+            }
+
+            button:focus {
+                outline: 0;
+            }
+        }
+
+        .popularLearn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+            margin-left: 5px;
+            color: #fff;
+            font-weight: 600;
+
+            button {
+                color: #ffffff;
+                background-color: transparent;
+                border: 1px solid white;
+                padding: 5px 10px;
+                border-radius: 20px;
+                font-size: 14px;
+                cursor: pointer;
+                transition: all ease 0.4s;
+                font-weight: 600;
+            }
+
+            button:hover {
+                background-color: #fff;
+                color: #000;
+                font-weight: 600;
+            }
+
+            button:focus {
+                outline: 0;
+            }
+
+        }
+
+    }
+}

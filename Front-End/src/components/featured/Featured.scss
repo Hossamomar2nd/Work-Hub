@@ -1,0 +1,115 @@
+.featured{
+    height: 660px;
+    display: flex;
+    justify-content: center; 
+    background-color: #05685E;   
+    color: white;  
+
+    .featuredContainer{
+        width: 1400px;
+        display: flex;
+        align-items: center;
+    
+        .left{
+            margin-left: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .h1{
+            font-size: 50px;
+
+            i{
+              font-weight: 300;  
+            }
+        }
+
+        .search{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #fff;
+            border-radius: 5px;
+
+            .searchInput{
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                img{
+                    width: 20px;
+                    height: 20px;
+                    margin: 10px;
+                }
+
+                input{
+                    border: none;
+                    outline: none;
+                }
+            }
+
+            button{
+                width: 120px;
+                height: 50px;
+                border: none;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+                background-color: #1dbf73;
+                color: #fff;
+                cursor: pointer;
+                transition: all ease 0.4s;
+
+            }
+
+            button:hover{
+                background-color: #24dc86;  
+            }
+
+            button:focus{
+                outline: 0; 
+            }
+        }
+        .popular{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+
+            button{
+                color: #fff;
+                background-color: transparent;
+                border: 1px solid white;
+                padding: 5px 10px;
+                border-radius: 20px;
+                font-size: 14px;
+                cursor: pointer;
+                font-weight: 600;
+                transition: all ease 0.4s;
+
+            }
+
+            button:hover {
+                background-color: #fff;                
+                color: #000;
+                font-weight: 600;
+            }
+
+            button:focus{
+                outline: 0; 
+            }
+
+        }
+        .right{
+            height: 65%;
+            margin-left: 140px;
+
+            img{
+                height: 100%;
+                object-fit: contain;
+            }
+
+        }
+    }
+
+}

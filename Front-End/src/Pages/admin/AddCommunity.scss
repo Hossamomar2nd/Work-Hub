@@ -1,0 +1,119 @@
+.sidebar-close-addCommunity{
+    margin-left: 480px !important;
+}
+
+.addCommunityContainer{
+    height: 390px;
+    margin-left: 390px;
+
+    .AddCategoryPage {
+        text-align: center;
+        width: 100%;
+        height: auto;
+    
+        h1 {
+            color: rgb(25, 150, 170);
+            font-size: 45px;
+            font-weight: bold;
+            line-height: 120px;
+            position: relative;
+            top: 80px;
+            right: 200px;
+            margin-bottom: 50px;
+        }    
+    }
+    
+    .AddCommunity {
+        width: 80%;
+        height: 400px;
+        /* margin-left: auto; */
+        /* margin-right: auto; */
+        border: 1px solid #e9e9e9;
+        padding: 10px;
+        box-shadow: 3px 5px 20px 5px #e9e9e9;
+        border-radius: 20px;
+        margin-bottom: 220px;
+        position: relative;
+        right: 140px;
+        top: 50px;
+    
+        form {
+            float: left;
+            box-sizing: border-box;
+            width: 50%;
+            max-width: 100%;
+            height: auto;
+            padding: 100px;
+            // margin-bottom: 70px !important;
+            position: relative;
+            bottom: 50px;
+    
+            .form-control {
+                border: none;
+                margin-bottom: 70px;
+            }
+    
+            input {
+                width: 400px;
+                height: 40px;
+                border: 1px solid #ccc;
+                padding: 10px;
+                margin-bottom: 30px;
+                border-radius: 4px;
+                color: #333;
+                font-size: 17px;
+                outline: none;
+            }
+    
+            h2 {
+                font-size: 20px;
+            }
+        }
+    
+        .add-button {
+            width: 100px;
+            height: 50px;
+            background-color: rgb(77, 193, 195);
+            border: 1px solid rgb(77, 193, 195);
+            border-radius: 4px;
+            color: #fff;
+            font-weight: bold;
+            letter-spacing: 1px;
+            font-size: 20px;
+            margin-left: 20px;
+    
+            &:hover {
+                background-color: rgb(25, 150, 170);
+            }
+        }
+    
+        .cancel-button {
+            width: 100px;
+            height: 50px;
+            background-color: rgb(132, 132, 132);
+            color: #fff;
+            margin-left: 20px;
+            border: 1px solid;
+            border-radius: 4px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            font-size: 20px;
+    
+            &:hover {
+                background-color: rgb(96, 96, 96);
+            }
+        }
+    
+        .btn-container {
+            display: flex;
+            width: 600px;
+            margin-top: 40px;
+            position: relative;
+            right: 8px;
+        }
+    
+        .pn {
+            inline-size: 1000px;
+        }
+    }
+}

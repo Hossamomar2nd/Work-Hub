@@ -1,0 +1,974 @@
+.adminFeed {
+    flex: 6.5;
+
+    .communityProfileAlert{
+        .css-hu7tqv-MuiPaper-root-MuiAlert-root {
+            padding-top: 30px;
+            padding-bottom: 30px;
+            width: 605px;
+            margin-left: 35px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+    }
+
+    .communityFilterAlert{
+        .css-hu7tqv-MuiPaper-root-MuiAlert-root {
+            padding-top: 30px;
+            padding-bottom: 30px;
+            width: 605px;
+            margin-left: 35px;
+            margin-top: 50px;
+        }
+    }
+
+
+    .feedContainer {
+        padding: 20px 0px;
+
+        .postFormContainer {
+            .share {
+                position: relative;
+                left: 30px;
+                width: 90%;
+                height: 170px;
+                border-radius: 10px;
+                -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+                box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+
+                .shareContainer {
+                    padding: 10px;
+
+                    .shareHr {
+                        margin: 20px;
+                    }
+
+                    .shareTop {
+                        display: flex;
+                        align-items: center;
+
+                        .shareInput {
+                            border: none;
+                            height: 40px;
+                            border-radius: 30px;
+                            width: 90%;
+                            background-color: rgb(245, 245, 245);
+                            padding-left: 15px;
+                        }
+
+                        .shareInput:hover {
+                            background-color: rgb(230, 230, 230);
+                        }
+
+                        .shareInput:focus {
+                            outline: none;
+                            background-color: rgb(230, 230, 230);
+                        }
+
+                        .shareProfileImg {
+                            width: 50px;
+                            height: 50px;
+                            border-radius: 50%;
+                            object-fit: cover;
+                            margin-right: 10px;
+                        }
+                        
+                        .onlineImg{
+                            width: 12px;
+                            height: 12px;
+                            position: absolute;
+                            right: 566px;
+                            top: 47px;
+                        }
+
+                    }
+
+                    .shareBottom {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+
+                        .shareOption:hover {
+                            background-color: rgb(255, 255, 255);
+                        }
+
+                        .shareOptions {
+                            display: flex;
+                            gap: 5px;
+
+                            .shareOptionImg:hover {
+                                border: 1px solid #1dbf73;
+                            }
+
+                            .shareOptionImg:focus {
+                                outline: 0;
+                                border: 1px solid #1dbf73;
+                            }
+
+                            .communityfilterShareOptionImg{
+                                width: 180px;
+                                margin-left: 28px;
+                                display: flex;
+                                align-items: center;
+                                // margin-right: 15px;
+                                cursor: pointer;
+                                height: 40px;
+                                border: 1px solid rgb(196, 195, 195);
+                                padding: 10px;
+                                border-radius: 10px;
+                                position: relative;
+                                left: 50px;
+
+                                .fileInputContainer {
+                                    // overflow: hidden;
+                                    width: 100%;
+                                    position: relative;
+                                    bottom: 15px;
+                                    cursor: pointer;
+                                }
+
+                                .addPostImg {
+                                    position: relative;
+                                    top: 27px;
+                                    padding: 0;
+                                    opacity: 0;
+                                    width: 100px;
+                                    height: 100%;
+                                    z-index: 9999999;
+                                    cursor: pointer;
+                                }
+
+                                .communityfilterFileInputLabel{
+                                    position: relative;
+                                    // right: 80px;
+                                    color: #000;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                }
+                                
+
+                                .fileInputLabel {
+                                    color: #000;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                }
+
+                                .shareIcon {
+                                    width: 30px;
+                                    height: 30px;
+                                    margin-right: 7px;
+                                }
+
+                                .shareOptionText {
+                                    font-weight: 500;
+                                    font-size: 16px;
+                                    color: rgb(107, 107, 107);
+                                }
+                            }
+
+
+                            .shareOptionImg {
+                                margin-left: 28px;
+                                display: flex;
+                                align-items: center;
+                                // margin-right: 15px;
+                                cursor: pointer;
+                                height: 40px;
+                                border: 1px solid rgb(196, 195, 195);
+                                padding: 10px;
+                                border-radius: 10px;
+
+                                .fileInputContainer {
+                                    // overflow: hidden;
+                                    width: 100%;
+                                    position: relative;
+                                    bottom: 15px;
+                                    cursor: pointer;
+                                }
+
+                                .addPostImg {
+                                    position: relative;
+                                    top: 27px;
+                                    padding: 0;
+                                    opacity: 0;
+                                    width: 100px;
+                                    height: 100%;
+                                    z-index: 9999999;
+                                    cursor: pointer;
+                                }
+
+                                .communityfilterFileInputLabel{
+                                    position: relative;
+                                    right: 80px;
+                                    color: #000;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                }
+                                
+
+                                .fileInputLabel {
+                                    color: #000;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                }
+
+                                .shareIcon {
+                                    width: 30px;
+                                    height: 30px;
+                                    margin-right: 7px;
+                                }
+
+                                .shareOptionText {
+                                    font-weight: 500;
+                                    font-size: 16px;
+                                    color: rgb(107, 107, 107);
+                                }
+                            }
+
+                            .shareOption {
+                                display: flex;
+                                align-items: center;
+                                cursor: pointer;
+                                height: 40px;
+
+                                .fileInputContainer {
+                                    width: 100%;
+                                    position: relative;
+                                    bottom: 25px;
+                                }
+
+                                .addPostImg {
+                                    position: relative;
+                                    opacity: 0;
+                                    width: 100px;
+                                    height: 100%;
+                                    bottom: 100px;
+                                }
+
+                                .fileInputLabel {
+                                    color: #000;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                }
+
+                                select {
+                                    padding: 10px;
+                                    border: 1px solid rgb(220, 220, 220);
+                                    border-radius: 10px;
+
+                                    &:focus {
+                                        outline: 0;
+                                        border: 1px solid #1dbf73;
+                                    }
+
+                                    &:hover {
+                                        border: 1px solid #1dbf73;
+                                    }
+                                }
+
+                                .shareIcon {
+                                    width: 30px;
+                                    height: 30px;
+                                    margin-right: 7px;
+                                }
+
+                                .shareOptionText {
+                                    font-weight: 500;
+                                    font-size: 16px;
+                                    color: rgb(107, 107, 107);
+                                }
+                            }
+                        }
+
+                        .communityfilterShareButton{
+                            width: 180px;
+                            border: none;
+                            padding: 7px;
+                            border-radius: 5px;
+                            background-color: #1dbf73;
+                            font-weight: 500;
+                            color: white;
+                            position: relative;
+                            right: 70px;
+                        }
+
+                        .shareButton {
+                            width: 180px;
+                            border: none;
+                            padding: 7px;
+                            border-radius: 5px;
+                            background-color: #1dbf73;
+                            font-weight: 500;
+                            color: white;
+                            margin-right: 20px;
+                            margin-left: 10px;
+                        }
+
+                        .shareButton:hover {
+                            background-color: #24dc86;
+                        }
+
+                    }
+                }
+
+            }
+
+
+        }
+    }
+}
+
+.adminFeedActive {
+    flex: 7.5;
+
+    .communityProfileAlert{
+        .css-hu7tqv-MuiPaper-root-MuiAlert-root {
+            padding-top: 30px;
+            padding-bottom: 30px;
+            width: 605px;
+            margin-left: 35px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+    }
+
+    .communityFilterAlert{
+        .css-hu7tqv-MuiPaper-root-MuiAlert-root {
+            padding-top: 30px;
+            padding-bottom: 30px;
+            width: 605px;
+            margin-left: 35px;
+            margin-top: 50px;
+        }
+    }
+
+
+    .feedContainer {
+        padding: 20px 0px;
+
+        .postFormContainer {
+            .share {
+                position: relative;
+                left: 30px;
+                width: 90%;
+                height: 170px;
+                border-radius: 10px;
+                -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+                box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+
+                .shareContainer {
+                    padding: 10px;
+
+                    .shareHr {
+                        margin: 20px;
+                    }
+
+                    .shareTop {
+                        display: flex;
+                        align-items: center;
+
+                        .shareInput {
+                            border: none;
+                            height: 40px;
+                            border-radius: 30px;
+                            width: 90%;
+                            background-color: rgb(245, 245, 245);
+                            padding-left: 15px;
+                        }
+
+                        .shareInput:hover {
+                            background-color: rgb(230, 230, 230);
+                        }
+
+                        .shareInput:focus {
+                            outline: none;
+                            background-color: rgb(230, 230, 230);
+                        }
+
+                        .shareProfileImg {
+                            width: 50px;
+                            height: 50px;
+                            border-radius: 50%;
+                            object-fit: cover;
+                            margin-right: 10px;
+                        }
+                        
+                        .onlineImg{
+                            width: 12px;
+                            height: 12px;
+                            position: absolute;
+                            right: 566px;
+                            top: 47px;
+                        }
+
+                    }
+
+                    .shareBottom {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+
+                        .shareOption:hover {
+                            background-color: rgb(255, 255, 255);
+                        }
+
+                        .shareOptions {
+                            display: flex;
+                            gap: 5px;
+
+                            .shareOptionImg:hover {
+                                border: 1px solid #1dbf73;
+                            }
+
+                            .shareOptionImg:focus {
+                                outline: 0;
+                                border: 1px solid #1dbf73;
+                            }
+
+                            .communityfilterShareOptionImg{
+                                width: 180px;
+                                margin-left: 28px;
+                                display: flex;
+                                align-items: center;
+                                // margin-right: 15px;
+                                cursor: pointer;
+                                height: 40px;
+                                border: 1px solid rgb(196, 195, 195);
+                                padding: 10px;
+                                border-radius: 10px;
+                                position: relative;
+                                left: 50px;
+
+                                .fileInputContainer {
+                                    // overflow: hidden;
+                                    width: 100%;
+                                    position: relative;
+                                    bottom: 15px;
+                                    cursor: pointer;
+                                }
+
+                                .addPostImg {
+                                    position: relative;
+                                    top: 27px;
+                                    padding: 0;
+                                    opacity: 0;
+                                    width: 100px;
+                                    height: 100%;
+                                    z-index: 9999999;
+                                    cursor: pointer;
+                                }
+
+                                .communityfilterFileInputLabel{
+                                    position: relative;
+                                    // right: 80px;
+                                    color: #000;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                }
+                                
+
+                                .fileInputLabel {
+                                    color: #000;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                }
+
+                                .shareIcon {
+                                    width: 30px;
+                                    height: 30px;
+                                    margin-right: 7px;
+                                }
+
+                                .shareOptionText {
+                                    font-weight: 500;
+                                    font-size: 16px;
+                                    color: rgb(107, 107, 107);
+                                }
+                            }
+
+
+                            .shareOptionImg {
+                                margin-left: 28px;
+                                display: flex;
+                                align-items: center;
+                                // margin-right: 15px;
+                                cursor: pointer;
+                                height: 40px;
+                                border: 1px solid rgb(196, 195, 195);
+                                padding: 10px;
+                                border-radius: 10px;
+
+                                .fileInputContainer {
+                                    // overflow: hidden;
+                                    width: 100%;
+                                    position: relative;
+                                    bottom: 15px;
+                                    cursor: pointer;
+                                }
+
+                                .addPostImg {
+                                    position: relative;
+                                    top: 27px;
+                                    padding: 0;
+                                    opacity: 0;
+                                    width: 100px;
+                                    height: 100%;
+                                    z-index: 9999999;
+                                    cursor: pointer;
+                                }
+
+                                .communityfilterFileInputLabel{
+                                    position: relative;
+                                    right: 80px;
+                                    color: #000;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                }
+                                
+
+                                .fileInputLabel {
+                                    color: #000;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                }
+
+                                .shareIcon {
+                                    width: 30px;
+                                    height: 30px;
+                                    margin-right: 7px;
+                                }
+
+                                .shareOptionText {
+                                    font-weight: 500;
+                                    font-size: 16px;
+                                    color: rgb(107, 107, 107);
+                                }
+                            }
+
+                            .shareOption {
+                                display: flex;
+                                align-items: center;
+                                cursor: pointer;
+                                height: 40px;
+
+                                .fileInputContainer {
+                                    width: 100%;
+                                    position: relative;
+                                    bottom: 25px;
+                                }
+
+                                .addPostImg {
+                                    position: relative;
+                                    opacity: 0;
+                                    width: 100px;
+                                    height: 100%;
+                                    bottom: 100px;
+                                }
+
+                                .fileInputLabel {
+                                    color: #000;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                }
+
+                                select {
+                                    padding: 10px;
+                                    border: 1px solid rgb(220, 220, 220);
+                                    border-radius: 10px;
+
+                                    &:focus {
+                                        outline: 0;
+                                        border: 1px solid #1dbf73;
+                                    }
+
+                                    &:hover {
+                                        border: 1px solid #1dbf73;
+                                    }
+                                }
+
+                                .shareIcon {
+                                    width: 30px;
+                                    height: 30px;
+                                    margin-right: 7px;
+                                }
+
+                                .shareOptionText {
+                                    font-weight: 500;
+                                    font-size: 16px;
+                                    color: rgb(107, 107, 107);
+                                }
+                            }
+                        }
+
+                        .communityfilterShareButton{
+                            width: 180px;
+                            border: none;
+                            padding: 7px;
+                            border-radius: 5px;
+                            background-color: #1dbf73;
+                            font-weight: 500;
+                            color: white;
+                            position: relative;
+                            right: 70px;
+                        }
+
+                        .shareButton {
+                            width: 180px;
+                            border: none;
+                            padding: 7px;
+                            border-radius: 5px;
+                            background-color: #1dbf73;
+                            font-weight: 500;
+                            color: white;
+                            margin-right: 20px;
+                            margin-left: 10px;
+                        }
+
+                        .shareButton:hover {
+                            background-color: #24dc86;
+                        }
+
+                    }
+                }
+
+            }
+
+
+        }
+    }
+}
+
+.feed {
+    flex: 5.5;
+
+    .communityProfileAlert{
+        .css-hu7tqv-MuiPaper-root-MuiAlert-root {
+            padding-top: 30px;
+            padding-bottom: 30px;
+            width: 605px;
+            margin-left: 35px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+    }
+
+    .communityFilterAlert{
+        .css-hu7tqv-MuiPaper-root-MuiAlert-root {
+            padding-top: 30px;
+            padding-bottom: 30px;
+            width: 605px;
+            margin-left: 35px;
+            margin-top: 50px;
+        }
+    }
+
+
+    .feedContainer {
+        padding: 20px 0px;
+
+        .postFormContainer {
+            .share {
+                position: relative;
+                left: 30px;
+                width: 90%;
+                height: 170px;
+                border-radius: 10px;
+                -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+                box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+
+                .shareContainer {
+                    padding: 10px;
+
+                    .shareHr {
+                        margin: 20px;
+                    }
+
+                    .shareTop {
+                        display: flex;
+                        align-items: center;
+
+                        .shareInput {
+                            border: none;
+                            height: 40px;
+                            border-radius: 30px;
+                            width: 90%;
+                            background-color: rgb(245, 245, 245);
+                            padding-left: 15px;
+                        }
+
+                        .shareInput:hover {
+                            background-color: rgb(230, 230, 230);
+                        }
+
+                        .shareInput:focus {
+                            outline: none;
+                            background-color: rgb(230, 230, 230);
+                        }
+
+                        .shareProfileImg {
+                            width: 50px;
+                            height: 50px;
+                            border-radius: 50%;
+                            object-fit: cover;
+                            margin-right: 10px;
+                        }
+                        
+                        .onlineImg{
+                            width: 12px;
+                            height: 12px;
+                            position: absolute;
+                            right: 566px;
+                            top: 47px;
+                        }
+
+                    }
+
+                    .shareBottom {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+
+                        .shareOption:hover {
+                            background-color: rgb(255, 255, 255);
+                        }
+
+                        .shareOptions {
+                            display: flex;
+                            gap: 5px;
+
+                            .shareOptionImg:hover {
+                                border: 1px solid #1dbf73;
+                            }
+
+                            .shareOptionImg:focus {
+                                outline: 0;
+                                border: 1px solid #1dbf73;
+                            }
+
+                            .communityfilterShareOptionImg{
+                                width: 180px;
+                                margin-left: 28px;
+                                display: flex;
+                                align-items: center;
+                                // margin-right: 15px;
+                                cursor: pointer;
+                                height: 40px;
+                                border: 1px solid rgb(196, 195, 195);
+                                padding: 10px;
+                                border-radius: 10px;
+                                position: relative;
+                                left: 50px;
+
+                                .fileInputContainer {
+                                    // overflow: hidden;
+                                    width: 100%;
+                                    position: relative;
+                                    bottom: 15px;
+                                    cursor: pointer;
+                                }
+
+                                .addPostImg {
+                                    position: relative;
+                                    top: 27px;
+                                    padding: 0;
+                                    opacity: 0;
+                                    width: 100px;
+                                    height: 100%;
+                                    z-index: 9999999;
+                                    cursor: pointer;
+                                }
+
+                                .communityfilterFileInputLabel{
+                                    position: relative;
+                                    // right: 80px;
+                                    color: #000;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                }
+                                
+
+                                .fileInputLabel {
+                                    color: #000;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                }
+
+                                .shareIcon {
+                                    width: 30px;
+                                    height: 30px;
+                                    margin-right: 7px;
+                                }
+
+                                .shareOptionText {
+                                    font-weight: 500;
+                                    font-size: 16px;
+                                    color: rgb(107, 107, 107);
+                                }
+                            }
+
+
+                            .shareOptionImg {
+                                margin-left: 28px;
+                                display: flex;
+                                align-items: center;
+                                // margin-right: 15px;
+                                cursor: pointer;
+                                height: 40px;
+                                border: 1px solid rgb(196, 195, 195);
+                                padding: 10px;
+                                border-radius: 10px;
+
+                                .fileInputContainer {
+                                    // overflow: hidden;
+                                    width: 100%;
+                                    position: relative;
+                                    bottom: 15px;
+                                    cursor: pointer;
+                                }
+
+                                .addPostImg {
+                                    position: relative;
+                                    top: 27px;
+                                    padding: 0;
+                                    opacity: 0;
+                                    width: 100px;
+                                    height: 100%;
+                                    z-index: 9999999;
+                                    cursor: pointer;
+                                }
+
+                                .communityfilterFileInputLabel{
+                                    position: relative;
+                                    right: 80px;
+                                    color: #000;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                }
+                                
+
+                                .fileInputLabel {
+                                    color: #000;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                }
+
+                                .shareIcon {
+                                    width: 30px;
+                                    height: 30px;
+                                    margin-right: 7px;
+                                }
+
+                                .shareOptionText {
+                                    font-weight: 500;
+                                    font-size: 16px;
+                                    color: rgb(107, 107, 107);
+                                }
+                            }
+
+                            .shareOption {
+                                display: flex;
+                                align-items: center;
+                                cursor: pointer;
+                                height: 40px;
+
+                                .fileInputContainer {
+                                    width: 100%;
+                                    position: relative;
+                                    bottom: 25px;
+                                }
+
+                                .addPostImg {
+                                    position: relative;
+                                    opacity: 0;
+                                    width: 100px;
+                                    height: 100%;
+                                    bottom: 100px;
+                                }
+
+                                .fileInputLabel {
+                                    color: #000;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                }
+
+                                select {
+                                    padding: 10px;
+                                    border: 1px solid rgb(220, 220, 220);
+                                    border-radius: 10px;
+
+                                    &:focus {
+                                        outline: 0;
+                                        border: 1px solid #1dbf73;
+                                    }
+
+                                    &:hover {
+                                        border: 1px solid #1dbf73;
+                                    }
+                                }
+
+                                .shareIcon {
+                                    width: 30px;
+                                    height: 30px;
+                                    margin-right: 7px;
+                                }
+
+                                .shareOptionText {
+                                    font-weight: 500;
+                                    font-size: 16px;
+                                    color: rgb(107, 107, 107);
+                                }
+                            }
+                        }
+
+                        .communityfilterShareButton{
+                            width: 180px;
+                            border: none;
+                            padding: 7px;
+                            border-radius: 5px;
+                            background-color: #1dbf73;
+                            font-weight: 500;
+                            color: white;
+                            position: relative;
+                            right: 70px;
+                        }
+
+                        .shareButton {
+                            width: 180px;
+                            border: none;
+                            padding: 7px;
+                            border-radius: 5px;
+                            background-color: #1dbf73;
+                            font-weight: 500;
+                            color: white;
+                            margin-right: 20px;
+                            margin-left: 10px;
+                        }
+
+                        .shareButton:hover {
+                            background-color: #24dc86;
+                        }
+
+                    }
+                }
+
+            }
+
+
+        }
+    }
+}

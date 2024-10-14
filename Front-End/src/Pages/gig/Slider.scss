@@ -1,0 +1,118 @@
+.slider-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  right: 100px;
+
+
+    .leftArrowContainer{
+        width: 50px;
+        height: 50px;
+        background-color: #1dbf73;
+        border-radius: 50%;
+        position: relative;
+        right: 18px;
+    }
+
+    .leftArrowContainer:hover{
+        background-color: #24dc86;
+    }
+
+
+    .rightArrowContainer{
+        width: 50px;
+        height: 50px;
+        background-color: #1dbf73;
+        border-radius: 50%;
+
+    }
+
+    .rightArrowContainer:hover{
+        background-color: #24dc86;
+    }
+
+}
+
+
+.slider-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.previousButton:focus{
+    background-color: white !important;
+    border-color:rgb(255, 255, 255) !important;
+    border: none !important;
+    outline: 0;
+}
+
+.previousButton{
+    background-color: white !important;
+    border-color:rgb(255, 255, 255) !important;
+    border: 0none !important;
+}
+
+.previousButton:hover{
+    background-color: white !important;
+    border-color:rgb(255, 255, 255) !important;
+    border: none !important;
+}
+
+.previousButton{
+    background-color: white;
+    border-color:white ;
+    border:none;
+    width: 30px;
+    height: 30px;
+    margin-top: 180px;
+    margin-right: 40px;
+
+    .leftArrow{
+        width: 30px;
+        height: 30px;
+        position: relative;
+        top: 10px;
+        left: 7px;
+    }
+}
+
+
+
+
+.nextButton:hover{
+    background-color: white !important;
+    border-color:rgb(255, 255, 255) !important;
+    border: none !important;
+}
+
+.nextButton:focus{
+    background-color: white !important;
+    border-color:rgb(255, 255, 255) !important;
+    border: none !important;
+    outline: 0;
+}
+
+.nextButton{
+    width: 30px;
+    height: 30px;
+    background-color: white !important;
+    border-color:rgb(255, 255, 255) !important;
+    border: none !important;
+    margin-top: 180px;
+    margin-left: 25px;
+
+
+    .rightArrow{
+        transform: rotate(180deg);
+        width: 30px;
+        height: 30px;
+        position: relative;
+        top: 10px;
+        left: 12px;
+    
+    }
+    
+}

@@ -1,0 +1,99 @@
+.orders {
+    display: flex;
+    justify-content: center;
+    color: #555;
+  
+    .ordersContainer {
+      width: 1200px;
+      padding: 50px 0px;
+
+      .breadcrumbsLink{
+        text-decoration: none;
+        font-size: 18px;
+        line-height: 1;
+        color: #7e7e7e;
+        font-weight: 500;
+
+        .homeIconImg{
+          width: 20px;
+          height: 20px;
+          margin-bottom: 4px;
+        }
+      }
+  
+      .title {
+        display: flex;
+        justify-content: space-between;
+        
+        h1{
+          font-size: 18px;
+        }
+
+        button {
+          background-color: #1dbf73;
+          color: white;
+          font-weight: 500;
+          border: none;
+          padding: 10px;
+          cursor: pointer;
+        }
+      }
+  
+      table {
+        width: 100%;
+  
+        tr {
+          height: 50px;
+          th {
+            text-align: center;
+          }
+          td {
+            text-align: center;
+
+            .messageBtn {
+              position: relative;
+              border-radius: 100%;
+              width: 39px;
+              height: 38px;
+              border-color: transparent;
+              background-color: transparent;
+            }
+
+            .approveBtn {
+              background-color: #1dbf73;
+              text-transform: none;
+            }
+
+            .delcineBtn {
+              background-color: #dd3232;
+              text-transform: none;
+              margin-left: 10px;
+            }
+            
+            sup{
+              font-size: 12px;
+            }
+  
+            .image {
+              width: 50px;
+              height: 25px;
+              object-fit: cover;
+            }
+  
+            .message {
+              position: relative;
+              width: 25px;
+              cursor: pointer;
+              margin: 0px;
+              z-index: -1 !important;
+
+            }
+          }
+          &:nth-child(even) {
+            background-color: #1dbf730f;
+          }
+        }
+      }
+    }
+  }
+  

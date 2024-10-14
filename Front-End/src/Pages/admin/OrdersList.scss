@@ -1,0 +1,161 @@
+.sidebar-close-orders{
+    margin-top: 50px !important;
+}
+
+.OrdersListPage {
+    margin-top: 50px;
+    margin-left: -170px;
+    
+    h1 {
+        text-align: center;
+        color: #0e9184;
+        font-size: 45px;
+        font-weight: bold;
+        line-height: 120px;
+        margin-bottom: 15px;
+        margin-left: 470px; 
+        margin-top: 50px;    
+    }
+
+    .contain-table {
+        width: 85%;   // commented out since you mentioned it's not currently used
+        margin-left: 310px;
+
+        td{
+            text-align: center;
+        }
+ 
+        tr{
+            text-align: center;
+        }
+    }
+
+    .clicked {
+        opacity: 2%;
+    }
+
+    .action {
+        text-align: center;
+    }
+
+    .gl-update-btn,
+    .gl-delete-btn,
+    .gl-block-btn,
+    .gl-profile-btn {
+        width: 30px;
+        height: 30px;
+        margin-left: 15px;
+
+        &.gl-update-btn {
+
+            &:hover {
+                background-color: rgb(211, 210, 210);
+            }
+        }
+
+        &.gl-delete-btn {
+
+            &:hover {
+                background-color: rgb(211, 210, 210);
+            }
+        }
+        &.gl-block-btn {
+
+            &:hover {
+                background-color: rgb(211, 210, 210);
+
+            }
+        }
+        &.gl-profile-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+
+            &:hover {
+                background-color: rgb(211, 210, 210);
+
+            }
+        }
+    }
+}
+
+.OrdersListPageActive {
+    margin-top: 50px;
+    margin-left: -250px;
+    
+    h1 {
+        text-align: center;
+        color: #0e9184;
+        font-size: 45px;
+        font-weight: bold;
+        line-height: 120px;
+        margin-bottom: 15px;
+        margin-left: 470px; 
+        margin-top: 50px;    
+    }
+
+    .contain-table {
+        width: 85%;   // commented out since you mentioned it's not currently used
+        margin-left: 310px;
+
+        td{
+            text-align: center;
+        }
+ 
+        tr{
+            text-align: center;
+        }
+    }
+
+    .clicked {
+        opacity: 2%;
+    }
+
+    .action {
+        text-align: center;
+    }
+
+    .gl-update-btn,
+    .gl-delete-btn,
+    .gl-block-btn,
+    .gl-profile-btn {
+        width: 30px;
+        height: 30px;
+        margin-left: 15px;
+
+        &.gl-update-btn {
+
+            &:hover {
+                background-color: rgb(211, 210, 210);
+            }
+        }
+
+        &.gl-delete-btn {
+
+            &:hover {
+                background-color: rgb(211, 210, 210);
+            }
+        }
+        &.gl-block-btn {
+
+            &:hover {
+                background-color: rgb(211, 210, 210);
+
+            }
+        }
+        &.gl-profile-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+
+            &:hover {
+                background-color: rgb(211, 210, 210);
+
+            }
+        }
+    }
+}

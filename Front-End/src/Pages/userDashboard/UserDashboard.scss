@@ -1,0 +1,387 @@
+.freelancerDashboard {
+    display: flex;
+    justify-content: center;
+    color: #555;
+
+    .freelancerDashboardContainer {
+        width: 1200px;
+        padding: 50px 0px;
+
+        .chatbotImgContainer{
+            width: 70px;
+            height: 70px;
+            position: sticky;
+            top: 630px;
+            margin-left: 1250px;
+            left: 1400px;
+            transition: width 2s, height 2s, transform 1.5s;
+
+            .chatbotImgLink{
+
+                .chatbotImg{
+                    border-radius: 50%;
+                    object-fit: cover;
+                    border: 3px solid #1dbf73;
+                    padding: 10px;
+                    width: 70px;
+                    height: 70px;
+                }
+            }
+        }
+
+        .chatbotImgContainer:hover{
+            width: 70px;
+            height: 70px;
+            animation: rotate360 1.5s forwards;
+            opacity: 65%;
+            transition: all ease 0.4s;
+        }
+
+        @keyframes rotate360 {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+     
+        .freelancerDashboardTitle {
+            text-align: center;
+            // margin-bottom: 80px;
+        }
+
+        .freelancerDashboardMyServices {
+
+            .myServiceSection {
+                margin-bottom: 70px;
+
+                .myServiceHeader {
+                    // margin-bottom: 30px;
+
+                    h2 {
+                        color: #555;
+                        font-weight: 500;
+                        font-size: 24px;
+                        line-height: 130%;
+                    }
+
+
+                    .addNewServiceBtn {
+                        position: relative;
+                        left: 1070px;
+                        // width: 100%;
+                        background-color: #1dbf73;
+                        padding: 10px;
+                        color: white;
+                        font-weight: 500;
+                        border: none;
+                        font-size: 18px;
+                        cursor: pointer;
+                        margin-bottom: 10px;
+                        border-radius: 5px;
+                    }
+
+                    .addNewServiceBtn:hover {
+                        background-color: #24dc86;
+                    }
+
+                    .addNewServiceBtn:focus {
+                        outline: 0;
+                    }
+
+                }
+
+                .myServiceGigsCards {
+                    display: grid;
+                    grid-template-columns: auto auto auto auto;
+                    justify-content: start;
+                    column-gap: 10px;
+                }
+            }
+        }
+
+        .newOrders {
+            margin-bottom: 70px;
+
+            .title {
+                display: flex;
+                justify-content: space-between;
+
+                h1 {
+                    font-size: 24px;
+                    margin-bottom: 15px;
+                }
+
+                button {
+                    background-color: #1dbf73;
+                    color: white;
+                    font-weight: 500;
+                    border: none;
+                    padding: 10px;
+                    cursor: pointer;
+                }
+            }
+
+            table {
+                width: 100%;
+
+                tr {
+                    height: 50px;
+                    text-align: center;
+
+                    th {
+                        text-align: center;
+                    }
+
+                    td {
+                        text-align: center;
+
+                        .messageBtn {
+                            position: relative;
+                            border-radius: 100%;
+                            width: 39px;
+                            height: 38px;
+                            border-color: transparent;
+                            background-color: transparent;
+                        }
+
+                        .approveBtn {
+                            background-color: #1dbf73;
+                            text-transform: none;
+                        }
+
+                        .delcineBtn {
+                            background-color: #dd3232;
+                            text-transform: none;
+                            margin-left: 10px;
+                        }
+
+                        sup {
+                            font-size: 12px;
+                        }
+
+                        .image {
+                            width: 50px;
+                            height: 25px;
+                            object-fit: cover;
+                        }
+
+                        .message {
+                            position: relative;
+                            width: 25px;
+                            cursor: pointer;
+                            margin: 0px;
+                            z-index: -1 !important;
+
+                        }
+                    }
+
+                    &:nth-child(even) {
+                        background-color: #1dbf730f;
+                    }
+                }
+            }
+        }
+
+        .newMessages {
+            margin-bottom: 70px;
+
+            .messages {
+                display: flex;
+                justify-content: center;
+
+                .messagesContainer {
+                    width: 1200px;
+                    padding: 50px 0px;
+
+                    .action {
+                        text-align: center;
+                        position: relative;
+                    }
+
+                    .date {
+                        text-align: center;
+                        position: relative;
+                    }
+
+                    .userName {
+                        text-align: center;
+                        position: relative;
+                    }
+
+                    .title {
+                        display: flex;
+                        justify-content: space-between;
+
+                        h1 {
+                            font-size: 16px;
+                            color: #555;
+                            font-size: 24px;
+                            margin-bottom: 15px;
+                        }
+
+                        button {
+                            background-color: #1dbf73;
+                            color: white;
+                            font-weight: 500;
+                            border: none;
+                            padding: 10px;
+                            cursor: pointer;
+                        }
+                    }
+
+                    table {
+                        width: 100%;
+
+                        tr {
+                            height: 100px;
+
+                            th {
+                                text-align: center;
+                            }
+
+                            td {
+                                text-align: center;
+                                padding: 10px;
+
+                                &:first-child {
+                                    font-weight: 500;
+                                }
+
+                                &:nth-child(2),
+                                &:nth-child(3) {
+                                    color: gray;
+                                    text-align: center;
+                                }
+                            }
+
+                            button {
+                                background-color: #1dbf73;
+                                color: white;
+                                padding: 10px;
+                                border: none;
+                                cursor: pointer;
+                            }
+
+                            &.active {
+                                background-color: #1dbf730f;
+
+                                .dateData {
+                                    text-align: center;
+                                }
+
+                                .userNameData {
+                                    text-align: center;
+
+                                    p {
+                                        position: relative;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        .newRequest {
+            margin-bottom: 100px;
+
+            .breadcrumbsLink {
+                text-decoration: none;
+                // font-size: 16px;
+                line-height: 1;
+                color: #7e7e7e;
+                font-weight: 500;
+
+                .homeIconImg {
+                    width: 30px;
+                    height: 30px;
+                    margin-bottom: 10px;
+                }
+            }
+
+            .title {
+                display: flex;
+                justify-content: space-between;
+
+                h1 {
+                    font-size: 24px;
+                    margin-bottom: 15px;
+                }
+
+                button {
+                    background-color: #1dbf73;
+                    color: white;
+                    font-weight: 500;
+                    border: none;
+                    padding: 10px;
+                    cursor: pointer;
+                    margin-bottom: 15px;
+                }
+            }
+
+            table {
+                width: 100%;
+
+                tr {
+                    height: 50px;
+
+                    th {
+                        text-align: center;
+                    }
+
+                    td {
+                        text-align: center;
+
+                        .messageBtn {
+                            position: relative;
+                            border-radius: 100%;
+                            width: 39px;
+                            height: 38px;
+                            border-color: transparent;
+                            background-color: transparent;
+                        }
+
+                        .approveBtn {
+                            background-color: #1dbf73;
+                            text-transform: none;
+                        }
+
+                        .delcineBtn {
+                            background-color: #dd3232;
+                            text-transform: none;
+                            margin-left: 10px;
+                        }
+
+                        sup {
+                            font-size: 12px;
+                        }
+
+                        .image {
+                            width: 50px;
+                            height: 25px;
+                            object-fit: cover;
+                        }
+
+                        .message {
+                            position: relative;
+                            width: 25px;
+                            cursor: pointer;
+                            margin: 0px;
+                            z-index: -1 !important;
+
+                        }
+                    }
+
+                    &:nth-child(even) {
+                        background-color: #1dbf730f;
+                    }
+                }
+            }
+        }
+
+    }
+}

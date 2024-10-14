@@ -1,0 +1,309 @@
+.usersProfile {
+    margin-top: 60px;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+
+    .usersProfileContainer {
+        width: 1400px;
+        padding: 30px 0px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-left: 15px;
+
+        .myServiceHeader {
+            margin-top: 10px;
+
+            h1 {
+                color: #404145;
+                font-weight: 700;
+                font-size: 32px;
+                line-height: 130%;
+            }
+        }
+
+        .left {
+            gap: 20px;
+
+            .profileUser {
+                flex: 2;
+                display: flex;
+                // flex-direction: column;
+                gap: 20px;
+
+                .rightContainer{
+                    display: flex;
+                    flex-direction: column;
+                    gap: 40px;
+                    width: 33%;
+                    margin-left: 450px;
+                    
+                    .option {
+                        border: 1px solid lightgray;
+                        padding: 20px;
+                        border-radius: 5px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 20px;
+                        height: max-content;
+                        max-height: 500px;
+                        border-top: 5px solid #000000;
+            
+                        button {
+                            width: 90%;
+                            background-color: #000000;
+                            padding: 10px;
+                            color: white;
+                            font-weight: 500;
+                            border: none;
+                            border-radius: 5px;
+                            font-size: 18px;
+                            cursor: pointer;
+                            margin-left: 23px;
+            
+                            img {
+                                width: 20px;
+                                height: 20px;
+                                margin-right: 7px;
+                                margin-bottom: 7px;
+                            }
+                        }
+            
+                        button:hover {
+                            position: relative;
+                            opacity: 75%;
+                            transition: all ease 0.4s;
+                        }
+            
+                        button:focus {
+                            outline: 0;
+                        }
+                    }
+        
+        
+                    .right {
+                        border: 1px solid lightgray;
+                        padding: 20px;
+                        border-radius: 5px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 20px;
+                        height: max-content;
+                        max-height: 500px;
+                        // top: 150px;
+                        border-top: 5px solid #000000;
+        
+                        .rightFeatures {
+        
+                            .rightProfileUser {
+                                display: flex;
+                                gap: 20px;
+        
+                                img {
+                                    width: 75px;
+                                    height: 75px;
+                                    border-radius: 50%;
+                                    object-fit: cover;
+                                }
+        
+                                .rightInfo {
+                                    display: flex;
+                                    flex-direction: column;
+                                    gap: 15px;
+                                    margin-top: 20px;
+        
+                                    .rightMyName {
+                                        font-size: 26px;
+                                        font-weight: 700;
+                                        color: #222325;
+                                        font-size: 24px;
+                                        line-height: 32px;
+                                        margin-bottom: 30px;
+                                    }
+                                }
+                            }
+                        }
+        
+                        button {
+                            width: 90%;
+                            background-color: #000000;
+                            padding: 10px;
+                            color: white;
+                            font-weight: 500;
+                            border: none;
+                            border-radius: 5px;
+                            font-size: 18px;
+                            cursor: pointer;
+                            margin-left: 23px;
+        
+                            img {
+                                width: 20px;
+                                height: 20px;
+                                margin-right: 7px;
+                                margin-bottom: 3px;
+                            }
+                        }
+        
+                        button:hover {
+                            position: relative;
+                            opacity: 75%;
+                            transition: all ease 0.4s;
+                        }
+        
+                        button:focus {
+                            outline: 0;
+                        }
+                    }
+        
+                }
+
+                img {
+                    width: 150px;
+                    height: 150px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+                .info {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+                    margin-top: 20px;
+
+                    .myName {
+                        font-size: 26px;
+                        font-weight: 700;
+                        color: #222325;
+                        font-size: 24px;
+                        line-height: 32px;
+                    }
+
+                    .userInfo {
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+                        margin-bottom: 20px;
+
+                        .languageContainer{
+                            width: 60%;
+                        }
+
+                        .locationIcon {
+                            width: 20px;
+                            height: 20px;
+                        }
+
+                        .languageIcon {
+                            width: 20px;
+                            height: 20px;
+                            margin-left: 10px;
+                        }
+
+                        span {
+                            font-size: 14px;
+                            font-weight: 500;
+                            margin-right: 5px;
+                        }
+                    }
+                }
+            } 
+            
+            .aboutUser{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                margin-bottom: 30px;
+
+                .aboutUserHeader {
+                    font-weight: 500;
+                    font-size: 22px;
+                    margin-bottom: 20px;
+                  }
+            
+                  .aboutUserDesc {
+                    font-size: 17px;
+                    font-weight: 500;
+                    line-height: 1.5;
+                    color: #56575b;
+                    width:60%;
+                }
+            }
+
+            .skills{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                margin-bottom: 30px;
+                width: 500px !important;
+
+                .showMore{
+                    position: relative;
+                    bottom: 45px;
+                    left: 590px;
+                    color: black;
+                }
+
+                .skillsHeader {
+                    font-weight: 500;
+                    font-size: 22px;
+                    margin-bottom: 20px;
+                  }
+            
+                  .skillsDesc {
+                    display: grid;
+                    grid-template-columns: auto auto auto auto auto;
+                    gap: 10px;
+                    justify-content: left;
+                    // column-gap: 5px !important;
+                    list-style-type: none;
+                    font-weight: bold;
+                    color: #000000;
+
+
+                    li{
+                        padding-top: 5px;
+                        width: 100px;
+                        height: 32px;
+                        text-align: center;
+                        font-size: 14px;
+                        // padding: 10px;
+                        border: 1px solid rgb(130, 129, 129);
+                        border-radius: 30px;
+                        line-height: 20px;
+                    }
+
+                    li:hover{
+                        background-color: rgb(233, 233, 233);
+                    }
+
+                    .style {
+                        height: 50px;
+                        width: 120px;
+                    }
+                }
+            }
+        }
+
+        .myServiceSection {
+
+            .myServiceHeader {
+                margin-bottom: 30px;
+
+                h2 {
+                    color: #404145;
+                    font-weight: 700;
+                    font-size: 26px;
+                    line-height: 130%;
+                }
+            }
+
+            .myServiceGigsCards {
+                display: grid;
+                grid-template-columns: auto auto auto auto;
+                justify-content: start;
+                column-gap: 70px;
+            }
+        }
+    }
+}

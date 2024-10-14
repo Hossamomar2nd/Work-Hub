@@ -1,0 +1,234 @@
+.updateProfilePage {
+  background-color: rgb(244, 244, 244);
+  .updateProfileContainer {
+    display: flex;
+    background-color: #ffffff;
+    width: 50%;
+    height: auto;
+    margin-left: 360px;
+    border: 1px solid #e9e9e9;
+    padding: 10px;
+    box-shadow: 3px 5px 20px 5px #e9e9e9;
+    border-radius: 20px;
+    margin-bottom: 100px;
+    position: relative;
+    top: 100px;
+
+    .updateProfile {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 75px;
+
+      .right{
+          
+        .updateProfileImage{
+          width: 140px;
+          height: 140px;
+          border-radius: 50%;
+          object-fit: cover;
+          position: absolute;
+          right: 95px;
+          top: 40px;
+          margin: auto;
+          border: 3px solid white;
+        }
+      }
+
+      form {
+        width: 500px;
+        padding-top: 100px;
+        padding-bottom: 40px;
+        display: flex;
+        margin-left: 40px;
+
+        h1 {
+          color: rgb(69, 69, 69);
+          margin-bottom: 20px;
+
+        }
+
+        .left{
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+
+          .update-cancel-btn{
+            display: flex;
+            gap: 20px;
+            margin-left: 60px;
+
+            .cancelProfileButton{
+              width: 180px;
+              border: none;
+              border-radius: 5px;
+              padding: 10px;
+              color: white;
+              font-weight: 500;
+              font-size: 18px;
+              background-color: #8c8c8c;
+              cursor: pointer;
+              margin-top: 50px;
+            }
+  
+            .cancelProfileButton:hover {
+              background-color: #a2a2a2;
+            }
+
+            .updateProfileButton {
+              width: 180px;
+              border: none;
+              border-radius: 5px;
+              padding: 10px;
+              color: white;
+              font-weight: 500;
+              font-size: 18px;
+              background-color: #1dbf73;
+              cursor: pointer;
+              margin-top: 50px;
+            }
+  
+            .updateProfileButton:hover {
+              background-color: #24dc86;
+            }
+          }
+
+          label {
+            color: gray;
+            font-size: 18px;
+          }
+
+          .updateProfilePhoneNo {
+            position: relative;
+            top: 9px;
+          }
+
+          .updateProfilePhoneNoInput {
+            position: relative;
+            top: 9px;
+          }
+
+          .updateProfileDesc {
+            position: relative;
+            top: 15px;
+          }
+
+          .updateProfileDescTextarea {
+            position: relative;
+            top: 20px;
+          }
+
+          .updateProfileInput{
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid rgb(216, 214, 214);
+          }
+
+          .updateProfileInput:hover{
+            border: 1px solid #1dbf73 !important;
+            transition: .2s ease-in-out;
+          }
+
+          .updateProfileInput:focus{
+            outline: 0;
+            border: 1px solid #1dbf73 !important;
+            transition: .2s ease-in-out;
+          }
+
+          
+          textarea,
+          select {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid rgb(216, 214, 214);
+          }
+
+          textarea:hover,
+          select:hover {
+            border: 1px solid #1dbf73 !important;
+            transition: .2s ease-in-out;
+          }
+
+          textarea:focus,
+          select:focus {
+            outline: 0;
+            border: 1px solid #1dbf73 !important;
+            transition: .2s ease-in-out;
+          }
+        }
+      }
+    }
+  }
+  .circle {
+    position: relative;
+    bottom: 1000px;
+    right: 300px;
+    opacity: 40%;
+    animation: up-down 3s infinite alternate;
+  }
+  
+  @keyframes up-down {
+    0% {
+      transform: translateY(0px);
+    }
+    100% {
+      transform: translateY(-100px);
+    }
+  }
+  
+  .plus {
+    position: relative;
+    left: 1300px;
+    bottom: 950px;
+    opacity: 50%;
+    animation: rotation 10s linear infinite;
+  }
+  
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  
+  .wave1 {
+    animation: left-right 3s infinite alternate;
+    background: transparent !important;
+    opacity: 70%;
+    position: relative;
+    left: 50px;
+    bottom: 200px;
+  }
+  
+  @keyframes left-right {
+    0% {
+      transform: translateX(0px);
+    }
+    100% {
+      transform: translateX(-100px);
+    }
+  }
+  
+  .wave2 {
+    animation: right-left 3s infinite alternate;
+    background: transparent !important;
+    opacity: 70%;
+    position: relative;
+    left: 1020px;
+    bottom: 400px;
+  }
+  
+  @keyframes right-left {
+    0% {
+      transform: translateX(0px);
+    }
+    100% {
+      transform: translateX(100px);
+    }
+  }
+
+}

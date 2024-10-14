@@ -1,0 +1,124 @@
+
+.manageLearnPage {
+    position: relative;
+    bottom: 60px;
+    margin-top: 0px;
+    margin-right: 50px;
+    h1 {
+        width: 50%;
+        position: relative;
+        top: 30px;
+        left: 540px;
+        text-align: center;
+        color: #0e9184;
+        font-size: 45px;
+        font-weight: bold;
+        line-height: 120px;
+        margin-bottom: 0px;
+    }
+
+    .courseContain-table {
+        width: 90%;   // commented out since you mentioned it's not currently used
+        // margin-left: 240px;
+
+        .addCourseButton {
+            position: relative;
+            top: 30px;
+            left: 1200px;
+            width: 150px;
+            height: 40px;
+            color: rgb(255, 255, 255);
+            background-color: #0e9184;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            border: 1px solid;
+            display: inline-block;
+            cursor: pointer;
+            font-family: Arial;
+            font-size: 18px;
+            text-decoration: none;
+    
+            &:hover {
+                background-color: #11b4a3;
+            }
+    
+            &::after {
+                background-color: #11b4a3;
+            }
+        }
+    }
+    
+    .clicked {
+        opacity: 2%;
+    }
+    
+    .action {
+        text-align: center;
+    }    
+}
+
+
+.manageAllLearnPage {
+    position: relative;
+    bottom: 60px;
+    left: 50px;
+
+    h1 {
+        position: relative;
+        top: 30px;
+        left: 30px;
+        text-align: center;
+        color: #0e9184;
+        font-size: 45px;
+        font-weight: bold;
+        line-height: 120px;  
+    }
+
+    .allLearnCards {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        margin-left: 0 !important;
+        width: 1300px;
+        position: relative;
+        left: 100px;
+    }
+
+    .courseContain-table {
+        width: 90%;   // commented out since you mentioned it's not currently used
+
+        .addCourseButton {
+            position: relative;
+            top: 30px;
+            left: 1200px;
+            width: 150px;
+            height: 40px;
+            color: rgb(255, 255, 255);
+            background-color: #0e9184;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            border: 1px solid;
+            display: inline-block;
+            cursor: pointer;
+            font-family: Arial;
+            font-size: 18px;
+            text-decoration: none;
+    
+            &:hover {
+                background-color: #11b4a3;
+            }
+    
+            &::after {
+                background-color: #11b4a3;
+            }
+        }
+    }
+    
+    .clicked {
+        opacity: 2%;
+    }
+    
+    .action {
+        text-align: center;
+    }    
+}
+

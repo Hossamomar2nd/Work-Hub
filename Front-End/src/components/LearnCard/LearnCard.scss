@@ -1,0 +1,186 @@
+.learnLink:hover {
+    color: #404145;
+}
+
+.learnLink {
+    width: 270px;
+    align-items: center;
+    text-decoration: none !important;
+    color: #404145;
+
+    .learnCard {
+        width: 300px;
+        height: auto;
+        border: 1px solid rgb(255, 255, 255);
+        border-radius: 20px;
+
+        .learnImg {
+            border-radius: 10px;
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            overflow: hidden;
+        }
+
+        .learnImg:hover {
+            position: relative;
+            opacity: 65%;
+            transition: all ease 0.4s;
+
+        }
+
+        .courseInfo {
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            .courseDescCard {
+                margin-bottom: 20px;
+                font-size: 15px;
+                font-weight: 500;
+                color: #848484;
+            }
+
+            .professorDesc {
+                font-style: normal;
+                font-weight: normal;
+                font-size: 13px;
+                line-height: 18px;
+                color: #95979D;
+            }
+
+            .badgeDuration {
+                display: flex;
+                gap: 140px;
+
+                .courseDuration {
+                    display: flex;
+                    // position: relative;
+                    // bottom: 10px;
+                    // height: 50px;
+
+                    .courseDurationNo {
+                        font-size: 14px;
+                        line-height: 21px;
+                        color: #62646A;
+                        // display: flex;
+                        // align-items: center;
+                        font-weight: 500;
+                        height: 0px;
+                    }
+
+                    .hourIconOut {
+                        position: relative;
+                        bottom: 10px;
+                        height: 14px;
+                        width: 14px;
+                        // margin-left: 10px;
+                        margin-top: 13px;
+                        margin-right: 7px;
+                    }
+                }
+
+                .card-badge {
+                    width: 60px;
+                    height: 22px;
+                    background: #cfcfcf;
+                    border: 0px solid #EFEFF0;
+                    box-sizing: border-box;
+                    border-radius: 17px;
+                    text-align: center;
+                    letter-spacing: 0.5px;
+                    text-transform: uppercase;
+                    color: #404145;
+                    padding: 0px 8px;
+                    font-weight: bold;
+                    font-size: 10px;
+                    line-height: 17px;
+                    padding-top: 2px;
+                }
+
+            }
+
+            .professorName {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-weight: bold;
+                color: #111;
+
+                img {
+                    width: 26px;
+                    height: 26px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+                // span {
+                // }
+            }
+
+            p {
+                font-style: normal;
+                font-weight: bold;
+                font-size: 18px;
+                line-height: 25px;
+                color: #404145;
+                margin-bottom: 0px;
+                letter-spacing: 0px;
+                text-transform: capitalize;
+                margin-top: 7px;
+            }
+
+            .proffInfoContainer {
+
+                .professorName {
+
+                    .proffInfoCard{
+
+                        span {
+                            margin-left: 10px;
+                            font-size: 17px;
+                            font-weight: 500;
+                        }
+
+                        p{
+                            margin-left: 10px;
+                            font-size: 15px;
+                            font-weight: 500;
+                            color: #848484;
+                        }
+                    }
+    
+                    .proffImageLearnCard {
+                        width: 50px;
+                        height: 50px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                    }
+
+
+                }
+            }
+
+            .star {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+
+                .reviewNo {
+                    position: relative;
+                    bottom: 10px;
+                    font-size: 14px;
+                    color: #ffc108;
+                }
+            }
+        }
+
+        hr {
+            position: relative;
+            bottom: 30px;
+            height: 0;
+            border: 0.5px solid rgb(255, 255, 255);
+        }
+    }
+}

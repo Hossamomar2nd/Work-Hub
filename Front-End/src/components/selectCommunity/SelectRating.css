@@ -1,0 +1,16 @@
+.starImgSelectRating{
+    width: 20px;
+    height: 20px;
+    position: relative;
+    left: 15px;
+    top: 23px;
+    /* margin-left: 40px; */
+}
+
+.MuiButton-root {
+    background-color: black;
+}
+
+.css-1jxkpmo-MuiButtonBase-root-MuiButton-root:hover {
+        background-color: rgb(105, 105, 105) !important;
+}

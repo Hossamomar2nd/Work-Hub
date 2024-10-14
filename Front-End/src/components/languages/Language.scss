@@ -1,0 +1,29 @@
+// .MuiInput-underline {
+//     &:hover:not(.Mui-disabled):before {
+//       border-bottom: 2px solid #1dbf73; // Change the border color on hover
+//     }
+//     &.Mui-focused:after {
+//       border-bottom: 2px solid #1dbf73; // Change the border color on focus
+//     }
+//     &.Mui-focused.Mui-focused:after {
+//       border-bottom: 2px solid #1dbf73; // Change the border color on focus-visible
+//     }
+//   }
+  
+//   input {
+//     padding: 10px;
+//     // border: 1px solid #ccc;
+//     transition: border-color 0.2s ease;
+//     &::placeholder {
+//       color: #888;
+//     }
+//     &::label {
+//       color: #888;
+//       padding: 50px;
+//     }
+//     &:focus {
+//       border-color: #000;
+//       outline: none;
+//     }
+//   }
+  

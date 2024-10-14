@@ -1,0 +1,200 @@
+.myCourses {  
+
+    .communityFilterAlert{
+        width: 100%;
+        padding-bottom: 100px;
+        padding-left: 100px;
+        padding-right: 100px;
+
+    }
+  
+    .breadcrumbsCourse{
+        // float: left;
+        margin-left: 110px;
+
+        .learnHome{
+            text-decoration: none;
+        }
+
+        .learningImg{
+            width: 30px;
+            height: 30px;
+            margin-bottom: 5px;
+            margin-right: 5px;
+          }
+
+        .breadcrumbsCourseFirst {
+            font-size: 16px;
+            line-height: 1;
+            color: #7e7e7e;
+            font-weight: 500;
+        }
+
+        .breadcrumbsCourseSecond {
+            font-size: 16px;
+            line-height: 1;
+            color: #000;
+            font-weight: 500;
+        }
+    }
+
+    .title {
+      text-align: center;
+      margin-top: 50px;
+      color: #74767e;
+    }
+  
+    .myCoursesContainer {
+        width: 1200px;
+        margin-top: 50px;
+        margin-bottom: 80px;
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+        padding-left: 100px;
+        column-gap: 46.5px;
+        justify-content: start;
+
+      .myCoursesLink:hover{
+        color: #404145;
+    }
+    
+    .myCoursesLink{
+        width: 270px;
+        align-items: center;
+        text-decoration: none !important;
+        color: #404145;
+    
+        .learnCard {
+            width: 300px;
+            height: auto;
+            border: 1px solid rgb(255, 255, 255);
+            border-radius: 20px;
+    
+            .learnImg {
+                border-radius: 10px;
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+                overflow: hidden;
+            }
+        
+            .learnImg:hover {
+                position: relative;
+                opacity: 65%;
+                transition: all ease 0.4s;
+                
+            }
+        
+            .courseInfo {
+                padding-top: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+    
+                .professorDesc{
+                    font-style: normal;
+                    font-weight: normal;
+                    font-size: 13px;
+                    line-height: 18px;
+                    color: #95979D;
+                }
+    
+                .card-badge {
+                    width: 60px;
+                    background: #cfcfcf;
+                    border: 0px solid #EFEFF0;
+                    box-sizing: border-box;
+                    border-radius: 17px;
+                    text-align: center;
+                    letter-spacing: 0.5px;
+                    text-transform: uppercase;
+                    color: #404145;
+                    padding: 0px 8px;
+                    font-weight: bold;
+                    font-size: 10px;
+                    line-height: 17px;
+                    padding-top: 2px;
+                }
+        
+                .professorName {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-weight: bold;
+                    color: #111;
+        
+                    img {
+                        width: 26px;
+                        height: 26px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                    }
+        
+                    // span {
+                    // }
+                }
+        
+                p {
+                    font-style: normal;
+                    font-weight: bold;
+                    font-size: 18px;
+                    line-height: 25px;
+                    color: #404145;
+                    margin-bottom: 15px;
+                    letter-spacing: 0px;
+                    text-transform: capitalize;
+                    margin-top: 7px;
+                }
+        
+                .star {
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+        
+                    img {
+                        position: relative;
+                        bottom: 10px;
+                        height: 14px;
+                        width: 14px;
+                    }
+        
+                    .reviewNo {
+                        position: relative;
+                        bottom: 10px;
+                        font-size: 14px;
+                        color: #ffc108;
+                    }
+    
+                    .courseDuration{
+                        display: flex;
+                        position: relative;
+                        bottom: 10px;
+    
+                        .courseDurationNo{
+                        font-size: 14px;
+                        line-height: 21px;
+                        color: #62646A;
+                        display: flex;
+                        align-items: center;
+                        font-weight: 500;
+                        }
+    
+                        .hourIconOut{
+                            margin-left: 10px;
+                            margin-top: 20px;
+                            margin-right: 7px;
+                        }
+                    }
+                }
+            }
+        
+            hr {
+                position: relative;
+                bottom: 30px;
+                height: 0;
+                border: 0.5px solid rgb(255, 255, 255);
+            }
+        }
+    }
+    }
+  }
