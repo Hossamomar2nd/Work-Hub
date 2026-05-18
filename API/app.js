@@ -73,9 +73,8 @@ const server = app.listen(port, () => {
     console.log(`App listening on port ${port}!`);
     DBconnection();
 });
-/******************************************************************************************************************/
-/******************************************************************************************************************/
-/******************************************************************************************************************/
+
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const model = new LlamaModel({
     modelPath: path.join(__dirname, "model", "capybarahermes-2.5-mistral-7b.Q4_K_M.gguf")
@@ -95,5 +94,3 @@ io.on("connection", (soc) => {
         soc.emit("response", bot_reply);
     })
 });
-
-// open source large language model
