@@ -1,5 +1,5 @@
 
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import AdminModel from '../../../DB/models/admin_model.js'
 import { validatePassword } from '../../middleware/val.middleware.js';
 
