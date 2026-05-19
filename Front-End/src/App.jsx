@@ -54,8 +54,6 @@ import UserDashboard from './Pages/userDashboard/UserDashboard';
 import CommunityFilter from './Pages/communityFilter/CommunityFilter';
 import AdminCommunity from './Pages/admin/AdminCommunity';
 import GigsFilter from './Pages/gigs/GigsFilter';
-
-import Chatbot from './components/chatbot/Chatbot';
 import FilterLearn from './Pages/learn/FilterLearn';
 let dashboardData;
 
@@ -72,7 +70,6 @@ export default function App() {
   // }
 
 
-  // return <Chatbot />
   const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
@@ -385,10 +382,6 @@ export default function App() {
         {
           path: "/userDashboard",
           element: <UserDashboard />
-        },
-        {
-          path: "/chatbot/:id",
-          element: <Chatbot />
         },
       ]
     },
