@@ -317,29 +317,10 @@ const UserDashboard = () => {
       });
   }
 
-  const addConversation = () => {
-    axios
-    .post("http://localhost:3000/api/chatbotConversations/addConversation/" + user._id + "/" + user.role)
-    .then((resp) => {
-      const conservationId = resp.data.data._id;
-      window.location = "http://localhost:3001/chatbot/" + conservationId;
-    })
-    .catch((err) => {
-      window.location = "http://localhost:3001/chatbot/" + err.response.data.conversationData[0]._id;
-      // console.log(err);
-      // console.log(err.response.data.conversationData[0]._id);
-    });
-  }
-
   return (
     <div className="freelancerDashboard">
       <div className="freelancerDashboardContainer">
         <h1 className="freelancerDashboardTitle">Dashboard</h1>
-        <div onClick={addConversation} className="chatbotImgContainer">
-            <Link className="chatbotImgLink">
-              <img className="chatbotImg" src="./img/chatbot1.png"/>
-            </Link>
-        </div>
         <div className="newRequest">
           <div className="title">
             <h1>Requests</h1>

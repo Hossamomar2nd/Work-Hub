@@ -30,7 +30,6 @@
     "reactstrap": "^9.2.2",
     "recharts": "^2.12.4",
     "sass": "^1.71.1",
-    "socket.io-client": "^4.7.5",
     "styled-components": "^6.1.11",
     "sweetalert": "^2.1.2",
     "web-vitals": "^3.5.2"
