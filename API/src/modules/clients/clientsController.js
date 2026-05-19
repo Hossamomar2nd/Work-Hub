@@ -1,6 +1,6 @@
 
 import client from "../../../DB/models/client_model.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { validatePassword } from "../../middleware/val.middleware.js";
 import ClientModel from "../../../DB/models/client_model.js"
 import mongoose from "mongoose";

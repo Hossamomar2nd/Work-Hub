@@ -2,7 +2,7 @@
 import mongoose from "mongoose";
 import FreelancerModel from "../../../DB/models/freelancer_model.js";
 import { validatePassword } from '../../middleware/val.middleware.js';
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
 // Get All Freelancers
 export const getAllFreelancers = async (req,res) => {
