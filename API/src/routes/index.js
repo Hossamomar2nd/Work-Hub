@@ -1,0 +1,33 @@
+import freelancersRoutes from "../modules/freelancer/freelancer_routes.js";
+import adminRoutes from "../modules/admin/admin_routes.js";
+import categoriesRoute from "../modules/categories/categoriesRoutes.js";
+import clientsRoute from "../modules/clients/clientsRoutes.js";
+import ordersRoute from "../modules/orders/ordersRoutes.js";
+import requestsRoute from "../modules/requests/requestsRoutes.js";
+import communitiesRoutes from "../modules/communities/communitiesRoutes.js";
+import conversationsRoutes from "../modules/conversations/conversationsRoutes.js";
+import messagesRoutes from "../modules/messages/messagesRoutes.js";
+import postsRoutes from "../modules/posts/post_routes.js";
+import professorsRoutes from "../modules/professors/professorsRoutes.js";
+import authRoutes from "../modules/auth/authRoutes.js";
+import servicesRoutes from "../modules/service/service.router.js";
+import reviewsRoutes from "../modules/reviews/reviewRouter.js";
+import coursesRoutes from "../modules/courses/coursesRoutes.js";
+
+export const registerRoutes = (app) => {
+  app.use("/api/categories", categoriesRoute);
+  app.use("/api/clients", clientsRoute);
+  app.use("/api/orders", ordersRoute);
+  app.use("/api/requests", requestsRoute);
+  app.use("/api/freelancers", freelancersRoutes);
+  app.use("/api/admins", adminRoutes);
+  app.use("/api/communities", communitiesRoutes);
+  app.use("/api/conversations", conversationsRoutes);
+  app.use("/api/messages", messagesRoutes);
+  app.use("/api/posts", postsRoutes);
+  app.use("/api/professors", professorsRoutes);
+  app.use("/api/auth", authRoutes);
+  app.use("/api/services", servicesRoutes);
+  app.use("/api/reviews", reviewsRoutes);
+  app.use("/api/courses", coursesRoutes);
+};
