@@ -13,21 +13,26 @@ import authRoutes from "../modules/auth/authRoutes.js";
 import servicesRoutes from "../modules/service/service.router.js";
 import reviewsRoutes from "../modules/reviews/reviewRouter.js";
 import coursesRoutes from "../modules/courses/coursesRoutes.js";
+import { Router } from "express";
 
+const router = Router();
 export const registerRoutes = (app) => {
-  app.use("/api/categories", categoriesRoute);
-  app.use("/api/clients", clientsRoute);
-  app.use("/api/orders", ordersRoute);
-  app.use("/api/requests", requestsRoute);
-  app.use("/api/freelancers", freelancersRoutes);
-  app.use("/api/admins", adminRoutes);
-  app.use("/api/communities", communitiesRoutes);
-  app.use("/api/conversations", conversationsRoutes);
-  app.use("/api/messages", messagesRoutes);
-  app.use("/api/posts", postsRoutes);
-  app.use("/api/professors", professorsRoutes);
-  app.use("/api/auth", authRoutes);
-  app.use("/api/services", servicesRoutes);
-  app.use("/api/reviews", reviewsRoutes);
-  app.use("/api/courses", coursesRoutes);
+  
+  router.use("/categories", categoriesRoute);
+  router.use("/clients", clientsRoute);
+  router.use("/orders", ordersRoute);
+  router.use("/requests", requestsRoute);
+  router.use("/freelancers", freelancersRoutes);
+  router.use("/admins", adminRoutes);
+  router.use("/communities", communitiesRoutes);
+  router.use("/conversations", conversationsRoutes);
+  router.use("/messages", messagesRoutes);
+  router.use("/posts", postsRoutes);
+  router.use("/professors", professorsRoutes);
+  router.use("/auth", authRoutes);
+  router.use("/services", servicesRoutes);
+  router.use("/reviews", reviewsRoutes);
+  router.use("/courses", coursesRoutes);
+
+  app.use("/api/v1", router);
 };
