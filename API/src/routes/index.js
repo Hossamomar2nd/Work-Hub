@@ -13,6 +13,7 @@ import authRoutes from "../modules/auth/authRoutes.js";
 import servicesRoutes from "../modules/service/service.router.js";
 import reviewsRoutes from "../modules/reviews/reviewRouter.js";
 import coursesRoutes from "../modules/courses/coursesRoutes.js";
+import healthRoutes from "../modules/health/healthRoutes.js";
 import { Router } from "express";
 
 const router = Router();
@@ -34,5 +35,6 @@ export const registerRoutes = (app) => {
   router.use("/reviews", reviewsRoutes);
   router.use("/courses", coursesRoutes);
 
+  app.use("/api/health", healthRoutes);
   app.use("/api/v1", router);
 };
