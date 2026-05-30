@@ -29,14 +29,18 @@ const getPostgresStatus = async () => {
   }
 };
 
-router.get("/", async (req, res) => {
-  const postgres = await getPostgresStatus();
+const isConnected = ({ status }) => status === "connected";
 
-  return res.status(200).json({
-    status: "ok",
+router.get("/", async (req, res) => {
+  const mongo = getMongoStatus();
+  const postgres = await getPostgresStatus();
+  const isHealthy = [mongo, postgres].every(isConnected);
+
+  return res.status(isHealthy ? 200 : 503).json({
+    status: isHealthy ? "ok" : "degraded",
     environment: process.env.NODE_ENV || "development",
     timestamp: new Date().toISOString(),
-    mongo: getMongoStatus(),
+    mongo,
     postgres,
   });
 });
