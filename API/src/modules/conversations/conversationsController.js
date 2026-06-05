@@ -31,8 +31,8 @@ export const getConversationById = async (req, res) => {
             return res.status(404).json({ msg: "Conversation Not Found" });
         }
 
-        conversationData.freelancer.image_url = "http://" + req.hostname + ":3000/" + conversationData.freelancer.image_url;
-        conversationData.client.image_url = "http://" + req.hostname + ":3000/" + conversationData.client.image_url;
+        conversationData.freelancer.image_url = "http://" + req.hostname + ":3000/uploads/" + conversationData.freelancer.image_url;
+        conversationData.client.image_url = "http://" + req.hostname + ":3000/uploads/" + conversationData.client.image_url;
         return res.status(200).json({conversationData});
 
     } catch (error) {
@@ -70,9 +70,9 @@ export const getConversationsByUserId = async (req, res) => {
             const modifiedConversations = conversationData.map((conversation) => {
                 const modifiedConversation = { ...conversation._doc }; // Create a copy of the service object
                 modifiedConversation.freelancer = { ...modifiedConversation.freelancer._doc }; // Create a copy of the freelancerId object
-                modifiedConversation.freelancer.image_url = "http://" + req.hostname + ":3000/" + modifiedConversation.freelancer.image_url;
+                modifiedConversation.freelancer.image_url = "http://" + req.hostname + ":3000/uploads/" + modifiedConversation.freelancer.image_url;
                 modifiedConversation.client = { ...modifiedConversation.client._doc }; // Create a copy of the freelancerId object
-                modifiedConversation.client.image_url = "http://" + req.hostname + ":3000/" + modifiedConversation.client.image_url;
+                modifiedConversation.client.image_url = "http://" + req.hostname + ":3000/uploads/" + modifiedConversation.client.image_url;
                 return modifiedConversation;
             });
 

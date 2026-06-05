@@ -76,10 +76,10 @@ const login = async (req, res) => {
         return res.status(400).json({ msg: "Role undefined" });
     }
 
-    userData.image_url = "http://" + req.hostname + ":3000/" + userData.image_url;
+    userData.image_url = "http://" + req.hostname + ":3000/uploads/" + userData.image_url;
 
     if (userData.coverImage_url != undefined) {
-      userData.coverImage_url = "http://" + req.hostname + ":3000/" + userData.coverImage_url;
+      userData.coverImage_url = "http://" + req.hostname + ":3000/uploads/" + userData.coverImage_url;
     }
 
     res.status(200).json({ msg: "Sign in successful", userData });
@@ -228,10 +228,10 @@ export const signup = async (req, res) => {
     }
 
 
-    userData.image_url = "http://" + req.hostname + ":3000/" + userData.image_url;
+    userData.image_url = "http://" + req.hostname + ":3000/uploads/" + userData.image_url;
 
     // userData.map((user) => {
-    //   user.image_url = "http://" + req.hostname + ":3000/" + services.serviceCover_url;
+    //   user.image_url = "http://" + req.hostname + ":3000/uploads/" + services.serviceCover_url;
     // });
 
     return res.status(201).json({ message: 'User created successfully', userData });

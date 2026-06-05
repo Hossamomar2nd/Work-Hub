@@ -6,6 +6,9 @@ import path from 'path'; // Import path module to handle file paths
 import { fileURLToPath } from 'url';
 import freelancer_model from "../../../DB/models/freelancer_model.js";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const uploadsDir = path.join(__dirname, "../../../uploads");
 
 // Get all services
 export const getAllServices = async (req, res, next) => {
@@ -18,10 +21,10 @@ export const getAllServices = async (req, res, next) => {
         const modifiedServices = services.map((service) => {
             const modifiedService = { ...service._doc }; // Create a copy of the service object
             modifiedService.freelancerId = { ...modifiedService.freelancerId._doc }; // Create a copy of the freelancerId object
-            modifiedService.freelancerId.image_url = "http://" + req.hostname + ":3000/" + modifiedService.freelancerId.image_url;
-            modifiedService.serviceCover_url = "http://" + req.hostname + ":3000/" + modifiedService.serviceCover_url;
+            modifiedService.freelancerId.image_url = "http://" + req.hostname + ":3000/uploads/" + modifiedService.freelancerId.image_url;
+            modifiedService.serviceCover_url = "http://" + req.hostname + ":3000/uploads/" + modifiedService.serviceCover_url;
             modifiedService.serviceImages_url = modifiedService.serviceImages_url.map((image_url) => {
-                return "http://" + req.hostname + ":3000/" + image_url;
+                return "http://" + req.hostname + ":3000/uploads/" + image_url;
             });
             return modifiedService;
         });
@@ -51,10 +54,10 @@ export const getServicesByCategoryId = async (req, res, next) => {
         const modifiedServices = services.map((service) => {
             const modifiedService = { ...service._doc }; // Create a copy of the service object
             modifiedService.freelancerId = { ...modifiedService.freelancerId._doc }; // Create a copy of the freelancerId object
-            modifiedService.freelancerId.image_url = "http://" + req.hostname + ":3000/" + modifiedService.freelancerId.image_url;
-            modifiedService.serviceCover_url = "http://" + req.hostname + ":3000/" + modifiedService.serviceCover_url;
+            modifiedService.freelancerId.image_url = "http://" + req.hostname + ":3000/uploads/" + modifiedService.freelancerId.image_url;
+            modifiedService.serviceCover_url = "http://" + req.hostname + ":3000/uploads/" + modifiedService.serviceCover_url;
             modifiedService.serviceImages_url = modifiedService.serviceImages_url.map((image_url) => {
-                return "http://" + req.hostname + ":3000/" + image_url;
+                return "http://" + req.hostname + ":3000/uploads/" + image_url;
             });
             return modifiedService;
         });
@@ -151,10 +154,10 @@ export const deleteService = async (req, res, next) => {
         const process = await Service.deleteOne(filter);
 
         if (process) {
-            fs.unlinkSync("./src/middleware/upload/" + data.serviceCover_url); //delete old image
+            fs.unlinkSync(path.join(uploadsDir, data.serviceCover_url)); //delete old image
 
             data.serviceImages_url.forEach((image_url) => {
-                fs.unlinkSync("./src/middleware/upload/" + image_url); //delete old image
+                fs.unlinkSync(path.join(uploadsDir, image_url)); //delete old image
             })
 
             res.status(200).json({ success: true, message: "Service deleted successfully", process });
@@ -179,19 +182,19 @@ export const getServiceById = async (req, res, next) => {
     
         const service = await Service.findById(id).populate("freelancerId").populate("serviceCategoryId");
 
-        service.freelancerId.image_url = "http://" + req.hostname + ":3000/" + service.freelancerId.image_url;
+        service.freelancerId.image_url = "http://" + req.hostname + ":3000/uploads/" + service.freelancerId.image_url;
 
         var images_url_array = [];
 
         service.serviceImages_url.map((image_url) => {
-            var url = "http://" + req.hostname + ":3000/" + image_url;
+            var url = "http://" + req.hostname + ":3000/uploads/" + image_url;
 
             images_url_array.push(url);
         });
 
         service.serviceImages_url = images_url_array;
 
-        service.serviceCover_url = "http://" + req.hostname + ":3000/" + service.serviceCover_url;
+        service.serviceCover_url = "http://" + req.hostname + ":3000/uploads/" + service.serviceCover_url;
 
     
         if (service) {
@@ -219,10 +222,10 @@ export const getFreelancerServices = async (req, res, next) => {
         const modifiedServices = services.map((service) => {
             const modifiedService = { ...service._doc }; // Create a copy of the service object
             modifiedService.freelancerId = { ...modifiedService.freelancerId._doc }; // Create a copy of the freelancerId object
-            modifiedService.freelancerId.image_url = "http://" + req.hostname + ":3000/" + modifiedService.freelancerId.image_url;
-            modifiedService.serviceCover_url = "http://" + req.hostname + ":3000/" + modifiedService.serviceCover_url;
+            modifiedService.freelancerId.image_url = "http://" + req.hostname + ":3000/uploads/" + modifiedService.freelancerId.image_url;
+            modifiedService.serviceCover_url = "http://" + req.hostname + ":3000/uploads/" + modifiedService.serviceCover_url;
             modifiedService.serviceImages_url = modifiedService.serviceImages_url.map((image_url) => {
-                return "http://" + req.hostname + ":3000/" + image_url;
+                return "http://" + req.hostname + ":3000/uploads/" + image_url;
             });
             return modifiedService;
         });

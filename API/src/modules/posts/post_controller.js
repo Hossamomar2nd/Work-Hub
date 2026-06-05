@@ -4,6 +4,12 @@ import client_model from "../../../DB/models/client_model.js";
 import freelancer_model from "../../../DB/models/freelancer_model.js";
 import Postmodel from "../../../DB/models/post_model.js";
 import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const uploadsDir = path.join(__dirname, "../../../uploads");
 
 // Get All Posts
 export const getAllPosts = async (req, res) => {
@@ -28,8 +34,8 @@ export const getAllPosts = async (req, res) => {
             }
 
             modifiedPost.posterId = { ...data._doc };
-            modifiedPost.posterId.image_url = "http://" + req.hostname + ":3000/" + modifiedPost.posterId.image_url;
-            modifiedPost.media_url = "http://" + req.hostname + ":3000/" + modifiedPost.media_url;
+            modifiedPost.posterId.image_url = "http://" + req.hostname + ":3000/uploads/" + modifiedPost.posterId.image_url;
+            modifiedPost.media_url = "http://" + req.hostname + ":3000/uploads/" + modifiedPost.media_url;
 
             const commentsData = [];
 
@@ -97,8 +103,8 @@ export const getUserPosts = async (req, res) => {
             }
 
             modifiedPost.posterId = { ...data._doc };
-            modifiedPost.posterId.image_url = "http://" + req.hostname + ":3000/" + modifiedPost.posterId.image_url;
-            modifiedPost.media_url = "http://" + req.hostname + ":3000/" + modifiedPost.media_url;
+            modifiedPost.posterId.image_url = "http://" + req.hostname + ":3000/uploads/" + modifiedPost.posterId.image_url;
+            modifiedPost.media_url = "http://" + req.hostname + ":3000/uploads/" + modifiedPost.media_url;
             modifiedPosts.push(modifiedPost);
         }
 
@@ -134,8 +140,8 @@ export const getCommunityPosts = async (req, res) => {
             }
 
             modifiedPost.posterId = { ...data._doc };
-            modifiedPost.posterId.image_url = "http://" + req.hostname + ":3000/" + modifiedPost.posterId.image_url;
-            modifiedPost.media_url = "http://" + req.hostname + ":3000/" + modifiedPost.media_url;
+            modifiedPost.posterId.image_url = "http://" + req.hostname + ":3000/uploads/" + modifiedPost.posterId.image_url;
+            modifiedPost.media_url = "http://" + req.hostname + ":3000/uploads/" + modifiedPost.media_url;
             modifiedPosts.push(modifiedPost);
         }
 
@@ -383,7 +389,7 @@ export const addComment = async (req, res) => {
             const allComments = postToUpdate.comments;
 
             const modifiedUser = { ...userData._doc }; // Create a copy of the service object
-            modifiedUser.image_url = "http://" + req.hostname + ":3000/" + modifiedUser.image_url;
+            modifiedUser.image_url = "http://" + req.hostname + ":3000/uploads/" + modifiedUser.image_url;
             modifiedUser.comment = comment;
             modifiedUser.commentDate = commentCreationDate;
 
@@ -480,7 +486,7 @@ export const deletePost = async (req, res) => {
         const process = await Postmodel.deleteOne(filter);
 
         if (process) {
-            fs.unlinkSync("./src/middleware/upload/" + data.media_url); //delete old image
+            fs.unlinkSync(path.join(uploadsDir, data.media_url)); //delete old image
 
             return res.status(200).json({ msg: "Post deleted successfully" });
         }

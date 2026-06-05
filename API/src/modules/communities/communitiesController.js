@@ -37,8 +37,8 @@ export const getJoinedCommunities = async (req, res) => {
 
         const modifiedCommunities = allCommunities.map((community) => {
             const modifiedCommunity = { ...community._doc }; // Create a copy of the service object
-            // modifiedCourse.courseCoverImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.courseCoverImage_url;
-            // modifiedCourse.proffImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.proffImage_url;
+            // modifiedCourse.courseCoverImage_url = "http://" + req.hostname + ":3000/uploads/" + modifiedCourse.courseCoverImage_url;
+            // modifiedCourse.proffImage_url = "http://" + req.hostname + ":3000/uploads/" + modifiedCourse.proffImage_url;
             return modifiedCommunity;
         });
 
@@ -114,10 +114,10 @@ export const getAllJoinedMembersCommunities = async (req, res) => {
 
         members.forEach(member => {
             const modifiedMember = { ...member._doc };
-            modifiedMember.image_url = "http://" + req.hostname + ":3000/" + modifiedMember.image_url;
+            modifiedMember.image_url = "http://" + req.hostname + ":3000/uploads/" + modifiedMember.image_url;
 
             if(modifiedMember.coverImage_url !== undefined) {
-                modifiedMember.coverImage_url = "http://" + req.hostname + ":3000/" + modifiedMember.coverImage_url;
+                modifiedMember.coverImage_url = "http://" + req.hostname + ":3000/uploads/" + modifiedMember.coverImage_url;
             }
 
             modifiedMembers.push(modifiedMember);
@@ -386,8 +386,8 @@ export const uploadCoverImage = async (req, res) => {
 
         data = { ...userData._doc };
 
-        data.image_url = "http://" + req.hostname + ":3000/" + data.image_url;
-        data.coverImage_url = "http://" + req.hostname + ":3000/" + data.coverImage_url;
+        data.image_url = "http://" + req.hostname + ":3000/uploads/" + data.image_url;
+        data.coverImage_url = "http://" + req.hostname + ":3000/uploads/" + data.coverImage_url;
 
         res.status(200).json({ msg: "Cover image uploaded successfuly", data});
     } catch (error) {

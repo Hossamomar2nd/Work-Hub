@@ -41,7 +41,7 @@ export const getUserOrders = async (req, res) => {
         const ordersData = Orders.map((order) => {
             const modifiedRequest = { ...order._doc }; // Create a copy of the service object
             modifiedRequest.serviceId = { ...modifiedRequest.serviceId._doc }; // Create a copy of the freelancerId object
-            modifiedRequest.serviceId.serviceCover_url = "http://" + req.hostname + ":3000/" + modifiedRequest.serviceId.serviceCover_url;
+            modifiedRequest.serviceId.serviceCover_url = "http://" + req.hostname + ":3000/uploads/" + modifiedRequest.serviceId.serviceCover_url;
             return modifiedRequest;
         });
 

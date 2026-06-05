@@ -17,7 +17,7 @@ export const getAllRequests = async (req, res) => {
         const requests = allRequests.map((request) => {
             const modifiedRequest = { ...request._doc }; // Create a copy of the service object
             modifiedRequest.serviceId = { ...modifiedRequest.serviceId._doc }; // Create a copy of the freelancerId object
-            modifiedRequest.serviceId.serviceCover_url = "http://" + req.hostname + ":3000/" + modifiedRequest.serviceId.serviceCover_url;
+            modifiedRequest.serviceId.serviceCover_url = "http://" + req.hostname + ":3000/uploads/" + modifiedRequest.serviceId.serviceCover_url;
             return modifiedRequest;
         });
 
@@ -41,7 +41,7 @@ export const getClientRequests = async (req, res) => {
         const requests = allRequests.map((request) => {
             const modifiedRequest = { ...request._doc }; // Create a copy of the service object
             modifiedRequest.serviceId = { ...modifiedRequest.serviceId._doc }; // Create a copy of the freelancerId object
-            modifiedRequest.serviceId.serviceCover_url = "http://" + req.hostname + ":3000/" + modifiedRequest.serviceId.serviceCover_url;
+            modifiedRequest.serviceId.serviceCover_url = "http://" + req.hostname + ":3000/uploads/" + modifiedRequest.serviceId.serviceCover_url;
             return modifiedRequest;
         });
 
@@ -65,7 +65,7 @@ export const getFreelancerRequests = async (req, res) => {
         const requests = allRequests.map((request) => {
             const modifiedRequest = { ...request._doc }; // Create a copy of the service object
             modifiedRequest.serviceId = { ...modifiedRequest.serviceId._doc }; // Create a copy of the freelancerId object
-            modifiedRequest.serviceId.serviceCover_url = "http://" + req.hostname + ":3000/" + modifiedRequest.serviceId.serviceCover_url;
+            modifiedRequest.serviceId.serviceCover_url = "http://" + req.hostname + ":3000/uploads/" + modifiedRequest.serviceId.serviceCover_url;
             return modifiedRequest;
         });
 
@@ -99,7 +99,7 @@ export const getUserRequests = async (req, res) => {
         const requests = allRequests.map((request) => {
             const modifiedRequest = { ...request._doc }; // Create a copy of the service object
             modifiedRequest.serviceId = { ...modifiedRequest.serviceId._doc }; // Create a copy of the freelancerId object
-            modifiedRequest.serviceId.serviceCover_url = "http://" + req.hostname + ":3000/" + modifiedRequest.serviceId.serviceCover_url;
+            modifiedRequest.serviceId.serviceCover_url = "http://" + req.hostname + ":3000/uploads/" + modifiedRequest.serviceId.serviceCover_url;
             return modifiedRequest;
         });
 

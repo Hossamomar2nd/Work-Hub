@@ -1,6 +1,7 @@
 .env
 /node_modules
-/src/middleware/upload
+/uploads/*
+!/uploads/.gitkeep
 /model
 /myenv
 yarn.lock

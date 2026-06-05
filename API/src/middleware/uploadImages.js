@@ -1,21 +1,22 @@
+import multer from "multer";
+import fs from "fs";
+import { fileURLToPath } from "url";
+import { nanoid } from "nanoid";
+import path from "path";
 
-import multer from 'multer';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-import { nanoid } from 'nanoid';
-import path from 'path';
-
-// Get the current module's path
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.dirname(__filename);
+const uploadDir = path.join(__dirname, "../../uploads");
+
+fs.mkdirSync(uploadDir, { recursive: true });
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, 'upload'));
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
+  destination: (req, file, cb) => {
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + nanoid() + path.extname(file.originalname));
+  },
 });
 
 export const upload = multer({ storage: storage });
