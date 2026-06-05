@@ -14,8 +14,8 @@ export const getAllCourses = async (req, res) => {
 
         const modifiedCourses = allCourses.map((course) => {
             const modifiedCourse = { ...course._doc }; // Create a copy of the service object
-            modifiedCourse.courseCoverImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.courseCoverImage_url;
-            modifiedCourse.proffImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.proffImage_url;
+            modifiedCourse.courseCoverImage_url = "http://" + req.hostname + ":3000/uploads/" + modifiedCourse.courseCoverImage_url;
+            modifiedCourse.proffImage_url = "http://" + req.hostname + ":3000/uploads/" + modifiedCourse.proffImage_url;
             return modifiedCourse;
         });
 
@@ -37,7 +37,7 @@ export const getCourseById = async (req, res) => {
         }
         
 
-        courseData.proffImage_url = "http://" + req.hostname + ":3000/" + courseData.proffImage_url;
+        courseData.proffImage_url = "http://" + req.hostname + ":3000/uploads/" + courseData.proffImage_url;
 
         res.status(200).json({ courseData });
     } catch (error) {
@@ -58,8 +58,8 @@ export const getCoursesByCategoryId = async (req, res) => {
 
         const modifiedCourses = coursesData.map((course) => {
             const modifiedCourse = { ...course._doc }; // Create a copy of the service object
-            modifiedCourse.courseCoverImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.courseCoverImage_url;
-            modifiedCourse.proffImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.proffImage_url;
+            modifiedCourse.courseCoverImage_url = "http://" + req.hostname + ":3000/uploads/" + modifiedCourse.courseCoverImage_url;
+            modifiedCourse.proffImage_url = "http://" + req.hostname + ":3000/uploads/" + modifiedCourse.proffImage_url;
             return modifiedCourse;
         });
 
@@ -80,8 +80,8 @@ export const getEnrolledCourses = async (req, res) => {
 
         const modifiedCourses = allCourses.map((course) => {
             const modifiedCourse = { ...course._doc }; // Create a copy of the service object
-            modifiedCourse.courseCoverImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.courseCoverImage_url;
-            modifiedCourse.proffImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.proffImage_url;
+            modifiedCourse.courseCoverImage_url = "http://" + req.hostname + ":3000/uploads/" + modifiedCourse.courseCoverImage_url;
+            modifiedCourse.proffImage_url = "http://" + req.hostname + ":3000/uploads/" + modifiedCourse.proffImage_url;
             return modifiedCourse;
         });
     

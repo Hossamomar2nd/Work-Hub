@@ -17,7 +17,7 @@ export const getAllClients = async (req, res) => {
 
         const modifiedClients = allClients.map((client) => {
           const modifiedClient = { ...client._doc }; // Create a copy of the service object
-          modifiedClient.image_url = "http://" + req.hostname + ":3000/" + modifiedClient.image_url;
+          modifiedClient.image_url = "http://" + req.hostname + ":3000/uploads/" + modifiedClient.image_url;
           return modifiedClient;
         });
 
@@ -44,8 +44,8 @@ export const getClientById = async (req, res, next) => {
       res.status(404).json({msg: "Freelancer not found"});
     }
   
-    client.image_url = "http://" + req.hostname + ":3000/" + client.image_url;
-    client.coverImage_url = "http://" + req.hostname + ":3000/" + client.coverImage_url;
+    client.image_url = "http://" + req.hostname + ":3000/uploads/" + client.image_url;
+    client.coverImage_url = "http://" + req.hostname + ":3000/uploads/" + client.coverImage_url;
     
     res.status(200).json({ client });
     } catch (error) {

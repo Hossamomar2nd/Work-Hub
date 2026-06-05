@@ -55,7 +55,7 @@ export const getServiceReviews = async (req, res) => {
 
         const modifiedReviews = reviews.map((review) => {
             const modifiedReview = { ...review._doc }; // Create a copy of the service object
-            modifiedReview.clientId.image_url = "http://" + req.hostname + ":3000/" + modifiedReview.clientId.image_url;
+            modifiedReview.clientId.image_url = "http://" + req.hostname + ":3000/uploads/" + modifiedReview.clientId.image_url;
             return modifiedReview;
         });
 

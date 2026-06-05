@@ -11,7 +11,7 @@ export const getAllFreelancers = async (req,res) => {
       if(freelancers[0]){
         const modifiedFreelancers = freelancers.map((freelancer) => {
           const modifiedFreelancer = { ...freelancer._doc }; // Create a copy of the service object
-          modifiedFreelancer.image_url = "http://" + req.hostname + ":3000/" + modifiedFreelancer.image_url;
+          modifiedFreelancer.image_url = "http://" + req.hostname + ":3000/uploads/" + modifiedFreelancer.image_url;
           return modifiedFreelancer;
       });
 
@@ -42,8 +42,8 @@ export const getFreelancerById = async (req, res, next) => {
     return res.status(404).json({msg: "Freelancer not found"});
   }
 
-  freelancer.image_url = "http://" + req.hostname + ":3000/" + freelancer.image_url;
-  freelancer.coverImage_url = "http://" + req.hostname + ":3000/" + freelancer.coverImage_url;
+  freelancer.image_url = "http://" + req.hostname + ":3000/uploads/" + freelancer.image_url;
+  freelancer.coverImage_url = "http://" + req.hostname + ":3000/uploads/" + freelancer.coverImage_url;
 
   res.status(200).json({ freelancer });
   } catch (error) {
@@ -105,7 +105,7 @@ export const updateFreelancerInfo = async (req, res) => {
               await FreelancerModel.updateOne(filter, update);
 
               const freelancerNewData = await FreelancerModel.findById(freelancerId);
-              freelancerNewData.image_url = "http://" + req.hostname + ":3000/" + freelancerNewData.image_url;
+              freelancerNewData.image_url = "http://" + req.hostname + ":3000/uploads/" + freelancerNewData.image_url;
               return res.status(200).json({ msg: "Freelancer has been updated successfuly.", freelancerNewData});
           }
           return res.status(400).json({ msg: "You cannot use this email." });
