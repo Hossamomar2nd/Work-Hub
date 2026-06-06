@@ -4,9 +4,41 @@ import AdminModel from "../../../DB/models/admin_model.js";
 import ClientModel from "../../../DB/models/client_model.js";
 import FreelancerModel from "../../../DB/models/freelancer_model.js";
 
+const userModelsByRole = {
+  admin: AdminModel,
+  client: ClientModel,
+  freelancer: FreelancerModel,
+};
+
 const generateToken = async (userId, role) => {
-  return jwt.sign({ userId, role }, process.env.TOKEN_SECRETkEY);
-  // return jwt.sign({ userId, role }, process.env.TOKEN_SECRETkEY, { expiresIn: '1h' });
+  return jwt.sign({ userId, role }, process.env.TOKEN_SECRETkEY, {
+    expiresIn: process.env.JWT_EXPIRES_IN || "1d",
+  });
+};
+
+const getUserModelByRole = (role) => userModelsByRole[role];
+
+const findUserByEmail = async (email) => {
+  for (const UserModel of Object.values(userModelsByRole)) {
+    const user = await UserModel.findOne({ email });
+    if (user) return user;
+  }
+
+  return null;
+};
+
+const findUserByIdAndRole = async (id, role) => {
+  const UserModel = getUserModelByRole(role);
+  if (!UserModel) return null;
+
+  return UserModel.findById(id);
+};
+
+const updateUserByRole = async (role, filter, update) => {
+  const UserModel = getUserModelByRole(role);
+  if (!UserModel) return null;
+
+  return UserModel.updateOne(filter, update);
 };
 
 const sanitizeUser = (user) => {
@@ -19,42 +51,65 @@ const sanitizeUser = (user) => {
   return userObject;
 };
 
+const buildUploadUrl = (filename, req) => {
+  if (!filename) return filename;
+  if (/^https?:\/\//i.test(filename)) return filename;
+
+  const normalizedPath = filename.startsWith("/uploads/")
+    ? filename
+    : `/uploads/${filename}`;
+  const baseUrl = `${req.protocol}://${req.get("host")}`;
+
+  return `${baseUrl}${normalizedPath}`;
+};
+
 const buildAuthUserResponse = (user, req) => {
   const userObject = sanitizeUser(user);
 
   if (userObject.image_url) {
-    userObject.image_url = "http://" + req.hostname + ":3000/uploads/" + userObject.image_url;
+    userObject.image_url = buildUploadUrl(userObject.image_url, req);
   }
 
   if (userObject.coverImage_url) {
-    userObject.coverImage_url = "http://" + req.hostname + ":3000/uploads/" + userObject.coverImage_url;
+    userObject.coverImage_url = buildUploadUrl(userObject.coverImage_url, req);
   }
 
   return userObject;
 };
 
+const normalizeStringArray = (value) => {
+  if (value === undefined || value === null || value === "") return [];
+
+  const values = Array.isArray(value) ? value : [value];
+
+  return values
+    .flatMap((item) => {
+      if (item === undefined || item === null) return [];
+      if (Array.isArray(item)) return item;
+
+      const text = String(item).trim();
+      if (!text) return [];
+
+      try {
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed)) return parsed;
+      } catch {
+        // Not JSON; treat it as a comma-separated or single value below.
+      }
+
+      return text.split(",");
+    })
+    .map((item) => String(item).trim())
+    .filter(Boolean);
+};
+
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    let user;
+    const user = await findUserByEmail(email);
 
-    user = await AdminModel.findOne({ email: email });
     if (!user) {
-      user = await ClientModel.findOne({ email: email });
-      if (!user) {
-        user = await FreelancerModel.findOne({ email: email });
-        if (!user) {
-          return res.status(400).json({ msg: "Wrong email or password" });
-        }
-      }
-    }
-
-    if (user.activityStatus === "online") {
-      return res.status(400).json({ msg: "Already loged in" });
-    }
-
-    if (user.activityStatus === "online" && user.lastLogin === undefined) {
-      return res.status(400).json({ msg: "Already loged in" });
+      return res.status(400).json({ msg: "Wrong email or password" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -64,44 +119,23 @@ const login = async (req, res) => {
 
     const token = await generateToken(user._id, user.role);
     const filter = { _id: user._id };
+    // activityStatus is legacy presence metadata; token validity is handled separately.
     const update = {
       $set: { lastLogin: new Date(), activityStatus: "online", token: token },
     };
-    let process;
 
-    switch (user.role) {
-      case "admin":
-        process = await AdminModel.updateOne(filter, update);
-        break;
-      case "client":
-        process = await ClientModel.updateOne(filter, update);
-        break;
-      case "freelancer":
-        process = await FreelancerModel.updateOne(filter, update);
-        break;
-      default:
-        return res.status(400).json({ msg: "Role undefined" });
+    const updateResult = await updateUserByRole(user.role, filter, update);
+    if (!updateResult) {
+      return res.status(400).json({ msg: "Role undefined" });
     }
 
-
-    let userData;
-    switch (user.role) {
-      case "admin":
-        userData = await AdminModel.findById(filter);
-        break;
-      case "client":
-        userData = await ClientModel.findById(filter);
-        break;
-      case "freelancer":
-        userData = await FreelancerModel.findById(filter);
-        break;
-      default:
-        return res.status(400).json({ msg: "Role undefined" });
-    }
+    const userData = await findUserByIdAndRole(user._id, user.role);
 
     const responseUser = buildAuthUserResponse(userData, req);
 
-    res.status(200).json({ message: "Sign in successful", token, user: responseUser });
+    res
+      .status(200)
+      .json({ message: "Sign in successful", token, user: responseUser });
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Internal server error" });
@@ -110,45 +144,31 @@ const login = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    const id = req.params.id
-    let data;
+    const { id } = req.params;
+    const authenticatedUser = req.user;
 
-    data = await AdminModel.findById(id);
-    if (!data) {
-      data = await ClientModel.findById(id);
-      if (!data) {
-        data = await FreelancerModel.findById(id);
-        if (!data) {
-          return res.status(400).json({ msg: "User not found" });
-        }
-      }
+    if (!authenticatedUser) {
+      return res.status(401).json({ msg: "You are not authenticated" });
     }
 
-    const filter = { _id: id };
-    const update = { $set: { activityStatus: "offline", token: "null" } }
-
-    let user;
-
-    if (data) {
-      if (data.activityStatus === "online") {
-        switch (data.role) {
-          case "admin":
-            user = await AdminModel.updateOne(filter, update);
-            break;
-          case "client":
-            user = await ClientModel.updateOne(filter, update);
-            break;
-          case "freelancer":
-            user = await FreelancerModel.updateOne(filter, update);
-            break;
-          default:
-            return res.status(400).json({ msg: "Role undefined" });
-        }
-        return res.status(200).json({ msg: "loged out successfuly." });
-      }
-      return res.status(400).json({ msg: "already loged out" });
+    if (id !== String(authenticatedUser._id)) {
+      return res.status(403).json({ msg: "You are not authorized" });
     }
-    res.status(400).json({ msg: "Invalid id" });
+
+    const filter = { _id: authenticatedUser._id };
+    const update = { $set: { activityStatus: "offline", token: null } };
+
+    const updateResult = await updateUserByRole(
+      authenticatedUser.role,
+      filter,
+      update,
+    );
+
+    if (!updateResult) {
+      return res.status(400).json({ msg: "Role undefined" });
+    }
+
+    return res.status(200).json({ msg: "loged out successfuly." });
   } catch (error) {
     console.log(error);
     res.status(500).send("Somthing went wrong!");
@@ -158,7 +178,17 @@ export const logout = async (req, res) => {
 export const signup = async (req, res) => {
   try {
     const { role } = req.params;
-    const { name, email, password, country, desc, phoneNumber, skills, languages, specialization } = req.body;
+    const {
+      name,
+      email,
+      password,
+      country,
+      desc,
+      phoneNumber,
+      skills,
+      languages,
+      specialization,
+    } = req.body;
     let image_url;
 
     if (!password) {
@@ -168,55 +198,47 @@ export const signup = async (req, res) => {
       image_url = req.file.filename;
     }
 
-    const adminEmail = await AdminModel.findOne({ email });
+    if (!["client", "freelancer"].includes(role)) {
+      return res.status(400).json({ message: "Invalid role" });
+    }
 
-    if (adminEmail) {
+    const existingUser = await findUserByEmail(email);
+
+    if (existingUser) {
       return res.status(400).json({ message: "This Email is used" });
     }
-
-    const clientEmail = await ClientModel.findOne({ email });
-
-    if (clientEmail) {
-      return res.status(400).json({ message: "This Email is used" });
-    }
-
-    const freelancerEmail = await FreelancerModel.findOne({ email });
-
-    if (freelancerEmail) {
-      return res.status(400).json({ message: "This Email is used" });
-    }
-
-    // Validate role
-    if (!['client', 'freelancer'].includes(role)) {
-      return res.status(400).json({ message: 'Invalid role' });
-    }
-
-    // Check if the user already exists in any of the models
-    // let existingUser;
-    // switch (role) {
-    //   case 'client':
-    //     existingUser = await ClientModel.findOne({ email });
-    //     break;
-    //   case 'freelancer':
-    //     existingUser = await FreelancerModel.findOne({ email });
-    //     break;
-    // }
-
-    // if (existingUser) {
-    //   return res.status(400).json({ message: 'User already exists' });
-    // }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT_ROUND));
+    const hashedPassword = await bcrypt.hash(
+      password,
+      parseInt(process.env.SALT_ROUND),
+    );
 
     // Create a new user instance based on the role
     let newUser;
     switch (role) {
-      case 'client':
-        newUser = new ClientModel({ name, email, password: hashedPassword, country, image_url });
+      case "client":
+        newUser = new ClientModel({
+          name,
+          email,
+          password: hashedPassword,
+          country,
+          image_url,
+        });
         break;
-      case 'freelancer':
-        newUser = new FreelancerModel({ name, email, password: hashedPassword, country, image_url, desc, phoneNumber, skills, languages, specialization });
+      case "freelancer":
+        newUser = new FreelancerModel({
+          name,
+          email,
+          password: hashedPassword,
+          country,
+          image_url,
+          desc,
+          phoneNumber,
+          skills: normalizeStringArray(skills),
+          languages: normalizeStringArray(languages),
+          specialization,
+        });
         break;
     }
 
@@ -224,40 +246,21 @@ export const signup = async (req, res) => {
 
     const token = await generateToken(newUser._id, role);
     const filter = { _id: newUser._id };
-    const update = { $set: { token: token, activityStatus: "online" } }
-    let query;
+    const update = { $set: { token: token, activityStatus: "online" } };
+    await updateUserByRole(role, filter, update);
 
-    switch (role) {
-      case 'client':
-        query = await ClientModel.updateOne(filter, update);
-        break;
-      case 'freelancer':
-        query = await FreelancerModel.updateOne(filter, update);
-        break;
-    }
-
-    let userData;
-    switch (role) {
-      case 'client':
-        userData = await ClientModel.findOne({ email });
-        break;
-      case 'freelancer':
-        userData = await FreelancerModel.findOne({ email });
-        break;
-    }
-
-
+    const userData = await findUserByEmail(email);
     const responseUser = buildAuthUserResponse(userData, req);
 
-    // userData.map((user) => {
-    //   user.image_url = "http://" + req.hostname + ":3000/uploads/" + services.serviceCover_url;
-    // });
-
-    return res.status(201).json({ message: 'User created successfully', token, user: responseUser });
+    return res.status(201).json({
+      message: "User created successfully",
+      token,
+      user: responseUser,
+    });
   } catch (error) {
-    console.error('Error:', error);
-    return res.status(500).json({ message: 'Internal server error' });
+    console.error("Error:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
-export default login
+export default login;
