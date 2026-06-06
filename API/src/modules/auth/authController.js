@@ -9,10 +9,33 @@ const generateToken = async (userId, role) => {
   // return jwt.sign({ userId, role }, process.env.TOKEN_SECRETkEY, { expiresIn: '1h' });
 };
 
+const sanitizeUser = (user) => {
+  const userObject = user?.toObject ? user.toObject() : { ...user };
+
+  delete userObject.password;
+  delete userObject.token;
+  delete userObject.__v;
+
+  return userObject;
+};
+
+const buildAuthUserResponse = (user, req) => {
+  const userObject = sanitizeUser(user);
+
+  if (userObject.image_url) {
+    userObject.image_url = "http://" + req.hostname + ":3000/uploads/" + userObject.image_url;
+  }
+
+  if (userObject.coverImage_url) {
+    userObject.coverImage_url = "http://" + req.hostname + ":3000/uploads/" + userObject.coverImage_url;
+  }
+
+  return userObject;
+};
+
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email, password);
     let user;
 
     user = await AdminModel.findOne({ email: email });
@@ -76,13 +99,9 @@ const login = async (req, res) => {
         return res.status(400).json({ msg: "Role undefined" });
     }
 
-    userData.image_url = "http://" + req.hostname + ":3000/uploads/" + userData.image_url;
+    const responseUser = buildAuthUserResponse(userData, req);
 
-    if (userData.coverImage_url != undefined) {
-      userData.coverImage_url = "http://" + req.hostname + ":3000/uploads/" + userData.coverImage_url;
-    }
-
-    res.status(200).json({ msg: "Sign in successful", userData });
+    res.status(200).json({ message: "Sign in successful", token, user: responseUser });
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Internal server error" });
@@ -228,13 +247,13 @@ export const signup = async (req, res) => {
     }
 
 
-    userData.image_url = "http://" + req.hostname + ":3000/uploads/" + userData.image_url;
+    const responseUser = buildAuthUserResponse(userData, req);
 
     // userData.map((user) => {
     //   user.image_url = "http://" + req.hostname + ":3000/uploads/" + services.serviceCover_url;
     // });
 
-    return res.status(201).json({ message: 'User created successfully', userData });
+    return res.status(201).json({ message: 'User created successfully', token, user: responseUser });
   } catch (error) {
     console.error('Error:', error);
     return res.status(500).json({ message: 'Internal server error' });
