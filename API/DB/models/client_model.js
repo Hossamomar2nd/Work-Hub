@@ -1,56 +1,57 @@
-
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const clientSchema = new Schema({
+const clientSchema = new Schema(
+  {
     name: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     email: {
-        type: String,
-        required: true,
-        unique: true
+      type: String,
+      required: true,
+      unique: true,
     },
     password: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     image_url: {
-        type: String,
-       
+      type: String,
     },
     coverImage_url: {
-        type: String,
+      type: String,
     },
     country: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     lastLogin: {
-        type: Date,
-        required: false
+      type: Date,
+      required: false,
     },
     activityStatus: {
-        type: String,
-        default: 'offline',
-        required: false
+      type: String,
+      default: "offline",
+      required: false,
     },
     role: {
-        type: String,
-        default: 'client'
+      type: String,
+      default: "client",
     },
     token: {
-        type: String,
-        required: false
+      type: String,
+      required: false,
     },
     ordersCount: {
-        type: Number,
-        required: false,
-        default: 0
-    }
-},{
-    timestamps: true
-});
+      type: Number,
+      required: false,
+      default: 0,
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
 
 export default mongoose.model("client", clientSchema);
