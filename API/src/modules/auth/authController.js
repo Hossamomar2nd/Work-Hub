@@ -10,10 +10,16 @@ const userModelsByRole = {
   freelancer: FreelancerModel,
 };
 
-const generateToken = async (userId, role) => {
+const generateToken = (userId, role) => {
   return jwt.sign({ userId, role }, process.env.TOKEN_SECRETkEY, {
     expiresIn: process.env.JWT_EXPIRES_IN || "1d",
   });
+};
+
+const getSaltRounds = () => {
+  const saltRounds = Number.parseInt(process.env.SALT_ROUND, 10);
+
+  return Number.isInteger(saltRounds) && saltRounds > 0 ? saltRounds : 10;
 };
 
 const getUserModelByRole = (role) => userModelsByRole[role];
@@ -104,163 +110,142 @@ const normalizeStringArray = (value) => {
 };
 
 const login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await findUserByEmail(email);
+  const { email, password } = req.body;
+  const user = await findUserByEmail(email);
 
-    if (!user) {
-      return res.status(400).json({ msg: "Wrong email or password" });
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ msg: "Wrong email or password" });
-    }
-
-    const token = await generateToken(user._id, user.role);
-    const filter = { _id: user._id };
-    // activityStatus is legacy presence metadata; token validity is handled separately.
-    const update = {
-      $set: { lastLogin: new Date(), activityStatus: "online", token: token },
-    };
-
-    const updateResult = await updateUserByRole(user.role, filter, update);
-    if (!updateResult) {
-      return res.status(400).json({ msg: "Role undefined" });
-    }
-
-    const userData = await findUserByIdAndRole(user._id, user.role);
-
-    const responseUser = buildAuthUserResponse(userData, req);
-
-    res
-      .status(200)
-      .json({ message: "Sign in successful", token, user: responseUser });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ msg: "Internal server error" });
+  if (!user) {
+    return res.status(401).json({ msg: "Wrong email or password" });
   }
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!isPasswordValid) {
+    return res.status(401).json({ msg: "Wrong email or password" });
+  }
+
+  const token = generateToken(user._id, user.role);
+  const filter = { _id: user._id };
+  const update = {
+    $set: { lastLogin: new Date(), activityStatus: "online", token: token },
+  };
+
+  const updateResult = await updateUserByRole(user.role, filter, update);
+  if (!updateResult) {
+    return res.status(400).json({ msg: "Role undefined" });
+  }
+
+  const userData = await findUserByIdAndRole(user._id, user.role);
+
+  const responseUser = buildAuthUserResponse(userData, req);
+
+  res
+    .status(200)
+    .json({ message: "Sign in successful", token, user: responseUser });
 };
 
 export const logout = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const authenticatedUser = req.user;
+  const { id } = req.params;
+  const authenticatedUser = req.user;
 
-    if (!authenticatedUser) {
-      return res.status(401).json({ msg: "You are not authenticated" });
-    }
-
-    if (id !== String(authenticatedUser._id)) {
-      return res.status(403).json({ msg: "You are not authorized" });
-    }
-
-    const filter = { _id: authenticatedUser._id };
-    const update = { $set: { activityStatus: "offline", token: null } };
-
-    const updateResult = await updateUserByRole(
-      authenticatedUser.role,
-      filter,
-      update,
-    );
-
-    if (!updateResult) {
-      return res.status(400).json({ msg: "Role undefined" });
-    }
-
-    return res.status(200).json({ msg: "loged out successfuly." });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Somthing went wrong!");
+  if (!authenticatedUser) {
+    return res.status(401).json({ msg: "You are not authenticated" });
   }
+
+  if (id !== String(authenticatedUser._id)) {
+    return res.status(403).json({ msg: "You are not authorized" });
+  }
+
+  const filter = { _id: authenticatedUser._id };
+  const update = { $set: { activityStatus: "offline", token: null } };
+
+  const updateResult = await updateUserByRole(
+    authenticatedUser.role,
+    filter,
+    update,
+  );
+
+  if (!updateResult) {
+    return res.status(400).json({ msg: "Role undefined" });
+  }
+
+  return res.status(200).json({ msg: "logged out successfully." });
 };
 
 export const signup = async (req, res) => {
-  try {
-    const { role } = req.params;
-    const {
-      name,
-      email,
-      password,
-      country,
-      desc,
-      phoneNumber,
-      skills,
-      languages,
-      specialization,
-    } = req.body;
-    let image_url;
+  const { role } = req.params;
+  const {
+    name,
+    email,
+    password,
+    country,
+    desc,
+    phoneNumber,
+    skills,
+    languages,
+    specialization,
+  } = req.body;
+  let image_url;
 
-    if (!password) {
-      return res.status(400).json({ message: "You should enter password" });
-    }
-    if (req.file) {
-      image_url = req.file.filename;
-    }
-
-    if (!["client", "freelancer"].includes(role)) {
-      return res.status(400).json({ message: "Invalid role" });
-    }
-
-    const existingUser = await findUserByEmail(email);
-
-    if (existingUser) {
-      return res.status(400).json({ message: "This Email is used" });
-    }
-
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(
-      password,
-      parseInt(process.env.SALT_ROUND),
-    );
-
-    // Create a new user instance based on the role
-    let newUser;
-    switch (role) {
-      case "client":
-        newUser = new ClientModel({
-          name,
-          email,
-          password: hashedPassword,
-          country,
-          image_url,
-        });
-        break;
-      case "freelancer":
-        newUser = new FreelancerModel({
-          name,
-          email,
-          password: hashedPassword,
-          country,
-          image_url,
-          desc,
-          phoneNumber,
-          skills: normalizeStringArray(skills),
-          languages: normalizeStringArray(languages),
-          specialization,
-        });
-        break;
-    }
-
-    await newUser.save();
-
-    const token = await generateToken(newUser._id, role);
-    const filter = { _id: newUser._id };
-    const update = { $set: { token: token, activityStatus: "online" } };
-    await updateUserByRole(role, filter, update);
-
-    const userData = await findUserByEmail(email);
-    const responseUser = buildAuthUserResponse(userData, req);
-
-    return res.status(201).json({
-      message: "User created successfully",
-      token,
-      user: responseUser,
-    });
-  } catch (error) {
-    console.error("Error:", error);
-    return res.status(500).json({ message: "Internal server error" });
+  if (!password) {
+    return res.status(400).json({ message: "You should enter password" });
   }
+  if (req.file) {
+    image_url = req.file.filename;
+  }
+
+  if (!["client", "freelancer"].includes(role)) {
+    return res.status(400).json({ message: "Invalid role" });
+  }
+
+  const existingUser = await findUserByEmail(email);
+
+  if (existingUser) {
+    return res.status(400).json({ message: "This Email is used" });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, getSaltRounds());
+
+  let newUser;
+  switch (role) {
+    case "client":
+      newUser = new ClientModel({
+        name,
+        email,
+        password: hashedPassword,
+        country,
+        image_url,
+      });
+      break;
+    case "freelancer":
+      newUser = new FreelancerModel({
+        name,
+        email,
+        password: hashedPassword,
+        country,
+        image_url,
+        desc,
+        phoneNumber,
+        skills: normalizeStringArray(skills),
+        languages: normalizeStringArray(languages),
+        specialization,
+      });
+      break;
+  }
+
+  await newUser.save();
+
+  const token = generateToken(newUser._id, role);
+  const filter = { _id: newUser._id };
+  const update = { $set: { token: token, activityStatus: "online" } };
+  await updateUserByRole(role, filter, update);
+
+  const userData = await findUserByEmail(email);
+  const responseUser = buildAuthUserResponse(userData, req);
+
+  return res.status(201).json({
+    message: "User created successfully",
+    token,
+    user: responseUser,
+  });
 };
 
 export default login;

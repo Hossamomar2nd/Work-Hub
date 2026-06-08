@@ -6,7 +6,7 @@ import { asyncHandler } from "../../utils/asyncHandler.js";
 import auth from "../../middleware/auth.middleware.js";
 import endPoints from "../../middleware/endPoints.js";
 import login, { logout, signup } from "./authController.js";
-import { loginSchema, sigupSchema } from "./authSchema.js";
+import { loginSchema, signupSchema } from "./authSchema.js";
 import { upload } from "../../middleware/uploadImages.js";
 
 const router = express.Router();
@@ -14,16 +14,16 @@ const router = express.Router();
 router.post(
   "/signup/:role",
   upload.single("image"),
-  valMiddleware(sigupSchema, {
+  valMiddleware(signupSchema, {
     includeParams: true,
     assignValidatedData: true,
   }),
-  signup,
+  asyncHandler(signup),
 );
 router.post(
   "/login",
   valMiddleware(loginSchema, { assignValidatedData: true }),
-  login,
+  asyncHandler(login),
 );
 router.put(
   "/logout/:id",

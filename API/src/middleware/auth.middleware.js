@@ -3,17 +3,30 @@ import AdminModel from "../../DB/models/admin_model.js";
 import ClientModel from "../../DB/models/client_model.js";
 import FreelancerModel from "../../DB/models/freelancer_model.js";
 
+const getHeaderToken = (req) => {
+  const bearerKey = process.env.BEARER_KEY || "Bearer";
+  const headerToken = req.get("authorization") || req.headers.token;
+
+  if (!headerToken || Array.isArray(headerToken)) return null;
+
+  const parts = headerToken.trim().split(/\s+/);
+  if (parts.length !== 2) return null;
+
+  const [scheme, token] = parts;
+  if (scheme.toLowerCase() !== bearerKey.toLowerCase() || !token) return null;
+
+  return token;
+};
+
 const auth = (data) => {
   return async (req, res, next) => {
     try {
-      const headerToken = req.headers.token;
-      const bearerKey = process.env.BEARER_KEY || "Bearer";
+      const token = getHeaderToken(req);
 
-      if (!headerToken || !headerToken.startsWith(bearerKey)) {
+      if (!token) {
         return res.status(401).json({ msg: "Invalid header token" });
       }
 
-      const token = headerToken.split(" ")[1];
       const decoded = jwt.verify(token, process.env.TOKEN_SECRETkEY);
       let user;
 
@@ -32,7 +45,7 @@ const auth = (data) => {
           user = await FreelancerModel.findOne({ _id: decoded.userId });
           break;
         default:
-          return res.status(400).json({ msg: "Role undefined" });
+          return res.status(401).json({ msg: "invalid or expired token" });
       }
 
       if (!user) {
