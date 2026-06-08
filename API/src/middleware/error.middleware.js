@@ -5,8 +5,9 @@ export const errorHandler = (error, req, res, next) => {
 
   const statusCodeCandidates = [error?.statusCode, error?.status, error?.cause];
   const statusCode =
-    statusCodeCandidates.find((code) => Number.isInteger(code) && code >= 400 && code < 600) ||
-    500;
+    statusCodeCandidates.find(
+      (code) => Number.isInteger(code) && code >= 400 && code < 600,
+    ) || 500;
 
   const response = {
     success: false,
