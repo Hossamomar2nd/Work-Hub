@@ -11,7 +11,7 @@ const stringArrayInput = Joi.alternatives().try(
   Joi.string().trim().allow(""),
 );
 
-export const sigupSchema = Joi.object({
+export const signupSchema = Joi.object({
   role: Joi.string().valid("client", "freelancer").required(),
   name: Joi.string().trim().min(2).required(),
   email: Joi.string()
