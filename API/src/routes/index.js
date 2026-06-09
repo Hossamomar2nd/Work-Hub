@@ -1,5 +1,5 @@
 import freelancersRoutes from "../modules/freelancer/freelancer_routes.js";
-import adminRoutes from "../modules/admin/admin_routes.js";
+import adminRoutes from "../modules/admin/adminRoutes.js";
 import categoriesRoute from "../modules/categories/categoriesRoutes.js";
 import clientsRoute from "../modules/clients/clientsRoutes.js";
 import ordersRoute from "../modules/orders/ordersRoutes.js";
@@ -18,7 +18,6 @@ import { Router } from "express";
 
 const router = Router();
 export const registerRoutes = (app) => {
-  
   router.use("/categories", categoriesRoute);
   router.use("/clients", clientsRoute);
   router.use("/orders", ordersRoute);
