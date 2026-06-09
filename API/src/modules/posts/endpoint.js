@@ -1,8 +1,16 @@
-const roles = require("../../middleware/roles");
+import endPoints from "../../middleware/endPoints.js";
 
-const endPoint={
-    createPost:[roles.client,roles.freelancer],
-    createlike:[roles.client,roles.freelancer],
-    createcomment:[roles.client,roles.freelancer],
-}
-module.exports=endPoint;
+const userWriteRoles = endPoints.allUsersExceptAdmin;
+
+const postEndPoints = {
+  createPost: userWriteRoles,
+  updatePost: userWriteRoles,
+  deletePost: userWriteRoles,
+  uploadMedia: userWriteRoles,
+  addLike: userWriteRoles,
+  removeLike: userWriteRoles,
+  addComment: userWriteRoles,
+  deleteComment: userWriteRoles,
+};
+
+export default postEndPoints;

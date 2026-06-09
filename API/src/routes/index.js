@@ -7,7 +7,7 @@ import requestsRoute from "../modules/requests/requestsRoutes.js";
 import communitiesRoutes from "../modules/communities/communitiesRoutes.js";
 import conversationsRoutes from "../modules/conversations/conversationsRoutes.js";
 import messagesRoutes from "../modules/messages/messagesRoutes.js";
-import postsRoutes from "../modules/posts/post_routes.js";
+import postsRoutes from "../modules/posts/postRoutes.js";
 import professorsRoutes from "../modules/professors/professorsRoutes.js";
 import authRoutes from "../modules/auth/authRoutes.js";
 import servicesRoutes from "../modules/service/service.router.js";
