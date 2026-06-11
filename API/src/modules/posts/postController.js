@@ -9,6 +9,20 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const uploadsDir = path.join(__dirname, "../../../uploads");
+const updatePostAllowedFields = ["caption"];
+
+const buildPostUpdateData = (body) => {
+  const updateData = {};
+
+  for (const field of updatePostAllowedFields) {
+    if (!Object.prototype.hasOwnProperty.call(body, field)) continue;
+
+    const value = body[field];
+    updateData[field] = typeof value === "string" ? value.trim() : value;
+  }
+
+  return updateData;
+};
 
 // Get All Posts
 export const getAllPosts = async (req, res) => {
@@ -336,7 +350,7 @@ export const addComment = async (req, res) => {
     const postId = req.params.postId;
     const userId = req.user._id;
     const userRole = req.user.role;
-    const comment = req.body.comment;
+    const comment = req.body.comment.trim();
 
     const postToUpdate = await Postmodel.findById(postId);
 
@@ -380,6 +394,10 @@ export const deleteComment = async (req, res) => {
 
     const postData = await Postmodel.findById(postId);
 
+    if (!postData) {
+      return res.status(404).json({ msg: "Post Not Found!" });
+    }
+
     const commentsData = postData.comments;
 
     let newCommentsData = [];
@@ -410,11 +428,19 @@ export const deleteComment = async (req, res) => {
 export const updatePost = async (req, res) => {
   try {
     const postId = req.params.id;
-    const postToUpdate = await Postmodel.findById(communityId);
+    const updateData = buildPostUpdateData(req.body);
+
+    if (Object.keys(updateData).length === 0) {
+      return res
+        .status(400)
+        .json({ msg: "No allowed post fields were provided." });
+    }
+
+    const postToUpdate = await Postmodel.findById(postId);
 
     if (postToUpdate) {
       const filter = { _id: postId };
-      const update = { $set: { ...req.body } };
+      const update = { $set: updateData };
       await Postmodel.updateOne(filter, update);
       return res
         .status(200)
