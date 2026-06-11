@@ -114,12 +114,12 @@ const login = async (req, res) => {
   const user = await findUserByEmail(email);
 
   if (!user) {
-    return res.status(401).json({ msg: "Wrong email or password" });
+    return res.status(401).json({ message: "Wrong email or password" });
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
-    return res.status(401).json({ msg: "Wrong email or password" });
+    return res.status(401).json({ message: "Wrong email or password" });
   }
 
   const token = generateToken(user._id, user.role);
@@ -130,7 +130,7 @@ const login = async (req, res) => {
 
   const updateResult = await updateUserByRole(user.role, filter, update);
   if (!updateResult) {
-    return res.status(400).json({ msg: "Role undefined" });
+    return res.status(400).json({ message: "Role undefined" });
   }
 
   const userData = await findUserByIdAndRole(user._id, user.role);
@@ -147,11 +147,11 @@ export const logout = async (req, res) => {
   const authenticatedUser = req.user;
 
   if (!authenticatedUser) {
-    return res.status(401).json({ msg: "You are not authenticated" });
+    return res.status(401).json({ message: "You are not authenticated" });
   }
 
   if (id !== String(authenticatedUser._id)) {
-    return res.status(403).json({ msg: "You are not authorized" });
+    return res.status(403).json({ message: "You are not authorized" });
   }
 
   const filter = { _id: authenticatedUser._id };
@@ -164,10 +164,10 @@ export const logout = async (req, res) => {
   );
 
   if (!updateResult) {
-    return res.status(400).json({ msg: "Role undefined" });
+    return res.status(400).json({ message: "Role undefined" });
   }
 
-  return res.status(200).json({ msg: "logged out successfully." });
+  return res.status(200).json({ message: "logged out successfully." });
 };
 
 export const signup = async (req, res) => {
