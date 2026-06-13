@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import client_model from "../../../DB/models/client_model.js";
 import freelancer_model from "../../../DB/models/freelancer_model.js";
 import Postmodel from "../../../DB/models/post_model.js";
-import fs from "fs";
+import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -10,6 +10,64 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const uploadsDir = path.join(__dirname, "../../../uploads");
 const updatePostAllowedFields = ["caption"];
+
+const toIdString = (value) => {
+  if (!value) return "";
+
+  return value.toString();
+};
+
+const isPostOwner = (post, user) => {
+  return (
+    Boolean(post) &&
+    Boolean(user) &&
+    toIdString(post.posterId) === toIdString(user._id) &&
+    post.posterType === user.role
+  );
+};
+
+const isCommentAuthor = (comment, user) => {
+  return (
+    Boolean(comment) &&
+    Boolean(user) &&
+    toIdString(comment.userId || comment._id) === toIdString(user._id)
+  );
+};
+
+const getUploadPath = (fileName) => {
+  if (!fileName || typeof fileName !== "string") return null;
+
+  const uploadRoot = path.resolve(uploadsDir);
+  const uploadPath = path.resolve(uploadRoot, fileName);
+
+  if (!uploadPath.startsWith(uploadRoot + path.sep)) return null;
+
+  return uploadPath;
+};
+
+const deleteUploadedFile = async (fileName) => {
+  const uploadPath = getUploadPath(fileName);
+
+  if (!uploadPath) return;
+
+  try {
+    await fs.unlink(uploadPath);
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      throw error;
+    }
+  }
+};
+
+const cleanupUploadedRequestFile = async (req) => {
+  if (!req.file?.filename) return;
+
+  try {
+    await deleteUploadedFile(req.file.filename);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const buildPostUpdateData = (body) => {
   const updateData = {};
@@ -229,24 +287,31 @@ export const uploadPostMedia = async (req, res) => {
     const id = req.params.id;
 
     if (id == undefined) {
+      await cleanupUploadedRequestFile(req);
       return res
         .status(404)
         .send({ success: false, message: "id is required" });
     }
 
     const media_url = req.file.filename;
+    const post = await Postmodel.findById(id);
 
-    const filter = { _id: id };
-    const update = { $set: { media_url: media_url } };
-
-    const process = await Postmodel.updateOne(filter, update);
-
-    if (process) {
-      res.json({ message: "Media uploaded successfully" });
-    } else {
-      res.status(404).json({ message: "Somthing Went Wrong!" });
+    if (!post) {
+      await cleanupUploadedRequestFile(req);
+      return res.status(404).json({ message: "Post not found" });
     }
+
+    if (!isPostOwner(post, req.user)) {
+      await cleanupUploadedRequestFile(req);
+      return res.status(403).json({ message: "You are not authorized" });
+    }
+
+    post.media_url = media_url;
+    await post.save();
+
+    return res.json({ message: "Media uploaded successfully" });
   } catch (error) {
+    await cleanupUploadedRequestFile(req);
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
@@ -382,7 +447,7 @@ export const addComment = async (req, res) => {
   }
 };
 
-// Delete Post
+// Delete Comment
 export const deleteComment = async (req, res) => {
   try {
     const postId = req.params.postId;
@@ -398,22 +463,35 @@ export const deleteComment = async (req, res) => {
       return res.status(404).json({ msg: "Post Not Found!" });
     }
 
-    const commentsData = postData.comments;
-
-    let newCommentsData = [];
-
-    commentsData.filter((userComment) => {
-      console.log(userComment.comment);
-      console.log(commentText);
-      if (userComment.comment !== commentText) {
-        newCommentsData.push(userComment);
-      }
+    const commentsData = Array.isArray(postData.comments)
+      ? postData.comments
+      : [];
+    const matchingComments = commentsData.filter((userComment) => {
+      return userComment.comment === commentText;
     });
 
-    const filter = { _id: postId };
-    const update = { $set: { comments: newCommentsData } };
+    if (matchingComments.length === 0) {
+      return res.status(404).json({ msg: "Comment Not Found!" });
+    }
 
-    await Postmodel.updateOne(filter, update);
+    const canDeleteAsPostOwner = isPostOwner(postData, req.user);
+    const canDeleteAsCommentAuthor = matchingComments.some((userComment) => {
+      return isCommentAuthor(userComment, req.user);
+    });
+
+    if (!canDeleteAsPostOwner && !canDeleteAsCommentAuthor) {
+      return res.status(403).json({ message: "You are not authorized" });
+    }
+
+    const newCommentsData = commentsData.filter((userComment) => {
+      if (userComment.comment !== commentText) return true;
+      if (canDeleteAsPostOwner) return false;
+
+      return !isCommentAuthor(userComment, req.user);
+    });
+
+    postData.comments = newCommentsData;
+    await postData.save();
 
     return res
       .status(200)
@@ -430,24 +508,26 @@ export const updatePost = async (req, res) => {
     const postId = req.params.id;
     const updateData = buildPostUpdateData(req.body);
 
+    const postToUpdate = await Postmodel.findById(postId);
+
+    if (!postToUpdate) {
+      return res.status(404).json({ msg: "Post Not Found" });
+    }
+
+    if (!isPostOwner(postToUpdate, req.user)) {
+      return res.status(403).json({ message: "You are not authorized" });
+    }
+
     if (Object.keys(updateData).length === 0) {
       return res
         .status(400)
         .json({ msg: "No allowed post fields were provided." });
     }
 
-    const postToUpdate = await Postmodel.findById(postId);
+    postToUpdate.set(updateData);
+    await postToUpdate.save();
 
-    if (postToUpdate) {
-      const filter = { _id: postId };
-      const update = { $set: updateData };
-      await Postmodel.updateOne(filter, update);
-      return res
-        .status(200)
-        .json({ msg: "past has been updated successfuly." });
-    }
-
-    res.status(400).json({ msg: "There is no post with such id to update." });
+    return res.status(200).json({ msg: "post has been updated successfuly." });
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "Somthing went wrong!" });
@@ -469,14 +549,19 @@ export const deletePost = async (req, res) => {
       return res.status(404).json({ message: "Post Not Found" });
     }
 
-    const filter = { _id: id };
-    const process = await Postmodel.deleteOne(filter);
-
-    if (process) {
-      fs.unlinkSync(path.join(uploadsDir, data.media_url)); //delete old image
-
-      return res.status(200).json({ msg: "Post deleted successfully" });
+    if (!isPostOwner(data, req.user)) {
+      return res.status(403).json({ message: "You are not authorized" });
     }
+
+    await data.deleteOne();
+
+    try {
+      await deleteUploadedFile(data.media_url);
+    } catch (error) {
+      console.error(error);
+    }
+
+    return res.status(200).json({ msg: "Post deleted successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "Server Error" });
