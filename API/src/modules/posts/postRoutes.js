@@ -17,12 +17,7 @@ import {
   getPostlikesCount,
 } from "./postController.js";
 import postEndPoints from "./endpoint.js";
-import {
-  COMMENT_MAX_LENGTH,
-  commentSchema,
-  postSchema,
-  updatePostSchema,
-} from "./postSchema.js";
+import { commentSchema, postSchema, updatePostSchema } from "./postSchema.js";
 import { validation } from "../../middleware/val.middleware.js";
 import { upload } from "../../middleware/uploadImages.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -52,22 +47,6 @@ const validateObjectIdParams = (...paramNames) => {
 
     return next();
   };
-};
-
-const validateCommentTextParam = (req, res, next) => {
-  const { commentText } = req.params;
-
-  if (typeof commentText !== "string" || commentText.trim().length === 0) {
-    return res.status(400).json({ message: "commentText is required" });
-  }
-
-  if (commentText.length > COMMENT_MAX_LENGTH) {
-    return res.status(400).json({
-      message: `commentText must be at most ${COMMENT_MAX_LENGTH} characters`,
-    });
-  }
-
-  return next();
 };
 
 router.get("/getAllPosts", asyncHandler(getAllPosts));
@@ -112,9 +91,8 @@ router.put(
   asyncHandler(removeLike),
 );
 router.put(
-  "/deleteComment/:postId/:commentText",
-  validateObjectIdParams("postId"),
-  validateCommentTextParam,
+  "/deleteComment/:postId/:commentId",
+  validateObjectIdParams("postId", "commentId"),
   auth(postEndPoints.deleteComment),
   asyncHandler(deleteComment),
 );

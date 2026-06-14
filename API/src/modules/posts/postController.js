@@ -30,8 +30,20 @@ const isCommentAuthor = (comment, user) => {
   return (
     Boolean(comment) &&
     Boolean(user) &&
-    toIdString(comment.userId || comment._id) === toIdString(user._id)
+    Boolean(comment.userId) &&
+    toIdString(comment.userId) === toIdString(user._id)
   );
+};
+
+const sanitizeComment = (comment) => {
+  if (!comment || typeof comment !== "object") return comment;
+
+  const safeComment = { ...comment };
+  delete safeComment.password;
+  delete safeComment.token;
+  delete safeComment.__v;
+
+  return safeComment;
 };
 
 const getUploadPath = (fileName) => {
@@ -360,22 +372,17 @@ export const addLike = async (req, res) => {
     const postId = req.params.postId;
     const userId = req.user._id;
 
-    const postToUpdate = await Postmodel.findById(postId);
+    const postToUpdate = await Postmodel.findOneAndUpdate(
+      { _id: postId },
+      { $addToSet: { likes: userId } },
+      { new: true, projection: { _id: 1 } },
+    );
 
-    if (postToUpdate) {
-      let likes = postToUpdate.likes || [];
-
-      likes.push(userId);
-
-      const filter = { _id: postId };
-      const update = { $set: { likes: likes } };
-
-      await Postmodel.updateOne(filter, update);
-
-      return res.status(200).json({ msg: "post like added successfuly." });
+    if (!postToUpdate) {
+      return res.status(404).json({ msg: "Post Not Found" });
     }
 
-    res.status(400).json({ msg: "There is no post with such id to update." });
+    return res.status(200).json({ msg: "post like added successfuly." });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -388,21 +395,17 @@ export const removeLike = async (req, res) => {
     const postId = req.params.postId;
     const userId = req.user._id;
 
-    const postToUpdate = await Postmodel.findById(postId);
+    const postToUpdate = await Postmodel.findOneAndUpdate(
+      { _id: postId },
+      { $pull: { likes: userId } },
+      { new: true, projection: { _id: 1 } },
+    );
 
-    if (postToUpdate) {
-      let likes = postToUpdate.likes || [];
-      const newLikes = likes.filter((id) => id.valueOf() !== userId.valueOf());
-
-      const filter = { _id: postId };
-      const update = { $set: { likes: newLikes } };
-
-      await Postmodel.updateOne(filter, update);
-
-      return res.status(200).json({ msg: "post like removed successfuly." });
+    if (!postToUpdate) {
+      return res.status(404).json({ msg: "Post Not Found" });
     }
 
-    res.status(404).json({ msg: "Post Not Found" });
+    return res.status(200).json({ msg: "post like removed successfuly." });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -416,28 +419,25 @@ export const addComment = async (req, res) => {
     const userId = req.user._id;
     const userRole = req.user.role;
     const comment = req.body.comment.trim();
+    const newComment = {
+      _id: new mongoose.Types.ObjectId(),
+      userId,
+      userRole,
+      comment,
+      createdAt: new Date(),
+    };
 
-    const postToUpdate = await Postmodel.findById(postId);
+    const postToUpdate = await Postmodel.findOneAndUpdate(
+      { _id: postId },
+      { $push: { comments: newComment } },
+      { new: true, projection: { _id: 1 } },
+    );
 
     if (postToUpdate) {
-      const allComments = postToUpdate.comments || [];
-      const newComment = {
-        userId,
-        userRole,
-        comment,
-        createdAt: new Date(),
-      };
-
-      allComments.push(newComment);
-
-      const filter = { _id: postId };
-      const update = { $set: { comments: allComments } };
-
-      await Postmodel.updateOne(filter, update);
-
-      return res
-        .status(200)
-        .json({ msg: "post comment added successfuly.", comment: newComment });
+      return res.status(200).json({
+        msg: "post comment added successfuly.",
+        comment: newComment,
+      });
     }
 
     res.status(404).json({ msg: "Post Not Found!" });
@@ -451,13 +451,17 @@ export const addComment = async (req, res) => {
 export const deleteComment = async (req, res) => {
   try {
     const postId = req.params.postId;
-    const commentText = req.params.commentText;
+    const commentId = req.params.commentId;
 
     if (!mongoose.Types.ObjectId.isValid(postId)) {
       return res.status(400).json({ message: "Invalid Post ID" });
     }
 
-    const postData = await Postmodel.findById(postId);
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+      return res.status(400).json({ message: "Invalid Comment ID" });
+    }
+
+    const postData = await Postmodel.findById(postId).lean();
 
     if (!postData) {
       return res.status(404).json({ msg: "Post Not Found!" });
@@ -466,32 +470,29 @@ export const deleteComment = async (req, res) => {
     const commentsData = Array.isArray(postData.comments)
       ? postData.comments
       : [];
-    const matchingComments = commentsData.filter((userComment) => {
-      return userComment.comment === commentText;
+    const commentToDelete = commentsData.find((userComment) => {
+      return toIdString(userComment?._id) === toIdString(commentId);
     });
 
-    if (matchingComments.length === 0) {
+    if (!commentToDelete) {
       return res.status(404).json({ msg: "Comment Not Found!" });
     }
 
     const canDeleteAsPostOwner = isPostOwner(postData, req.user);
-    const canDeleteAsCommentAuthor = matchingComments.some((userComment) => {
-      return isCommentAuthor(userComment, req.user);
-    });
+    const canDeleteAsCommentAuthor = isCommentAuthor(commentToDelete, req.user);
 
     if (!canDeleteAsPostOwner && !canDeleteAsCommentAuthor) {
       return res.status(403).json({ message: "You are not authorized" });
     }
 
     const newCommentsData = commentsData.filter((userComment) => {
-      if (userComment.comment !== commentText) return true;
-      if (canDeleteAsPostOwner) return false;
+      return toIdString(userComment?._id) !== toIdString(commentId);
+    }).map(sanitizeComment);
 
-      return !isCommentAuthor(userComment, req.user);
-    });
-
-    postData.comments = newCommentsData;
-    await postData.save();
+    await Postmodel.updateOne(
+      { _id: postId },
+      { $pull: { comments: { _id: commentToDelete._id } } },
+    );
 
     return res
       .status(200)
