@@ -11,14 +11,17 @@ const commentSchema = new Schema(
     },
     userId: {
       type: Schema.Types.ObjectId,
+      required: true,
     },
     userRole: {
       type: String,
       enum: postUserRoles,
+      required: true,
     },
     comment: {
       type: String,
       trim: true,
+      required: true,
     },
     createdAt: {
       type: Date,
@@ -54,12 +57,10 @@ const postSchema = new Schema(
     },
     media_url: {
       type: String,
-      required: false,
       trim: true,
     },
     likes: {
       type: [Schema.Types.ObjectId],
-      required: false,
       default: [],
     },
     comments: {
