@@ -51,6 +51,11 @@ const validateObjectIdParams = (...paramNames) => {
 
 router.get("/getAllPosts", asyncHandler(getAllPosts));
 router.get(
+  "/getPost/:id",
+  validateObjectIdParams("id"),
+  asyncHandler(getPost),
+);
+router.get(
   "/getUserPosts/:id",
   validateObjectIdParams("id"),
   asyncHandler(getUserPosts),

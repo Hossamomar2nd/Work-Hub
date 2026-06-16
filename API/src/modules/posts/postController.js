@@ -10,6 +10,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const uploadsDir = path.join(__dirname, "../../../uploads");
 const updatePostAllowedFields = ["caption"];
+const userModelsByRole = {
+  client: client_model,
+  freelancer: freelancer_model,
+};
+const safeUserProjection = "-password -token -__v";
 
 const toIdString = (value) => {
   if (!value) return "";
@@ -44,6 +49,133 @@ const sanitizeComment = (comment) => {
   delete safeComment.__v;
 
   return safeComment;
+};
+
+const sanitizeUser = (user) => {
+  if (!user || typeof user !== "object") return user;
+
+  const safeUser = user.toObject ? user.toObject() : { ...user };
+  delete safeUser.password;
+  delete safeUser.token;
+  delete safeUser.__v;
+
+  return safeUser;
+};
+
+const buildUploadUrl = (filename, req) => {
+  if (!filename || typeof filename !== "string") return filename;
+  if (/^https?:\/\//i.test(filename)) return filename;
+
+  const normalizedFile = filename
+    .replace(/^\/+uploads\/+/i, "")
+    .replace(/^uploads\/+/i, "");
+  const normalizedPath = `/uploads/${normalizedFile}`;
+  const baseUrl = `${req.protocol}://${req.get("host")}`;
+
+  return `${baseUrl}${normalizedPath}`;
+};
+
+const buildUserResponse = (user, req) => {
+  const safeUser = sanitizeUser(user);
+
+  if (!safeUser || typeof safeUser !== "object") return safeUser;
+
+  if (safeUser.image_url) {
+    safeUser.image_url = buildUploadUrl(safeUser.image_url, req);
+  }
+
+  if (safeUser.coverImage_url) {
+    safeUser.coverImage_url = buildUploadUrl(safeUser.coverImage_url, req);
+  }
+
+  return safeUser;
+};
+
+const getUserModelByRole = (role) => userModelsByRole[role] || null;
+
+const findUserByRole = async (id, role) => {
+  const UserModel = getUserModelByRole(role);
+
+  if (!UserModel) return null;
+
+  return UserModel.findById(id).select(safeUserProjection).lean();
+};
+
+const findUserByAnyPostRole = async (id) => {
+  const freelancer = await findUserByRole(id, "freelancer");
+  if (freelancer) return freelancer;
+
+  return findUserByRole(id, "client");
+};
+
+const enrichCommentForRead = async (comment) => {
+  const safeComment = sanitizeComment(comment);
+
+  if (!safeComment || typeof safeComment !== "object") return safeComment;
+
+  const userId = safeComment.userId || safeComment._id;
+
+  if (!mongoose.Types.ObjectId.isValid(userId)) return safeComment;
+
+  const user = await findUserByAnyPostRole(userId);
+
+  if (user) {
+    safeComment.activityStatus = user.activityStatus;
+  }
+
+  return safeComment;
+};
+
+const buildPostResponse = async (post, req, { includeComments = false } = {}) => {
+  const modifiedPost = { ...post };
+
+  if (modifiedPost.media_url) {
+    modifiedPost.media_url = buildUploadUrl(modifiedPost.media_url, req);
+  }
+
+  const UserModel = getUserModelByRole(modifiedPost.posterType);
+
+  if (!UserModel) {
+    return { error: { status: 404, message: "Invalid role" } };
+  }
+
+  const poster = await UserModel.findById(modifiedPost.posterId)
+    .select(safeUserProjection)
+    .lean();
+
+  modifiedPost.posterId = buildUserResponse(poster, req);
+
+  if (includeComments) {
+    const comments = Array.isArray(modifiedPost.comments)
+      ? modifiedPost.comments
+      : [];
+
+    modifiedPost.comments = await Promise.all(
+      comments.map((comment) => enrichCommentForRead(comment)),
+    );
+  }
+
+  return { post: modifiedPost };
+};
+
+const buildPostListResponse = async (
+  posts,
+  req,
+  { includeComments = false } = {},
+) => {
+  const modifiedPosts = [];
+
+  for (const post of posts) {
+    const result = await buildPostResponse(post, req, { includeComments });
+
+    if (result.error) {
+      return result;
+    }
+
+    modifiedPosts.push(result.post);
+  }
+
+  return { posts: modifiedPosts };
 };
 
 const getUploadPath = (fileName) => {
@@ -97,68 +229,18 @@ const buildPostUpdateData = (body) => {
 // Get All Posts
 export const getAllPosts = async (req, res) => {
   try {
-    const posts = await Postmodel.find();
-    const modifiedPosts = [];
+    const posts = await Postmodel.find().lean();
+    const result = await buildPostListResponse(posts, req, {
+      includeComments: true,
+    });
 
-    if (!posts[0]) {
-      return res.status(404).json({ message: "No posts found" });
+    if (result.error) {
+      return res
+        .status(result.error.status)
+        .json({ message: result.error.message });
     }
 
-    for (const post of posts) {
-      let modifiedPost = { ...post._doc };
-      let data;
-
-      if (modifiedPost.posterType === "freelancer") {
-        data = await freelancer_model.findById(modifiedPost.posterId);
-      } else if (modifiedPost.posterType === "client") {
-        data = await client_model.findById(modifiedPost.posterId);
-      } else {
-        return res.status(404).json({ message: "Invalid role" });
-      }
-
-      modifiedPost.posterId = { ...data._doc };
-      modifiedPost.posterId.image_url =
-        "http://" +
-        req.hostname +
-        ":3000/uploads/" +
-        modifiedPost.posterId.image_url;
-      modifiedPost.media_url =
-        "http://" + req.hostname + ":3000/uploads/" + modifiedPost.media_url;
-
-      const commentsData = [];
-
-      const postComments = modifiedPost.comments;
-
-      for (let index = 0; index < postComments.length; index++) {
-        const userId = postComments[index].userId || postComments[index]._id;
-
-        let data;
-        data = await freelancer_model.findById(userId);
-
-        if (!data) {
-          data = await client_model.findById(userId);
-        }
-
-        if (data) {
-          postComments[index].activityStatus = data.activityStatus;
-        }
-
-        commentsData.push(postComments[index]);
-      }
-
-      modifiedPost.comments = commentsData;
-
-      console.log(modifiedPost._id);
-
-      const filter = { _id: modifiedPost._id };
-      const update = { $set: { comments: commentsData } };
-
-      await Postmodel.updateOne(filter, update);
-
-      modifiedPosts.push(modifiedPost);
-    }
-
-    return res.status(200).json({ posts: modifiedPosts });
+    return res.status(200).json({ posts: result.posts });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });
@@ -170,46 +252,27 @@ export const getUserPosts = async (req, res) => {
   try {
     const userId = req.params.id;
 
-    let userData = await freelancer_model.findById(userId);
+    const userData = await findUserByAnyPostRole(userId);
 
     if (!userData) {
-      userData = await client_model.findById(userId);
+      return res.status(404).json({ message: "User not found" });
     }
 
     const posts = await Postmodel.find({
       posterId: userId,
       posterType: userData.role,
-    }).populate("communityId");
-    const modifiedPosts = [];
+    })
+      .populate("communityId")
+      .lean();
+    const result = await buildPostListResponse(posts, req);
 
-    for (const post of posts) {
-      let modifiedPost = { ...post._doc };
-      let data;
-
-      if (modifiedPost.posterType === "freelancer") {
-        data = userData;
-      } else if (modifiedPost.posterType === "client") {
-        data = userData;
-      } else {
-        return res.status(404).json({ message: "Invalid role" });
-      }
-
-      modifiedPost.posterId = { ...data._doc };
-      modifiedPost.posterId.image_url =
-        "http://" +
-        req.hostname +
-        ":3000/uploads/" +
-        modifiedPost.posterId.image_url;
-      modifiedPost.media_url =
-        "http://" + req.hostname + ":3000/uploads/" + modifiedPost.media_url;
-      modifiedPosts.push(modifiedPost);
+    if (result.error) {
+      return res
+        .status(result.error.status)
+        .json({ message: result.error.message });
     }
 
-    if (modifiedPosts.length > 0) {
-      return res.status(200).json({ posts: modifiedPosts });
-    } else {
-      return res.status(404).json({ message: "No posts found" });
-    }
+    return res.status(200).json({ posts: result.posts });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });
@@ -221,39 +284,18 @@ export const getCommunityPosts = async (req, res) => {
   try {
     const communityId = req.params.id;
 
-    const posts = await Postmodel.find({ communityId: communityId }).populate(
-      "communityId",
-    );
-    const modifiedPosts = [];
+    const posts = await Postmodel.find({ communityId })
+      .populate("communityId")
+      .lean();
+    const result = await buildPostListResponse(posts, req);
 
-    for (const post of posts) {
-      let modifiedPost = { ...post._doc };
-      let data;
-
-      if (modifiedPost.posterType === "freelancer") {
-        data = await freelancer_model.findById(modifiedPost.posterId);
-      } else if (modifiedPost.posterType === "client") {
-        data = await client_model.findById(modifiedPost.posterId);
-      } else {
-        return res.status(404).json({ message: "Invalid role" });
-      }
-
-      modifiedPost.posterId = { ...data._doc };
-      modifiedPost.posterId.image_url =
-        "http://" +
-        req.hostname +
-        ":3000/uploads/" +
-        modifiedPost.posterId.image_url;
-      modifiedPost.media_url =
-        "http://" + req.hostname + ":3000/uploads/" + modifiedPost.media_url;
-      modifiedPosts.push(modifiedPost);
+    if (result.error) {
+      return res
+        .status(result.error.status)
+        .json({ message: result.error.message });
     }
 
-    if (modifiedPosts.length > 0) {
-      return res.status(200).json({ posts: modifiedPosts });
-    } else {
-      return res.status(404).json({ message: "No posts found" });
-    }
+    return res.status(200).json({ posts: result.posts });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });
@@ -333,15 +375,23 @@ export const uploadPostMedia = async (req, res) => {
 export const getPost = async (req, res) => {
   try {
     const { id } = req.params;
-    const post = await Postmodel.findById({ _id: id })
-      .populate("createdByClient", "email username clientImage_url") // Populate the createdByClient field with email
-      .populate("createdByFreelancer", "email username freelancerImage_url"); // Populate the createdByFreelancer field with email
+    const post = await Postmodel.findById(id).lean();
 
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    res.status(200).json({ message: "Post found", post });
+    const result = await buildPostResponse(post, req, {
+      includeComments: true,
+    });
+
+    if (result.error) {
+      return res
+        .status(result.error.status)
+        .json({ message: result.error.message });
+    }
+
+    res.status(200).json({ message: "Post found", post: result.post });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
@@ -351,13 +401,13 @@ export const getPost = async (req, res) => {
 export const getPostlikesCount = async (req, res) => {
   try {
     const { id } = req.params;
-    const post = await Postmodel.findById({ _id: id });
+    const post = await Postmodel.findById(id).select("likes").lean();
 
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    const likesCount = post.likes.length;
+    const likesCount = Array.isArray(post.likes) ? post.likes.length : 0;
 
     res.status(200).json({ message: "Post found", likesCount });
   } catch (error) {
