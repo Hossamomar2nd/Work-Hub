@@ -1,5 +1,4 @@
 import express from "express";
-import { Types } from "mongoose";
 import auth from "../../middleware/auth.middleware.js";
 import {
   addPost,
@@ -18,43 +17,17 @@ import {
 } from "./postController.js";
 import postEndPoints from "./endpoint.js";
 import { commentSchema, postSchema, updatePostSchema } from "./postSchema.js";
-import { validation } from "../../middleware/val.middleware.js";
+import {
+  validation,
+  validateObjectIdParams,
+} from "../../middleware/val.middleware.js";
 import { upload } from "../../middleware/uploadImages.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
 const router = express.Router();
-const objectIdPattern = /^[a-f\d]{24}$/i;
-
-const isObjectId = (value) => {
-  return (
-    typeof value === "string" &&
-    objectIdPattern.test(value) &&
-    Types.ObjectId.isValid(value)
-  );
-};
-
-const validateObjectIdParams = (...paramNames) => {
-  return (req, res, next) => {
-    for (const paramName of paramNames) {
-      const value = req.params[paramName];
-
-      if (!isObjectId(value)) {
-        return res
-          .status(400)
-          .json({ message: `${paramName} must be a valid ObjectId` });
-      }
-    }
-
-    return next();
-  };
-};
 
 router.get("/getAllPosts", asyncHandler(getAllPosts));
-router.get(
-  "/getPost/:id",
-  validateObjectIdParams("id"),
-  asyncHandler(getPost),
-);
+router.get("/getPost/:id", validateObjectIdParams("id"), asyncHandler(getPost));
 router.get(
   "/getUserPosts/:id",
   validateObjectIdParams("id"),
@@ -85,13 +58,13 @@ router.put(
 );
 router.put(
   "/addLike/:postId/:userId/:role",
-  validateObjectIdParams("postId"),
+  validateObjectIdParams("postId", "userId"),
   auth(postEndPoints.addLike),
   asyncHandler(addLike),
 );
 router.put(
   "/removeLike/:postId/:userId/:role",
-  validateObjectIdParams("postId"),
+  validateObjectIdParams("postId", "userId"),
   auth(postEndPoints.removeLike),
   asyncHandler(removeLike),
 );
@@ -103,7 +76,7 @@ router.put(
 );
 router.put(
   "/addComment/:postId/:userId/:role",
-  validateObjectIdParams("postId"),
+  validateObjectIdParams("postId", "userId"),
   auth(postEndPoints.addComment),
   validation(commentSchema),
   asyncHandler(addComment),

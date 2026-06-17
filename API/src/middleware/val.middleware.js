@@ -1,8 +1,34 @@
 import { Types } from "mongoose";
 
+const objectIdPattern = /^[a-f\d]{24}$/i;
+
+export const isValidObjectId = (value) => {
+  const objectId = value instanceof Types.ObjectId ? value.toString() : value;
+
+  return (
+    typeof objectId === "string" &&
+    objectIdPattern.test(objectId) &&
+    Types.ObjectId.isValid(objectId)
+  );
+};
+
 export const objectIdValidation = (value, helper) => {
-  if (Types.ObjectId.isValid(value)) return true;
+  if (isValidObjectId(value)) return true;
   return helper.message("Invalid ObjectId");
+};
+
+export const validateObjectIdParams = (...paramNames) => {
+  return (req, res, next) => {
+    for (const paramName of paramNames) {
+      if (!isValidObjectId(req.params[paramName])) {
+        return res
+          .status(400)
+          .json({ message: `${paramName} must be a valid ObjectId` });
+      }
+    }
+
+    return next();
+  };
 };
 
 export const validation = (Schema) => {
@@ -30,7 +56,7 @@ export const validateParams = () => {
       return res.status(400).send("Id should be string");
     }
 
-    if (!Types.ObjectId.isValid(id) || !/^[a-f\d]{24}$/i.test(id)) {
+    if (!isValidObjectId(id)) {
       return res.status(400).send("Invalid ObjectId");
     }
 
