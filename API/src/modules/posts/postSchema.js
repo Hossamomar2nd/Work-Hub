@@ -9,11 +9,15 @@ const objectId = Joi.string().trim().pattern(objectIdPattern).messages({
   "string.pattern.base": "{#label} must be a valid ObjectId",
 });
 
-const caption = Joi.string().trim().min(1).max(CAPTION_MAX_LENGTH).messages({
-  "string.empty": "caption is required",
-  "string.min": "caption is required",
-  "string.max": `caption must be at most ${CAPTION_MAX_LENGTH} characters`,
-});
+const caption = Joi.string()
+  .trim()
+  .min(1)
+  .max(CAPTION_MAX_LENGTH)
+  .messages({
+    "string.empty": "caption is required",
+    "string.min": "caption is required",
+    "string.max": `caption must be at most ${CAPTION_MAX_LENGTH} characters`,
+  });
 
 export const postSchema = Joi.object({
   communityId: objectId.required(),
