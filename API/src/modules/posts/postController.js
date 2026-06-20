@@ -57,11 +57,15 @@ const isPostOwner = (post, user) => {
 };
 
 const isCommentAuthor = (comment, user) => {
+  const hasStoredRole =
+    typeof comment?.userRole === "string" && comment.userRole.trim() !== "";
+
   return (
     Boolean(comment) &&
     Boolean(user) &&
     Boolean(comment.userId) &&
-    toIdString(comment.userId) === toIdString(user._id)
+    toIdString(comment.userId) === toIdString(user._id) &&
+    (!hasStoredRole || comment.userRole === user.role)
   );
 };
 
@@ -132,7 +136,10 @@ const enrichCommentForRead = async (comment) => {
 
   if (!mongoose.Types.ObjectId.isValid(userId)) return safeComment;
 
-  const user = await findUserByAnyPostRole(userId);
+  const user =
+    typeof safeComment.userRole === "string" && safeComment.userRole.trim()
+      ? await findUserByRole(userId, safeComment.userRole)
+      : await findUserByAnyPostRole(userId);
 
   if (user) {
     safeComment.activityStatus = user.activityStatus;
