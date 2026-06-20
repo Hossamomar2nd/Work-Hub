@@ -21,7 +21,7 @@ import {
   validation,
   validateObjectIdParams,
 } from "../../middleware/val.middleware.js";
-import { upload } from "../../middleware/uploadImages.js";
+import { uploadImage } from "../../middleware/uploadImages.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
 const router = express.Router();
@@ -53,7 +53,7 @@ router.put(
   "/uploadPostMedia/:id",
   validateObjectIdParams("id"),
   auth(postEndPoints.uploadMedia),
-  upload.single("media"),
+  uploadImage("media"),
   asyncHandler(uploadPostMedia),
 );
 router.put(

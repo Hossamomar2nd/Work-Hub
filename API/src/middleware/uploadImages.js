@@ -20,10 +20,23 @@ const storage = multer.diskStorage({
 });
 
 const allowedImageMimeTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
+const allowedImageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp"]);
+const unsafeImageExtensions = new Set([".html", ".htm", ".svg"]);
 const maxImageSizeInBytes = 5 * 1024 * 1024;
 
 const imageFileFilter = (req, file, cb) => {
-  if (allowedImageMimeTypes.has(file.mimetype)) {
+  const extension = path.extname(file.originalname).toLowerCase();
+  const allExtensions =
+    path.basename(file.originalname).toLowerCase().match(/\.[^.]+/g) || [];
+  const hasUnsafeExtension = allExtensions.some((item) => {
+    return unsafeImageExtensions.has(item);
+  });
+
+  if (
+    allowedImageMimeTypes.has(file.mimetype) &&
+    allowedImageExtensions.has(extension) &&
+    !hasUnsafeExtension
+  ) {
     return cb(null, true);
   }
 
