@@ -57,14 +57,14 @@ router.put(
   asyncHandler(uploadPostMedia),
 );
 router.put(
-  "/addLike/:postId/:userId/:role",
-  validateObjectIdParams("postId", "userId"),
+  "/addLike/:postId",
+  validateObjectIdParams("postId"),
   auth(postEndPoints.addLike),
   asyncHandler(addLike),
 );
 router.put(
-  "/removeLike/:postId/:userId/:role",
-  validateObjectIdParams("postId", "userId"),
+  "/removeLike/:postId",
+  validateObjectIdParams("postId"),
   auth(postEndPoints.removeLike),
   asyncHandler(removeLike),
 );
@@ -75,8 +75,8 @@ router.put(
   asyncHandler(deleteComment),
 );
 router.put(
-  "/addComment/:postId/:userId/:role",
-  validateObjectIdParams("postId", "userId"),
+  "/addComment/:postId",
+  validateObjectIdParams("postId"),
   auth(postEndPoints.addComment),
   validation(commentSchema),
   asyncHandler(addComment),

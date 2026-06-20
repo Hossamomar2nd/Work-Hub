@@ -310,15 +310,11 @@ export const addPost = async (req, res) => {
   const posterId = req.user._id;
   const posterType = req.user.role;
 
-  const date = new Date();
-  const creationDate = date.getTime();
-
   const newPost = new Postmodel({
     communityId,
     posterId,
     posterType,
     caption,
-    creationDate,
   });
 
   const savePost = await newPost.save();
@@ -361,7 +357,11 @@ export const uploadPostMedia = async (req, res) => {
     post.media_url = media_url;
     await post.save();
 
-    return res.json({ message: "Media uploaded successfully" });
+    return res.json({
+      message: "Media uploaded successfully",
+      media_url: buildUploadUrl(media_url, req),
+      filename: media_url,
+    });
   } catch (error) {
     await cleanupUploadedRequestFile(req);
     throw error;
