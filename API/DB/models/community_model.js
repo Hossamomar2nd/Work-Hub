@@ -6,10 +6,12 @@ const communitySchema = new Schema(
     communityName: {
       type: String,
       required: true,
+      trim: true,
     },
     communityDesc: {
       type: String,
       required: true,
+      trim: true,
     },
     communityPosts: {
       type: [mongoose.Types.ObjectId],
