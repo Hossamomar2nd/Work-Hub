@@ -91,7 +91,6 @@ const populateSafeCommunityUsers = (query) => {
     .populate({ path: "clientMembers", select: safeUserProjection });
 };
 
-// Get All Communities
 export const getAllCommunities = async (req, res) => {
   let allCommunities = await populateSafeCommunityUsers(
     community.find(),
@@ -102,7 +101,6 @@ export const getAllCommunities = async (req, res) => {
   return res.status(200).json({ allCommunities });
 };
 
-// Get Joined Communities
 export const getJoinedCommunities = async (req, res) => {
   const userId = req.params.id;
   const role = req.params.role;
@@ -128,7 +126,6 @@ export const getJoinedCommunities = async (req, res) => {
   return res.status(200).json({ communitiesData });
 };
 
-// Get All Member Joined in Communities
 export const getAllJoinedMembersCommunities = async (req, res) => {
   const allCommunities = await populateSafeCommunityUsers(community.find());
   const allMembers = new Map();
@@ -162,7 +159,6 @@ export const getAllJoinedMembersCommunities = async (req, res) => {
   return res.status(200).json({ modifiedMembers });
 };
 
-// Add Community
 export const addCommunity = async (req, res) => {
   const communityData = pickAllowedFields(req.body, communityEditableFields);
   const data = await community.find({
@@ -181,7 +177,6 @@ export const addCommunity = async (req, res) => {
   return res.status(400).json({ msg: "Community is already exists!" });
 };
 
-// Unjoin Community
 export const unjoinCommunity = async (req, res) => {
   const communityId = req.params.communityId;
   const userId = req.user._id;
@@ -209,7 +204,6 @@ export const unjoinCommunity = async (req, res) => {
   return res.status(200).json({ msg: "Unjoined Community Successfuly." });
 };
 
-// Join Community
 export const joinCommunity = async (req, res) => {
   const communityId = req.params.communityId;
   const userId = req.user._id;
@@ -237,7 +231,6 @@ export const joinCommunity = async (req, res) => {
   return res.status(200).json({ msg: "Joined Community Successfuly." });
 };
 
-// Update Community
 export const updateCommunity = async (req, res) => {
   const communityId = req.params.id;
   const communityData = pickAllowedFields(req.body, communityEditableFields);
@@ -259,7 +252,6 @@ export const updateCommunity = async (req, res) => {
     .json({ msg: "There is no community with such id to update." });
 };
 
-// Delete Community
 export const deleteCommunity = async (req, res) => {
   const communityId = req.params.id;
   const communityToDelete = await community.findById(communityId);
