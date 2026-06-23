@@ -14,6 +14,7 @@ const membershipFieldsByRole = {
   freelancer: "freelancerMembers",
 };
 const communityEditableFields = ["communityName", "communityDesc"];
+const communityReadProjection = "-communityPosts";
 
 const pickAllowedFields = (source = {}, allowedFields) => {
   return allowedFields.reduce((data, field) => {
@@ -85,6 +86,9 @@ const toIdString = (value) => {
 const getMembershipFieldByRole = (role) => membershipFieldsByRole[role] || null;
 const getUserModelByRole = (role) => userModelsByRole[role] || null;
 
+const findCommunitiesForRead = () =>
+  community.find().select(communityReadProjection);
+
 const populateSafeCommunityUsers = (query) => {
   return query
     .populate({ path: "freelancerMembers", select: safeUserProjection })
@@ -93,8 +97,8 @@ const populateSafeCommunityUsers = (query) => {
 
 export const getAllCommunities = async (req, res) => {
   let allCommunities = await populateSafeCommunityUsers(
-    community.find(),
-  ).populate("communityPosts");
+    findCommunitiesForRead(),
+  );
 
   allCommunities = allCommunities.map((item) => sanitizeResponseValue(item));
 
@@ -110,7 +114,7 @@ export const getJoinedCommunities = async (req, res) => {
   }
 
   const memberField = getMembershipFieldByRole(role);
-  const allCommunities = await community.find();
+  const allCommunities = await findCommunitiesForRead();
   const communitiesData = allCommunities
     .filter((item) => {
       const members = Array.isArray(item[memberField]) ? item[memberField] : [];
@@ -127,7 +131,9 @@ export const getJoinedCommunities = async (req, res) => {
 };
 
 export const getAllJoinedMembersCommunities = async (req, res) => {
-  const allCommunities = await populateSafeCommunityUsers(community.find());
+  const allCommunities = await populateSafeCommunityUsers(
+    findCommunitiesForRead(),
+  );
   const allMembers = new Map();
 
   allCommunities.forEach((item) => {
