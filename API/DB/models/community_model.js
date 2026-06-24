@@ -34,4 +34,8 @@ const communitySchema = new Schema(
   },
 );
 
+communitySchema.index({ communityName: 1 });
+communitySchema.index({ clientMembers: 1 });
+communitySchema.index({ freelancerMembers: 1 });
+
 export default mongoose.model("community", communitySchema);

@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import client_model from "../../../DB/models/client_model.js";
 import community from "../../../DB/models/community_model.js";
 import freelancer_model from "../../../DB/models/freelancer_model.js";
+import Postmodel from "../../../DB/models/post_model.js";
 
 const safeUserProjection = "-password -token -__v";
 const sensitiveResponseKeys = new Set(["password", "token", "__v"]);
@@ -86,8 +87,21 @@ const toIdString = (value) => {
 const getMembershipFieldByRole = (role) => membershipFieldsByRole[role] || null;
 const getUserModelByRole = (role) => userModelsByRole[role] || null;
 
-const findCommunitiesForRead = () =>
-  community.find().select(communityReadProjection);
+const findCommunitiesForRead = (filter = {}) =>
+  community.find(filter).select(communityReadProjection);
+
+const findCommunityForReadById = (id) =>
+  community.findById(id).select(communityReadProjection);
+
+const sanitizeCommunityForRead = (communityData) => {
+  const safeCommunity = sanitizeResponseValue(communityData);
+
+  if (safeCommunity && typeof safeCommunity === "object") {
+    delete safeCommunity.communityPosts;
+  }
+
+  return safeCommunity;
+};
 
 const populateSafeCommunityUsers = (query) => {
   return query
@@ -100,32 +114,35 @@ export const getAllCommunities = async (req, res) => {
     findCommunitiesForRead(),
   );
 
-  allCommunities = allCommunities.map((item) => sanitizeResponseValue(item));
+  allCommunities = allCommunities.map((item) => sanitizeCommunityForRead(item));
 
   return res.status(200).json({ allCommunities });
 };
 
+export const getCommunityById = async (req, res) => {
+  const communityId = req.params.id;
+  const communityData = await findCommunityForReadById(communityId);
+
+  if (!communityData) {
+    return res.status(404).json({ msg: "Community Not Found!" });
+  }
+
+  const safeCommunity = sanitizeCommunityForRead(communityData);
+  safeCommunity.postsCount = await Postmodel.countDocuments({ communityId });
+
+  return res.status(200).json({ community: safeCommunity });
+};
+
 export const getJoinedCommunities = async (req, res) => {
-  const userId = req.params.id;
-  const role = req.params.role;
+  const memberField = getMembershipFieldByRole(req.user.role);
 
-  if (role !== "client" && role !== "freelancer") {
-    return res.status(404).json({ msg: "Invalid role!" });
+  if (!memberField) {
+    return res.status(403).json({ msg: "You are not authorized" });
   }
 
-  const memberField = getMembershipFieldByRole(role);
-  const allCommunities = await findCommunitiesForRead();
-  const communitiesData = allCommunities
-    .filter((item) => {
-      const members = Array.isArray(item[memberField]) ? item[memberField] : [];
-
-      return members.some((id) => toIdString(id) === userId);
-    })
-    .map((item) => sanitizeResponseValue(item));
-
-  if (communitiesData.length == 0) {
-    return res.status(404).json({ msg: "No Communities Found!" });
-  }
+  const communitiesData = (
+    await findCommunitiesForRead({ [memberField]: req.user._id })
+  ).map((item) => sanitizeCommunityForRead(item));
 
   return res.status(200).json({ communitiesData });
 };

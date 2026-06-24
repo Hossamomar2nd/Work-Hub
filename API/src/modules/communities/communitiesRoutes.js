@@ -10,6 +10,7 @@ import {
   deleteCommunity,
   getAllCommunities,
   getAllJoinedMembersCommunities,
+  getCommunityById,
   getJoinedCommunities,
   joinCommunity,
   unjoinCommunity,
@@ -24,12 +25,18 @@ const router = express.Router();
 
 router.get("/getAllCommunities", asyncHandler(getAllCommunities));
 router.get(
+  "/getCommunity/:id",
+  validateObjectIdParams("id"),
+  asyncHandler(getCommunityById),
+);
+router.get(
   "/getAllJoinedMembersCommunities",
   asyncHandler(getAllJoinedMembersCommunities),
 );
 router.get(
   "/getJoinedCommunities/:id/:role",
   validateObjectIdParams("id"),
+  auth(endPoints.allUsersExceptAdmin),
   asyncHandler(getJoinedCommunities),
 );
 router.post(
