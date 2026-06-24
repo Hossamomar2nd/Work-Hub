@@ -4,8 +4,34 @@ import community from "../../../DB/models/community_model.js";
 import freelancer_model from "../../../DB/models/freelancer_model.js";
 import Postmodel from "../../../DB/models/post_model.js";
 
-const safeUserProjection = "-password -token -__v";
 const sensitiveResponseKeys = new Set(["password", "token", "__v"]);
+const safeUserProjection = "-password -token -__v";
+const publicMemberFieldsByRole = {
+  client: [
+    "_id",
+    "name",
+    "image_url",
+    "coverImage_url",
+    "country",
+    "activityStatus",
+    "role",
+    "ordersCount",
+  ],
+  freelancer: [
+    "_id",
+    "name",
+    "image_url",
+    "coverImage_url",
+    "country",
+    "desc",
+    "activityStatus",
+    "languages",
+    "skills",
+    "servicesCount",
+    "specialization",
+    "role",
+  ],
+};
 const userModelsByRole = {
   client: client_model,
   freelancer: freelancer_model,
@@ -86,6 +112,8 @@ const toIdString = (value) => {
 
 const getMembershipFieldByRole = (role) => membershipFieldsByRole[role] || null;
 const getUserModelByRole = (role) => userModelsByRole[role] || null;
+const getPublicMemberSelectByRole = (role) =>
+  publicMemberFieldsByRole[role]?.join(" ") || null;
 
 const findCommunitiesForRead = (filter = {}) =>
   community.find(filter).select(communityReadProjection);
@@ -105,8 +133,14 @@ const sanitizeCommunityForRead = (communityData) => {
 
 const populateSafeCommunityUsers = (query) => {
   return query
-    .populate({ path: "freelancerMembers", select: safeUserProjection })
-    .populate({ path: "clientMembers", select: safeUserProjection });
+    .populate({
+      path: "freelancerMembers",
+      select: getPublicMemberSelectByRole("freelancer"),
+    })
+    .populate({
+      path: "clientMembers",
+      select: getPublicMemberSelectByRole("client"),
+    });
 };
 
 export const getAllCommunities = async (req, res) => {
