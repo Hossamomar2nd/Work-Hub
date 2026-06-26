@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import client_model from "../../../DB/models/client_model.js";
+import community_model from "../../../DB/models/community_model.js";
 import freelancer_model from "../../../DB/models/freelancer_model.js";
 import Postmodel from "../../../DB/models/post_model.js";
 import fs from "fs/promises";
@@ -316,6 +317,11 @@ export const addPost = async (req, res) => {
   const { communityId, caption } = req.body;
   const posterId = req.user._id;
   const posterType = req.user.role;
+  const communityExists = await community_model.exists({ _id: communityId });
+
+  if (!communityExists) {
+    return res.status(404).json({ message: "Community not found" });
+  }
 
   const newPost = new Postmodel({
     communityId,

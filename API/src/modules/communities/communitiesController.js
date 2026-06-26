@@ -1,11 +1,29 @@
 import mongoose from "mongoose";
-import client_model from "../../../DB/models/client_model.js";
 import community from "../../../DB/models/community_model.js";
-import freelancer_model from "../../../DB/models/freelancer_model.js";
 import Postmodel from "../../../DB/models/post_model.js";
+import fs from "fs/promises";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const sensitiveResponseKeys = new Set(["password", "token", "__v"]);
-const safeUserProjection = "-password -token -__v";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const uploadsDir = path.join(__dirname, "../../../uploads");
+const sensitiveResponseKeys = new Set([
+  "password",
+  "token",
+  "email",
+  "phoneNumber",
+  "lastLogin",
+  "accessToken",
+  "refreshToken",
+  "resetToken",
+  "verificationToken",
+  "auth",
+  "session",
+  "sessions",
+  "__v",
+  "communityPosts",
+]);
 const publicMemberFieldsByRole = {
   client: [
     "_id",
@@ -32,16 +50,12 @@ const publicMemberFieldsByRole = {
     "role",
   ],
 };
-const userModelsByRole = {
-  client: client_model,
-  freelancer: freelancer_model,
-};
 const membershipFieldsByRole = {
   client: "clientMembers",
   freelancer: "freelancerMembers",
 };
 const communityEditableFields = ["communityName", "communityDesc"];
-const communityReadProjection = "-communityPosts";
+const communityReadProjection = "-communityPosts -communityNameNormalized -__v";
 
 const pickAllowedFields = (source = {}, allowedFields) => {
   return allowedFields.reduce((data, field) => {
@@ -111,7 +125,6 @@ const toIdString = (value) => {
 };
 
 const getMembershipFieldByRole = (role) => membershipFieldsByRole[role] || null;
-const getUserModelByRole = (role) => userModelsByRole[role] || null;
 const getPublicMemberSelectByRole = (role) =>
   publicMemberFieldsByRole[role]?.join(" ") || null;
 
@@ -143,14 +156,99 @@ const populateSafeCommunityUsers = (query) => {
     });
 };
 
+const normalizeCommunityName = (value) => {
+  if (typeof value !== "string") return value;
+
+  return value.trim().replace(/\s+/g, " ").toLowerCase();
+};
+
+const buildPagination = (query) => {
+  const pageValue = Number.parseInt(query.page, 10);
+  const limitValue = Number.parseInt(query.limit, 10);
+  const page = Number.isInteger(pageValue) && pageValue > 0 ? pageValue : 1;
+  const requestedLimit =
+    Number.isInteger(limitValue) && limitValue > 0 ? limitValue : 20;
+  const limit = Math.min(requestedLimit, 100);
+  const skip = (page - 1) * limit;
+
+  return { page, limit, skip };
+};
+
+const buildPaginationMeta = ({ page, limit, total }) => {
+  return {
+    page,
+    limit,
+    total,
+    pages: Math.ceil(total / limit),
+  };
+};
+
+const getUploadPath = (fileName) => {
+  if (!fileName || typeof fileName !== "string") return null;
+
+  const uploadRoot = path.resolve(uploadsDir);
+  const uploadPath = path.resolve(uploadRoot, fileName);
+
+  if (!uploadPath.startsWith(uploadRoot + path.sep)) return null;
+
+  return uploadPath;
+};
+
+const deleteUploadedFile = async (fileName) => {
+  const uploadPath = getUploadPath(fileName);
+
+  if (!uploadPath) return;
+
+  try {
+    await fs.unlink(uploadPath);
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      throw error;
+    }
+  }
+};
+
+const cleanupUploadedRequestFile = async (req) => {
+  if (!req.file?.filename) return;
+
+  try {
+    await deleteUploadedFile(req.file.filename);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const isDuplicateCommunityNameError = (error) => {
+  return (
+    error?.code === 11000 &&
+    (Object.prototype.hasOwnProperty.call(
+      error.keyPattern || {},
+      "communityNameNormalized",
+    ) ||
+      Object.prototype.hasOwnProperty.call(
+        error.keyValue || {},
+        "communityNameNormalized",
+      ))
+  );
+};
+
+const sendDuplicateCommunityName = (res) => {
+  return res.status(409).json({ message: "Community already exists" });
+};
+
 export const getAllCommunities = async (req, res) => {
+  const pagination = buildPagination(req.query);
+  const total = await community.countDocuments();
   let allCommunities = await populateSafeCommunityUsers(
-    findCommunitiesForRead(),
+    findCommunitiesForRead().skip(pagination.skip).limit(pagination.limit),
   );
 
   allCommunities = allCommunities.map((item) => sanitizeCommunityForRead(item));
 
-  return res.status(200).json({ allCommunities });
+  return res.status(200).json({
+    allCommunities,
+    pagination: buildPaginationMeta({ ...pagination, total }),
+  });
 };
 
 export const getCommunityById = async (req, res) => {
@@ -158,7 +256,7 @@ export const getCommunityById = async (req, res) => {
   const communityData = await findCommunityForReadById(communityId);
 
   if (!communityData) {
-    return res.status(404).json({ msg: "Community Not Found!" });
+    return res.status(404).json({ message: "Community Not Found!" });
   }
 
   const safeCommunity = sanitizeCommunityForRead(communityData);
@@ -171,7 +269,7 @@ export const getJoinedCommunities = async (req, res) => {
   const memberField = getMembershipFieldByRole(req.user.role);
 
   if (!memberField) {
-    return res.status(403).json({ msg: "You are not authorized" });
+    return res.status(403).json({ message: "You are not authorized" });
   }
 
   const communitiesData = (
@@ -182,6 +280,7 @@ export const getJoinedCommunities = async (req, res) => {
 };
 
 export const getAllJoinedMembersCommunities = async (req, res) => {
+  const pagination = buildPagination(req.query);
   const allCommunities = await populateSafeCommunityUsers(
     findCommunitiesForRead(),
   );
@@ -205,33 +304,37 @@ export const getAllJoinedMembersCommunities = async (req, res) => {
     }
   });
 
-  const modifiedMembers = Array.from(allMembers.values()).map((member) =>
-    buildUserResponse(member, req),
-  );
+  const members = Array.from(allMembers.values());
+  const modifiedMembers = members
+    .slice(pagination.skip, pagination.skip + pagination.limit)
+    .map((member) => buildUserResponse(member, req));
 
-  if (!modifiedMembers[0]) {
-    return res.status(404).json({ msg: "No Members Found!" });
-  }
-
-  return res.status(200).json({ modifiedMembers });
+  return res.status(200).json({
+    modifiedMembers,
+    pagination: buildPaginationMeta({ ...pagination, total: members.length }),
+  });
 };
 
 export const addCommunity = async (req, res) => {
   const communityData = pickAllowedFields(req.body, communityEditableFields);
-  const data = await community.find({
-    communityName: communityData.communityName,
-  });
+  communityData.communityNameNormalized = normalizeCommunityName(
+    communityData.communityName,
+  );
 
-  if (data.length === 0) {
+  try {
     const newCommunity = new community(communityData);
 
     await newCommunity.save();
     return res
       .status(200)
-      .json({ msg: "Community has been created successfuly." });
-  }
+      .json({ message: "Community has been created successfully." });
+  } catch (error) {
+    if (isDuplicateCommunityNameError(error)) {
+      return sendDuplicateCommunityName(res);
+    }
 
-  return res.status(400).json({ msg: "Community is already exists!" });
+    throw error;
+  }
 };
 
 export const unjoinCommunity = async (req, res) => {
@@ -240,7 +343,7 @@ export const unjoinCommunity = async (req, res) => {
   const memberField = getMembershipFieldByRole(req.user.role);
 
   if (!memberField) {
-    return res.status(403).json({ msg: "You are not authorized" });
+    return res.status(403).json({ message: "You are not authorized" });
   }
 
   const result = await community.updateOne(
@@ -249,16 +352,16 @@ export const unjoinCommunity = async (req, res) => {
   );
 
   if (result.matchedCount === 0) {
-    return res.status(404).json({ msg: "Community Not Found!" });
+    return res.status(404).json({ message: "Community Not Found!" });
   }
 
   if (result.modifiedCount === 0) {
     return res
       .status(400)
-      .json({ msg: "You Are Not Joined In This Community!" });
+      .json({ message: "You Are Not Joined In This Community!" });
   }
 
-  return res.status(200).json({ msg: "Unjoined Community Successfuly." });
+  return res.status(200).json({ message: "Unjoined Community Successfully." });
 };
 
 export const joinCommunity = async (req, res) => {
@@ -267,7 +370,7 @@ export const joinCommunity = async (req, res) => {
   const memberField = getMembershipFieldByRole(req.user.role);
 
   if (!memberField) {
-    return res.status(403).json({ msg: "You are not authorized" });
+    return res.status(403).json({ message: "You are not authorized" });
   }
 
   const result = await community.updateOne(
@@ -276,82 +379,95 @@ export const joinCommunity = async (req, res) => {
   );
 
   if (result.matchedCount === 0) {
-    return res.status(404).json({ msg: "Community Not Found" });
+    return res.status(404).json({ message: "Community Not Found" });
   }
 
   if (result.modifiedCount === 0) {
     return res
       .status(200)
-      .json({ msg: "You Have Already Joined The Community!" });
+      .json({ message: "You Have Already Joined The Community!" });
   }
 
-  return res.status(200).json({ msg: "Joined Community Successfuly." });
+  return res.status(200).json({ message: "Joined Community Successfully." });
 };
 
 export const updateCommunity = async (req, res) => {
   const communityId = req.params.id;
   const communityData = pickAllowedFields(req.body, communityEditableFields);
-  const updatedCommunity = await community.findByIdAndUpdate(
-    communityId,
-    { $set: communityData },
-    { new: true, runValidators: true },
-  );
 
-  if (updatedCommunity) {
-    return res.status(200).json({
-      msg: "Community has been updated successfuly.",
-      community: sanitizeResponseValue(updatedCommunity),
-    });
+  try {
+    const updatedCommunity = await community
+      .findByIdAndUpdate(
+        communityId,
+        { $set: communityData },
+        { new: true, runValidators: true },
+      )
+      .select(communityReadProjection);
+
+    if (updatedCommunity) {
+      return res.status(200).json({
+        message: "Community has been updated successfully.",
+        community: sanitizeCommunityForRead(updatedCommunity),
+      });
+    }
+  } catch (error) {
+    if (isDuplicateCommunityNameError(error)) {
+      return sendDuplicateCommunityName(res);
+    }
+
+    throw error;
   }
 
   return res
     .status(404)
-    .json({ msg: "There is no community with such id to update." });
+    .json({ message: "There is no community with such id to update." });
 };
 
 export const deleteCommunity = async (req, res) => {
   const communityId = req.params.id;
-  const communityToDelete = await community.findById(communityId);
+  const result = await community.deleteOne({ _id: communityId });
 
-  if (communityToDelete) {
-    const filter = { _id: communityId };
-
-    await community.deleteOne(filter);
+  if (result.deletedCount > 0) {
     return res
       .status(200)
-      .json({ msg: "Community has been deleted successfuly." });
+      .json({ message: "Community has been deleted successfully." });
   }
 
-  return res.status(400).json({ msg: "Community deletion failed." });
+  return res.status(404).json({ message: "Community Not Found!" });
 };
 
 export const uploadCoverImage = async (req, res) => {
-  if (!req.file) {
-    return res
-      .status(404)
-      .send({ success: false, message: "Cover image is required" });
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "Cover image is required" });
+    }
+
+    const communityId = req.params.communityId;
+    const coverImageUrl = req.file.filename;
+    const communityData = await community
+      .findByIdAndUpdate(
+        communityId,
+        { $set: { coverImage_url: coverImageUrl } },
+        { new: true, runValidators: true },
+      )
+      .select(communityReadProjection);
+
+    if (!communityData) {
+      await cleanupUploadedRequestFile(req);
+      return res.status(404).json({ message: "Community Not Found!" });
+    }
+
+    const safeCommunity = sanitizeCommunityForRead(communityData);
+    safeCommunity.coverImage_url = buildUploadUrl(coverImageUrl, req);
+
+    return res.status(200).json({
+      message: "Community cover image uploaded successfully",
+      coverImage_url: safeCommunity.coverImage_url,
+      community: safeCommunity,
+    });
+  } catch (error) {
+    await cleanupUploadedRequestFile(req);
+
+    throw error;
   }
-
-  const UserModel = getUserModelByRole(req.user.role);
-
-  if (!UserModel) {
-    return res.status(403).json({ msg: "You are not authorized" });
-  }
-
-  const cover_url = req.file.filename;
-  const userData = await UserModel.findByIdAndUpdate(
-    req.user._id,
-    { $set: { coverImage_url: cover_url } },
-    { new: true },
-  ).select(safeUserProjection);
-
-  if (!userData) {
-    return res.status(404).send({ success: false, message: "User not found" });
-  }
-
-  const data = buildUserResponse(userData, req);
-
-  return res
-    .status(200)
-    .json({ msg: "Cover image uploaded successfuly", data });
 };

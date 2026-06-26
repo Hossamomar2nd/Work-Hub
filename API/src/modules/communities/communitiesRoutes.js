@@ -34,8 +34,7 @@ router.get(
   asyncHandler(getAllJoinedMembersCommunities),
 );
 router.get(
-  "/getJoinedCommunities/:id/:role",
-  validateObjectIdParams("id"),
+  "/getJoinedCommunities",
   auth(endPoints.allUsersExceptAdmin),
   asyncHandler(getJoinedCommunities),
 );
@@ -52,21 +51,22 @@ router.put(
   validation(updateCommunitySchema),
   asyncHandler(updateCommunity),
 );
-router.put(
-  "/joinCommunity/:communityId/:userId/:role",
+router.post(
+  "/joinCommunity/:communityId",
   validateObjectIdParams("communityId"),
   auth(endPoints.allUsersExceptAdmin),
   asyncHandler(joinCommunity),
 );
-router.put(
-  "/unjoinCommunity/:communityId/:userId/:role",
+router.delete(
+  "/unjoinCommunity/:communityId",
   validateObjectIdParams("communityId"),
   auth(endPoints.allUsersExceptAdmin),
   asyncHandler(unjoinCommunity),
 );
 router.put(
-  "/uploadCoverImage/:id/:role",
-  auth(endPoints.allUsersExceptAdmin),
+  "/uploadCoverImage/:communityId",
+  validateObjectIdParams("communityId"),
+  auth(endPoints.admin),
   uploadImage("coverImage"),
   asyncHandler(uploadCoverImage),
 );
