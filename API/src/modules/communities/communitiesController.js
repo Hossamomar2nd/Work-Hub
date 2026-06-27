@@ -56,6 +56,7 @@ const membershipFieldsByRole = {
 };
 const communityEditableFields = ["communityName", "communityDesc"];
 const communityReadProjection = "-communityPosts -communityNameNormalized -__v";
+const communityStableSort = { createdAt: -1, _id: -1 };
 
 const pickAllowedFields = (source = {}, allowedFields) => {
   return allowedFields.reduce((data, field) => {
@@ -240,7 +241,10 @@ export const getAllCommunities = async (req, res) => {
   const pagination = buildPagination(req.query);
   const total = await community.countDocuments();
   let allCommunities = await populateSafeCommunityUsers(
-    findCommunitiesForRead().skip(pagination.skip).limit(pagination.limit),
+    findCommunitiesForRead()
+      .sort(communityStableSort)
+      .skip(pagination.skip)
+      .limit(pagination.limit),
   );
 
   allCommunities = allCommunities.map((item) => sanitizeCommunityForRead(item));
@@ -272,11 +276,20 @@ export const getJoinedCommunities = async (req, res) => {
     return res.status(403).json({ message: "You are not authorized" });
   }
 
+  const pagination = buildPagination(req.query);
+  const filter = { [memberField]: req.user._id };
+  const total = await community.countDocuments(filter);
   const communitiesData = (
-    await findCommunitiesForRead({ [memberField]: req.user._id })
+    await findCommunitiesForRead(filter)
+      .sort(communityStableSort)
+      .skip(pagination.skip)
+      .limit(pagination.limit)
   ).map((item) => sanitizeCommunityForRead(item));
 
-  return res.status(200).json({ communitiesData });
+  return res.status(200).json({
+    communitiesData,
+    pagination: buildPaginationMeta({ ...pagination, total }),
+  });
 };
 
 export const getAllJoinedMembersCommunities = async (req, res) => {

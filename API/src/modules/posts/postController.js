@@ -15,6 +15,10 @@ const userModelsByRole = {
   client: client_model,
   freelancer: freelancer_model,
 };
+const communityMemberFieldsByRole = {
+  client: "clientMembers",
+  freelancer: "freelancerMembers",
+};
 const safeUserProjection = "-password -token -__v";
 const sensitiveResponseKeys = new Set(["password", "token", "__v"]);
 
@@ -46,6 +50,21 @@ const toIdString = (value) => {
   if (!value) return "";
 
   return value.toString();
+};
+
+const getCommunityMemberFieldByRole = (role) =>
+  communityMemberFieldsByRole[role] || null;
+
+const isCommunityMember = (communityData, userId, role) => {
+  const memberField = getCommunityMemberFieldByRole(role);
+
+  if (!memberField || !Array.isArray(communityData?.[memberField])) {
+    return false;
+  }
+
+  return communityData[memberField].some((memberId) => {
+    return toIdString(memberId) === toIdString(userId);
+  });
 };
 
 const isPostOwner = (post, user) => {
@@ -317,10 +336,19 @@ export const addPost = async (req, res) => {
   const { communityId, caption } = req.body;
   const posterId = req.user._id;
   const posterType = req.user.role;
-  const communityExists = await community_model.exists({ _id: communityId });
+  const communityData = await community_model
+    .findById(communityId)
+    .select("clientMembers freelancerMembers")
+    .lean();
 
-  if (!communityExists) {
+  if (!communityData) {
     return res.status(404).json({ message: "Community not found" });
+  }
+
+  if (!isCommunityMember(communityData, posterId, posterType)) {
+    return res
+      .status(403)
+      .json({ message: "You are not authorized to post in this community" });
   }
 
   const newPost = new Postmodel({

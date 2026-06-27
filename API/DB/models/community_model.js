@@ -34,6 +34,7 @@ const communitySchema = new Schema(
       type: String,
       trim: true,
     },
+    // Deprecated legacy field. Post.communityId is the source of truth for community posts.
     communityPosts: {
       type: [mongoose.Types.ObjectId],
       required: false,
