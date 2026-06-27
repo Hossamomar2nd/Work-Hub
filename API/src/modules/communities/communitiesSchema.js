@@ -11,8 +11,11 @@ const communityEditableFields = {
 export const communitySchema = Joi.object({
   communityName: communityEditableFields.communityName.required(),
   communityDesc: communityEditableFields.communityDesc.required(),
-}).required();
+})
+  .unknown(false)
+  .required();
 
 export const updateCommunitySchema = Joi.object(communityEditableFields)
   .or("communityName", "communityDesc")
+  .unknown(false)
   .required();
