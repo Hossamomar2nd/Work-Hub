@@ -24,14 +24,14 @@ const auth = (data) => {
       const token = getHeaderToken(req);
 
       if (!token) {
-        return res.status(401).json({ msg: "Invalid header token" });
+        return res.status(401).json({ message: "Invalid header token" });
       }
 
       const decoded = jwt.verify(token, process.env.TOKEN_SECRETkEY);
       let user;
 
       if (!decoded) {
-        return res.status(401).json({ msg: "invalid or expired token" });
+        return res.status(401).json({ message: "invalid or expired token" });
       }
 
       switch (decoded.role) {
@@ -45,15 +45,15 @@ const auth = (data) => {
           user = await FreelancerModel.findOne({ _id: decoded.userId });
           break;
         default:
-          return res.status(401).json({ msg: "invalid or expired token" });
+          return res.status(401).json({ message: "invalid or expired token" });
       }
 
       if (!user) {
-        return res.status(401).json({ msg: "invalid or expired token" });
+        return res.status(401).json({ message: "invalid or expired token" });
       }
 
       if (token !== user.token) {
-        return res.status(403).json({ msg: "You are not authorized" });
+        return res.status(403).json({ message: "You are not authorized" });
       }
 
       const allowedRoles = Array.isArray(data) ? data : [];
@@ -63,17 +63,17 @@ const auth = (data) => {
         req.auth = { token, decoded };
         return next();
       }
-      return res.status(403).json({ msg: "You are not authorized" });
+      return res.status(403).json({ message: "You are not authorized" });
     } catch (error) {
       if (
         error.name === "TokenExpiredError" ||
         error.name === "JsonWebTokenError"
       ) {
-        return res.status(401).json({ msg: "invalid or expired token" });
+        return res.status(401).json({ message: "invalid or expired token" });
       }
 
       console.error(error);
-      return res.status(500).json({ msg: "Internal server error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   };
 };
