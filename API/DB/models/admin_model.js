@@ -15,6 +15,7 @@ const adminSchema = new Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
     image_url: {
       type: String,
@@ -37,6 +38,7 @@ const adminSchema = new Schema(
     token: {
       type: String,
       required: false,
+      select: false,
     },
   },
   {

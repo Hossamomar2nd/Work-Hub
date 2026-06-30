@@ -36,7 +36,9 @@ const auth = (data) => {
 
       switch (decoded.role) {
         case "admin":
-          user = await AdminModel.findOne({ _id: decoded.userId });
+          user = await AdminModel.findOne({ _id: decoded.userId }).select(
+            "+token",
+          );
           break;
         case "client":
           user = await ClientModel.findOne({ _id: decoded.userId });
