@@ -2,12 +2,36 @@ import bcrypt from "bcryptjs";
 import AdminModel from "../../../DB/models/admin_model.js";
 import { validatePassword } from "../../middleware/val.middleware.js";
 
+const adminResponseFields = [
+  "_id",
+  "name",
+  "email",
+  "image_url",
+  "activityStatus",
+  "lastLogin",
+  "role",
+  "createdAt",
+  "updatedAt",
+];
+
+const sanitizeAdmin = (admin) => {
+  const adminObject = admin?.toObject ? admin.toObject() : { ...admin };
+
+  return adminResponseFields.reduce((safeAdmin, field) => {
+    if (adminObject[field] !== undefined) {
+      safeAdmin[field] = adminObject[field];
+    }
+
+    return safeAdmin;
+  }, {});
+};
+
 // Get All Admins
 export const getAllAdmins = async (req, res) => {
   try {
     const allAdmins = await AdminModel.find();
     if (allAdmins.length !== 0) {
-      res.status(200).send(allAdmins);
+      res.status(200).send(allAdmins.map(sanitizeAdmin));
     } else {
       res.status(400).json({ msg: "No admins found!" });
     }
@@ -50,7 +74,7 @@ export const addAdmin = async (req, res) => {
     res.status(200).json({ msg: "Admin added successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ msg: "Internal server error", error });
+    res.status(500).json({ msg: "Internal server error" });
   }
 };
 

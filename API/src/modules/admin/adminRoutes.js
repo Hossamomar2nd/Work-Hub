@@ -3,7 +3,6 @@ import valMiddleware, {
   validateParams,
 } from "../../middleware/val.middleware.js";
 import {
-  loginSchema,
   sigupSchema,
   updatePasswordSchema,
 } from "../validation/validation.js";
@@ -23,25 +22,43 @@ import { upload } from "../../middleware/uploadImages.js";
 
 const router = express.Router();
 
-router.get("/getAllAdmins", getAllAdmins); // auth(endPoints.admin)
-router.post("/addAdmin", valMiddleware(sigupSchema), addAdmin);
+router.get(
+  "/getAllAdmins",
+  auth(endPoints.admin),
+  asyncHandler(getAllAdmins),
+);
+router.post(
+  "/addAdmin",
+  auth(endPoints.admin),
+  valMiddleware(sigupSchema),
+  asyncHandler(addAdmin),
+);
 router.put(
   "/uploadAdminImage/:id",
+  validateParams(),
+  auth(endPoints.admin),
   upload.single("image"),
   asyncHandler(uploadAdminImage),
-); // auth(endPoints.admin)
+);
 router.put(
   "/updateAdminInfo/:id",
   validateParams(),
+  auth(endPoints.admin),
   valMiddleware(updateInfoSchema),
   asyncHandler(updateAdminInfo),
-); // auth(endPoints.admin)
+);
 router.put(
   "/updateAdminPassword/:id",
   validateParams(),
+  auth(endPoints.admin),
   valMiddleware(updatePasswordSchema),
   asyncHandler(updateAdminPassword),
-); // auth(endPoints.admin)
-router.delete("/deleteAdmin/:id", validateParams(), asyncHandler(deleteAdmin)); // auth(endPoints.admin)
+);
+router.delete(
+  "/deleteAdmin/:id",
+  validateParams(),
+  auth(endPoints.admin),
+  asyncHandler(deleteAdmin),
+);
 
 export default router;

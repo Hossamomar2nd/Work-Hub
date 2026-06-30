@@ -26,7 +26,7 @@ const getUserModelByRole = (role) => userModelsByRole[role];
 
 const findUserByEmail = async (email) => {
   for (const UserModel of Object.values(userModelsByRole)) {
-    const user = await UserModel.findOne({ email });
+    const user = await UserModel.findOne({ email }).select("+password");
     if (user) return user;
   }
 
